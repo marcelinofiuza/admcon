@@ -1,0 +1,163 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+        <section class="r42-pagina">
+
+            <!-- execução inicial -->
+			<f:metadata>
+				<f:viewAction action="#{controleConta.listar}"></f:viewAction>
+			</f:metadata>
+
+			<h:form id="frm">
+				<!-- Mensagem Form -->
+				<p:growl id="msg-frm" showDetail="true"/> 
+				
+				<!-- Barra de Ferramentas -->
+				<p:toolbar styleClass="r42-toolbar" id="toolbar">
+					<p:toolbarGroup align="left">
+						<p:commandButton id="bto-novo" 
+										 title="Novo" 
+										 icon="fa fa-file-o"
+ 										 process="@this"	
+										 update="dialogo"			
+										 oncomplete="PF('wgDados').show()"
+										 disabled="#{controleConta.contaSelect == null}"
+										 actionListener="#{controleConta.novoCadastro}">
+										 <p:resetInput target="dialogo"/>
+						</p:commandButton>
+						<p:commandButton id="bto-editar" 
+										 title="Editar" 
+										 icon="fa fa-pencil"
+ 										 process="@this"	
+										 update="dialogo"			
+										 oncomplete="PF('wgDados').show()"
+										 disabled="#{controleConta.contaSelect == null}"
+										 actionListener="#{controleConta.editCadastro}">
+										 <p:resetInput target="dialogo"/>
+						</p:commandButton>
+						<p:commandButton id="bto-excluir" 
+										 title="Excluir" 
+										 icon="fa fa-trash"										 
+										 process="@this"	
+										 update="tabela msg-frm toolbar"	
+										 disabled="#{controleConta.contaSelect == null}"
+										 actionListener="#{controleConta.excluir}">
+										<p:confirm icon="fa fa-warning" header="Exclusão de Registro" message="Confirma a exclusão da Conta?"/>
+						</p:commandButton>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right" styleClass="r42-toolbar-right">
+						<p:outputLabel value="Cadastro de Contas Contábeis"/>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<!-- Listagem dos dados -->
+				<p:treeTable value="#{controleConta.treeContas}" var="conta" 
+							 id="tabela" 
+							 resizableColumns="true"							 
+							 rows="15" paginator="true" paginatorPosition="top"
+							 selectionMode="single"
+							 selection="#{controleConta.contaSelect}">
+
+					<!-- Evento ajax, que atuliza a barra de ferramentas, quando marca/desmarca uma linha -->
+					<p:ajax event="select" update=":frm:toolbar" />
+        			<p:ajax event="unselect" update=":frm:toolbar" />
+					
+					<!-- Colunas -->
+					<p:column headerText="Chave" style="width:10%">
+						<h:outputText value="#{conta.chave}" />
+					</p:column>					
+					<p:column headerText="Reduzida" style="width:10%">
+						<h:outputText value="#{conta.reduzida}" />
+					</p:column>
+					<p:column headerText="Descrição" style="width:50%">
+						<h:outputText value="#{conta.descricao}" />
+					</p:column>
+					<p:column headerText="Tipo Conta" style="width:15%">
+						<h:outputText value="#{conta.tipoConta.descricao}" />
+					</p:column>
+					<p:column headerText="Status" style="width:15%">
+						<h:outputText value="#{conta.status.descricao}" />
+					</p:column>
+				</p:treeTable>
+
+				<!-- Dialogo inclusão/alteração -->
+				<p:dialog styleClass="r42-dialogo" 
+				          header="Conta Contábil" 
+						  widgetVar="wgDados" 
+                          id="dialogo"
+                          modal="true"
+                          resizable="false"                   
+                          responsive="true">
+						  
+					<!-- Barra de Ferramentas dialogo-->					
+					<p:defaultCommand target="bto-salvar" scope="dialogo"/>  
+					<p:toolbar>		
+						<p:toolbarGroup align="left">	
+							<p:commandButton id="bto-salvar"
+											 title="Salvar"
+											 icon="fa fa-save" 										  
+											 action="#{controleConta.salvar}"
+											 process="dialogo" 
+											 update="panel-dados"
+											 oncomplete="if(!args.validationFailed) PF('wgDados').hide()"/>
+						</p:toolbarGroup>
+					</p:toolbar>
+						  
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+                    
+                    <!-- Dados Dialogo -->
+                    <p:tabView id="panel-dados">
+                        <!-- Aba Dados Conta -->
+                        <p:tab title="Dados Conta"> 						  
+		                    <p:panelGrid columns="2" layout="grid" 
+		                                 styleClass="panelgrid-noborder r42-panelgrid"
+		                                 columnClasses="ui-grid-col-3, ui-grid-col-9">
+														
+								<p:outputLabel value="Descrição" for="descricao"/>
+								<p:inputText id="descricao" size="50" maxlength="50"
+								             value="#{controleConta.contaEdicao.descricao}" 
+								             onblur="value=value.toUpperCase()"/>
+								
+								<p:outputLabel value="Reduzida" for="reduzida"/>
+								<p:inputText id="reduzida" size="10" maxlength="10"
+								             value="#{controleConta.contaEdicao.reduzida}"
+								             onblur="value=value.toUpperCase()"/>
+								
+								<p:outputLabel value="Tipo Conta" for="tipo-conta"/>
+								<p:selectOneMenu id="tipo-conta" value="#{controleConta.contaEdicao.tipoConta}">
+		                            <f:selectItem  itemLabel="Selecione"/>
+									<f:selectItems value="#{controleEnums.tiposConta}" var="tipoConta"
+												   itemLabel="#{tipoConta.descricao}" itemValue="#{tipoConta}"/>
+								</p:selectOneMenu>	
+		
+								<p:outputLabel value="Status" for="status"/>
+								<p:selectOneMenu id="status" value="#{controleConta.contaEdicao.status}">
+									<f:selectItem  itemLabel="Selecione"/>
+									<f:selectItems value="#{controleEnums.statusConta}" var="status"
+												   itemLabel="#{status.descricao}" itemValue="#{status}"/>
+								</p:selectOneMenu>
+		
+								<p:outputLabel value="Natureza" for="natureza"/>
+								<p:selectOneMenu id="natureza" value="#{controleConta.contaEdicao.natureza}">
+									<f:selectItem  itemLabel="Selecione"/>
+									<f:selectItems value="#{controleEnums.naturezas}" var="natureza"
+												   itemLabel="#{natureza.descricao}" itemValue="#{natureza}"/>
+								</p:selectOneMenu>
+														
+								<p:outputLabel value="Conta Pai" for="conta-pai"/>
+								<p:outputLabel id="conta-pai"
+											   value="#{controleConta.contaEdicao.contaPai.idConta}-#{controleConta.contaEdicao.contaPai.descricao}"/>
+								
+							</p:panelGrid>	
+                        </p:tab>
+                    </p:tabView>					  
+				</p:dialog>
+			</h:form>
+		</section>
+	</ui:define>
+</ui:composition>

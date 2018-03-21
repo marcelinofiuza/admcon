@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+        
+		<p:panelMenu style="width: 210px" toggleable="true">
+			<p:submenu label="Cadastros">
+			    <p:menuitem value="Banco" />
+				<p:menuitem value="Cliente" />
+				<p:menuitem value="Fornecedor" />
+				<p:menuitem value="Conta Contábil" outcome="Conta"/>
+			</p:submenu>
+			<p:submenu label="Contas a Receber">
+				<p:menuitem value="Receber" />
+				<p:menuitem value="Cobrança" />
+				<p:menuitem value="Boleto" />
+				<p:menuitem value="Retorno" />
+			</p:submenu>
+			<p:submenu label="Contas a Pagar">
+				<p:menuitem value="Pagar"  />
+			</p:submenu>
+            <p:submenu label="Movimento Bancário">
+                <p:menuitem value="Lançamento" />
+                <p:menuitem value="Extrato" />
+            </p:submenu>			
+            <p:submenu label="Configurações">               
+            	<p:menuitem value="Empresa"  outcome="Empresa"/> 
+                <p:menuitem value="Usuários" outcome="Usuario"/>
+                <p:menuitem value="Migração" />
+            </p:submenu>			
+		</p:panelMenu>
+
+	</h:form>
+
+</ui:composition>
