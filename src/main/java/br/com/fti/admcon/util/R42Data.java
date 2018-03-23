@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import br.com.fti.admcon.entidade.empresa.BancoPeriodo;
+
 /****************************************************************************
  * Metodos para trabalhos com datas
  * 
@@ -115,14 +117,14 @@ public class R42Data {
 	/****************************************************************************
 	 * Verifica se a data está dentro do periodo
 	 ****************************************************************************/
-//	public static boolean dentroPeriodo(Date data, BancoPeriodo bancoPeriodo) {
-//
-//		if (data.before(bancoPeriodo.getDataInicio()) || data.after(bancoPeriodo.getDataFinal())) {
-//			return false;
-//		}
-//		return true;
-//
-//	}
+	public static boolean dentroPeriodo(Date data, BancoPeriodo bancoPeriodo) {
+
+		if (data.before(bancoPeriodo.getDataInicio()) || data.after(bancoPeriodo.getDataFinal())) {
+			return false;
+		}
+		return true;
+
+	}
 
 	/****************************************************************************
 	 * Retorna a data atual

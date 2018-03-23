@@ -7,19 +7,19 @@
         
 		<p:panelMenu style="width: 210px" toggleable="true">
 			<p:submenu label="Cadastros">
-			    <p:menuitem value="Banco" />
-				<p:menuitem value="Cliente" />
-				<p:menuitem value="Fornecedor" />
+			    <p:menuitem value="Banco" outcome="Banco" />
+				<p:menuitem value="Cliente" outcome="Cliente"/>
+				<p:menuitem value="Fornecedor" outcome="Fornecedor"/>
 				<p:menuitem value="Conta Contábil" outcome="Conta"/>
 			</p:submenu>
 			<p:submenu label="Contas a Receber">
-				<p:menuitem value="Receber" />
-				<p:menuitem value="Cobrança" />
-				<p:menuitem value="Boleto" />
-				<p:menuitem value="Retorno" />
+				<p:menuitem value="Receber" outcome="Receber"/>
+				<p:menuitem value="Cobrança" outcome="Cobranca"/>
+				<p:menuitem value="Boleto" outcome="Boleto"/>
+				<p:menuitem value="Retorno" outcome="BoletoRetorno"/>
 			</p:submenu>
 			<p:submenu label="Contas a Pagar">
-				<p:menuitem value="Pagar"  />
+				<p:menuitem value="Pagar" outcome="Pagar" />
 			</p:submenu>
             <p:submenu label="Movimento Bancário">
                 <p:menuitem value="Lançamento" />
