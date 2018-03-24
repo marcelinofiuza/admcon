@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.fti.admcon.entidade.empresa.Banco;
 import br.com.fti.admcon.entidade.empresa.Lancamento;
+import br.com.fti.admcon.relatorio.relExtrato.RelExtrato;
 import br.com.fti.admcon.servico.SerBanco;
 import br.com.fti.admcon.util.FacesMessages;
 import br.com.fti.admcon.util.R42Data;
@@ -85,22 +86,22 @@ public class ControleExtrato implements Serializable {
 	
 	}
 
-//	/****************************************************************************
-//	 * Imprime o extrato bancario
-//	 ****************************************************************************/	
-//	public void imprimir(){
-//		try {
-//			RelExtrato relatorio = new RelExtrato();
-//			relatorio.setParametros("banco", getBanco().getIdeDescricao());
-//			relatorio.setParametros("periodo", R42Data.dateToString(dataInicio) +" - "+ R42Data.dateToString(dataFinal));
-//			relatorio.setLista(getLancamentos());
-//			relatorio.gerar();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			mensagens.error(e.getMessage());
-//			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:tabela"));
-//		}		
-//	}
+	/****************************************************************************
+	 * Imprime o extrato bancario
+	 ****************************************************************************/	
+	public void imprimir(){
+		try {
+			RelExtrato relatorio = new RelExtrato();
+			relatorio.setParametros("banco", getBanco().getIdeDescricao());
+			relatorio.setParametros("periodo", R42Data.dateToString(dataInicio) +" - "+ R42Data.dateToString(dataFinal));
+			relatorio.setLista(getLancamentos());
+			relatorio.gerar();
+		} catch (Exception e) {
+			e.printStackTrace();
+			mensagens.error(e.getMessage());
+			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:tabela"));
+		}		
+	}
 	
 	/****************************************************************************
 	 * Gets e Sets do controle

@@ -126,18 +126,24 @@ public class SerBanco {
 
 		// Monta saldo inicial
 		Lancamento bancoLcto = new Lancamento();
-		BigDecimal saldoAnterior = lancamentos.get(0).getSaldo().subtract(lancamentos.get(0).getValorLctoConvertido());
+		BigDecimal saldoAnterior = new BigDecimal(0);
+		
+		try {
+			saldoAnterior = lancamentos.get(0).getSaldo().subtract(lancamentos.get(0).getValorLctoConvertido());
+		} catch (Exception e) {
 
+		}
+		
 		bancoLcto.setHistorico("SALDO ANTERIOR");
 		bancoLcto.setValorLcto(new BigDecimal(0));
 		bancoLcto.setSaldo(saldoAnterior);
-		
+
 		if (saldoAnterior.signum() == -1) {
 			bancoLcto.setTipoLcto(DebitoCredito.DEBITO);
 		} else {
 			bancoLcto.setTipoLcto(DebitoCredito.CREDITO);
 		}
-		
+
 		lancamentos.add(0, bancoLcto);
 
 		return lancamentos;

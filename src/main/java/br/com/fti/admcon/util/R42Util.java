@@ -1,12 +1,15 @@
 package br.com.fti.admcon.util;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.jamel.dbf.DbfReader;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -17,63 +20,64 @@ import br.com.fti.admcon.enums.AnaliticaSintetica;
 import br.com.fti.admcon.enums.AtivaItativa;
 import br.com.fti.admcon.enums.Estado;
 import br.com.fti.admcon.enums.Natureza;
+import br.com.fti.admcon.migracao.ControleMigracao;
 
 public class R42Util {
-	
+
 	/****************************************************************************
 	 * Retorna a sessão em aberto
 	 * 
 	 * @return - HttpSession
 	 * 
-	 ****************************************************************************/	
-	public static HttpSession getSessao(){
+	 ****************************************************************************/
+	public static HttpSession getSessao() {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		return attr.getRequest().getSession(true); // true == allow create		
+		return attr.getRequest().getSession(true); // true == allow create
 	}
-	
+
 	/****************************************************************************
 	 * Retorna o usuário logado
 	 * 
 	 * @return - Usuario
 	 * 
-	 ****************************************************************************/		
-	public static Usuario resgataUsuario(){		
+	 ****************************************************************************/
+	public static Usuario resgataUsuario() {
 		HttpSession httpSessao = getSessao();
-		Usuario usuario = (Usuario) httpSessao.getAttribute("USUARIO");			
+		Usuario usuario = (Usuario) httpSessao.getAttribute("USUARIO");
 		return usuario;
 	}
-	
+
 	/****************************************************************************
 	 * Retorna a empresa ativa
 	 * 
 	 * @return - Empresa
 	 * 
-	 ****************************************************************************/		
-	public static Empresa resgataEmpresa(){		
+	 ****************************************************************************/
+	public static Empresa resgataEmpresa() {
 		return resgataUsuario().getEmpresaWork();
 	}
-	
+
 	/****************************************************************************
 	 * Valida CPF
 	 * 
 	 * @param cpf
-	 * 			- Numero do cpf a ser validado
+	 *            - Numero do cpf a ser validado
 	 * @param ponto
-	 * 			- true retorna com ponto, false sem ponto
+	 *            - true retorna com ponto, false sem ponto
 	 * @return - CPF, null se inválido
 	 * 
 	 ****************************************************************************/
 	public static String validaCPF(String numCpf, boolean ponto) {
 
-		String cpf = numCpf.replace('(', ' ').replace(')', ' ').replaceAll("[ ./-]", "").replace("-","");
-		
+		String cpf = numCpf.replace('(', ' ').replace(')', ' ').replaceAll("[ ./-]", "").replace("-", "");
+
 		if (cpf.length() == 11) {
-			Integer digito1 = calcularDigito(cpf.substring(0,9), "CPF");
-			Integer digito2 = calcularDigito(cpf.substring(0,9)+digito1, "CPF");
-			if(cpf.equals(cpf.substring(0,9) + digito1.toString() + digito2.toString())){
-				if(ponto){
+			Integer digito1 = calcularDigito(cpf.substring(0, 9), "CPF");
+			Integer digito2 = calcularDigito(cpf.substring(0, 9) + digito1, "CPF");
+			if (cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString())) {
+				if (ponto) {
 					return pontosCpf(cpf);
-				}else{
+				} else {
 					return cpf;
 				}
 			}
@@ -85,30 +89,30 @@ public class R42Util {
 	 * Valida CNPJ
 	 * 
 	 * @param cnpj
-	 * 			- Numero do cnpj a ser validado
+	 *            - Numero do cnpj a ser validado
 	 * @param ponto
-	 * 			- true retorna com ponto, false sem ponto
+	 *            - true retorna com ponto, false sem ponto
 	 * @return - CNPJ, null se inválido
 	 * 
 	 ****************************************************************************/
 	public static String validaCNPJ(String numCnpj, boolean ponto) {
 
-		String cnpj = numCnpj.replace('(', ' ').replace(')', ' ').replaceAll("[ ./-]", "").replace("-","");
+		String cnpj = numCnpj.replace('(', ' ').replace(')', ' ').replaceAll("[ ./-]", "").replace("-", "");
 
 		if (cnpj.length() == 14) {
-			Integer digito1 = calcularDigito(cnpj.substring(0,12), "CNPJ");
-			Integer digito2 = calcularDigito(cnpj.substring(0,12)+digito1, "CNPJ");
-			if(cnpj.equals(cnpj.substring(0,12) + digito1.toString() + digito2.toString())){
-				if(ponto){
+			Integer digito1 = calcularDigito(cnpj.substring(0, 12), "CNPJ");
+			Integer digito2 = calcularDigito(cnpj.substring(0, 12) + digito1, "CNPJ");
+			if (cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString())) {
+				if (ponto) {
 					return pontosCnpj(cnpj);
-				}else{
+				} else {
 					return cnpj;
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	/****************************************************************************
 	 * Calcula Digito modulo 11 para cpf ou cnpj
 	 * 
@@ -139,20 +143,19 @@ public class R42Util {
 	}
 
 	/****************************************************************************
-	 * Remove caracteres 
+	 * Remove caracteres
 	 * 
 	 * @param numero
-	 *            - Numero do cpf (123.555.896-65)
-	 *            - Numero do cnpj (12.225.896/0001-65)
-	 *            - Numero qualquer (4566.11)
+	 *            - Numero do cpf (123.555.896-65) - Numero do cnpj
+	 *            (12.225.896/0001-65) - Numero qualquer (4566.11)
 	 * @return - sem ponto (12355589665)
 	 * 
-	 ****************************************************************************/	
-	public static String removePontos(final String numero){
-		String newNumero = numero.replace('(', ' ').replace(')', ' ').replaceAll("[ ./-]", "").replace("-","");
+	 ****************************************************************************/
+	public static String removePontos(final String numero) {
+		String newNumero = numero.replace('(', ' ').replace(')', ' ').replaceAll("[ ./-]", "").replace("-", "");
 		return newNumero;
 	}
-	
+
 	/****************************************************************************
 	 * Coloca pontos no CPF
 	 * 
@@ -164,13 +167,11 @@ public class R42Util {
 	public static String pontosCpf(final String cpf) {
 
 		String newCpf = removePontos(cpf);
-		
-		return newCpf.substring(0, 3) + "." + 
-				newCpf.substring(3, 6) + "." + 
-				newCpf.substring(6, 9) + "-" + 
-				newCpf.substring(9, 11);
+
+		return newCpf.substring(0, 3) + "." + newCpf.substring(3, 6) + "." + newCpf.substring(6, 9) + "-"
+				+ newCpf.substring(9, 11);
 	}
-	
+
 	/****************************************************************************
 	 * Coloca pontos no CNPJ
 	 * 
@@ -182,14 +183,11 @@ public class R42Util {
 	public static String pontosCnpj(final String cnpj) {
 
 		String newCnpj = removePontos(cnpj);
-		
-		return newCnpj.substring(0, 2) + "." + 
-				newCnpj.substring(2, 5) + "." + 
-				newCnpj.substring(5, 8) + "/" + 
-				newCnpj.substring(8, 12) + "-" +
-				newCnpj.substring(12,14);
-	}	
-	
+
+		return newCnpj.substring(0, 2) + "." + newCnpj.substring(2, 5) + "." + newCnpj.substring(5, 8) + "/"
+				+ newCnpj.substring(8, 12) + "-" + newCnpj.substring(12, 14);
+	}
+
 	/****************************************************************************
 	 * Retorna o arquivo DbfReader contido no path c:\temp\dbf
 	 * 
@@ -198,26 +196,26 @@ public class R42Util {
 	 * @return - DbfReader
 	 * 
 	 ****************************************************************************/
-//	public static DbfReader lerDbf(String arquivo) throws Exception{	
-//
-////      String path = "/src/resources/"+arquivo		
-////		ClassLoader classLoader = new MigrarConta().getClass().getClassLoader();	
-////		File file = new File(classLoader.getResource(path).getFile());
-//		
-//		Long idEmpresa = resgataEmpresa().getIdEmpresa();
-//		String id = String.valueOf(idEmpresa);
-//		
-//		URL url = new ControleMigracao().getClass().getClassLoader().getResource("dbf/"+id+"/"+arquivo);
-//		File file = new File(url.getFile());
-//		
-//		try {		
-//			DbfReader dbfReader = new DbfReader(file);
-//			return dbfReader;		
-//		} catch (Exception e) {
-//			throw new Exception("Não foi possível abrir o arquivo " + file.getAbsolutePath());
-//		}		 
-//	}
-	
+	public static DbfReader lerDbf(String arquivo) throws Exception {
+
+		// String path = "/src/resources/"+arquivo
+		// ClassLoader classLoader = new MigrarConta().getClass().getClassLoader();
+		// File file = new File(classLoader.getResource(path).getFile());
+
+		Long idEmpresa = resgataEmpresa().getIdEmpresa();
+		String id = String.valueOf(idEmpresa);
+
+		URL url = new ControleMigracao().getClass().getClassLoader().getResource("dbf/" + id + "/" + arquivo);
+		File file = new File(url.getFile());
+
+		try {
+			DbfReader dbfReader = new DbfReader(file);
+			return dbfReader;
+		} catch (Exception e) {
+			throw new Exception("Não foi possível abrir o arquivo " + file.getAbsolutePath());
+		}
+	}
+
 	/****************************************************************************
 	 * Converte String em Estado
 	 ****************************************************************************/
@@ -228,34 +226,36 @@ public class R42Util {
 				estado = Estado.valueOf(uf);
 			} catch (Exception e) {
 				throw new Exception("Estado não existente!");
-			}					
+			}
 		}
 		return estado;
-	}	
-	
+	}
+
 	/****************************************************************************
 	 * Converte BigDecimal para String formatado
-	 * @param moeda - Exemplo "R$"
+	 * 
+	 * @param moeda
+	 *            - Exemplo "R$"
 	 ****************************************************************************/
 	public static String converteValor(String moeda, BigDecimal bigDecimal) {
 		String valor;
 		DecimalFormat decFormat = new DecimalFormat("#,###,##0.00");
 		valor = decFormat.format(bigDecimal);
-		
-		if(moeda != null){
-			valor = moeda +" "+ valor;
+
+		if (moeda != null) {
+			valor = moeda + " " + valor;
 		}
-		
+
 		return valor;
-	}	
-	
+	}
+
 	/****************************************************************************
 	 * Retorna um plano de contas pré existente
-	 ****************************************************************************/	
-	public static List<Conta> criarContaRaiz(){
-		
+	 ****************************************************************************/
+	public static List<Conta> criarContaRaiz() {
+
 		List<Conta> listaConta = new ArrayList<>();
-		
+
 		Conta conta = new Conta();
 		conta.setChave(1);
 		conta.setDescricao("ATIVO");
@@ -295,8 +295,8 @@ public class R42Util {
 		conta.setReduzida("4");
 		conta.setContaPai(null);
 		listaConta.add(conta);
-		
+
 		return listaConta;
-		
+
 	}
 }

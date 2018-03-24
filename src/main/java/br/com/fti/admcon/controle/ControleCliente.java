@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.com.fti.admcon.entidade.empresa.Cliente;
 import br.com.fti.admcon.entidade.empresa.ClienteContatos;
 import br.com.fti.admcon.entidade.empresa.Conta;
+import br.com.fti.admcon.relatorio.relCliente.RelCliente;
 import br.com.fti.admcon.servico.SerCliente;
 import br.com.fti.admcon.util.FacesMessages;
 
@@ -120,19 +121,19 @@ public class ControleCliente implements Serializable {
 		listaClienteContatos.add(clienteContatos);
 	}
 
-//	/****************************************************************************
-//	 * Gerar relatório de clientes
-//	 ****************************************************************************/
-//	public void gerarRelatorio() {
-//		try {
-//			RelCliente relatorio = new RelCliente();
-//			relatorio.setLista(getListaClientes());
-//			relatorio.gerar();
-//		} catch (Exception e) {
-//			mensagens.error(e.getMessage());
-//			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:tabela"));
-//		}
-//	}
+	/****************************************************************************
+	 * Gerar relatório de clientes
+	 ****************************************************************************/
+	public void gerarRelatorio() {
+		try {
+			RelCliente relatorio = new RelCliente();
+			relatorio.setLista(getListaClientes());
+			relatorio.gerar();
+		} catch (Exception e) {
+			mensagens.error(e.getMessage());
+			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:tabela"));
+		}
+	}
 
 	/****************************************************************************
 	 * Remover contato

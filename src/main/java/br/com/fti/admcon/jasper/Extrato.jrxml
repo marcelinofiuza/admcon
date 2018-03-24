@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8ac4aa7c-ab8a-4a44-82e1-70241fbcd5d8">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="empresa" class="java.lang.String"/>
+	<parameter name="banco" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<field name="dataLcto" class="java.util.Date"/>
+	<field name="documento" class="java.lang.String"/>
+	<field name="historico" class="java.lang.String"/>
+	<field name="valorLctoConvertido" class="java.math.BigDecimal"/>
+	<field name="saldo" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="90">
+			<rectangle>
+				<reportElement x="-20" y="-20" width="595" height="110" backcolor="#0B0B6E" uuid="53375c35-08b6-4a9c-8b52-0d80d99268fe"/>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="460" y="-10" width="108" height="30" forecolor="#FFFFFF" uuid="50d964fc-5803-42b2-bb23-8555099b9546"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-10" y="-10" width="100" height="30" forecolor="#FFFFFF" uuid="e426a20e-dd4a-4659-992f-316d06baf031"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empresa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="-10" width="370" height="30" forecolor="#FFFFFF" uuid="aa87f276-22ec-4a1b-96d4-8de3da86c348"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-10" y="20" width="100" height="30" forecolor="#FFFFFF" uuid="e1fa38ae-1a6a-44ed-8063-4500880af16f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Banco:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="20" width="370" height="30" forecolor="#FFFFFF" uuid="4c91270d-3b3c-4ff7-9f27-63232e8016f4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{banco}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-10" y="50" width="100" height="30" forecolor="#FFFFFF" uuid="f8c85795-0d74-44f2-8658-05a1f903ecc6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="50" width="260" height="30" forecolor="#FFFFFF" uuid="5ee5d1b1-e8f1-4a2d-a2b3-ffe3805fe92a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="360" y="50" width="208" height="30" forecolor="#FFFFFF" uuid="160c0e12-ad24-4eec-acb7-d5f15b5da763"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXTRATO]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="-11" y="8" width="80" height="16" uuid="5cce4497-6f33-453f-8511-e5bbf17b7dd7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="8" width="78" height="16" uuid="a728390e-bfeb-4011-b76f-96a3dbd8eaaa"/>
+				<text><![CDATA[Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="8" width="210" height="16" uuid="5838c9d5-3588-49be-b749-c3aa910fe814">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Historico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="8" width="100" height="16" uuid="955fdc15-2e4d-4152-985f-fb81c9fc43f1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Valor Lcto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="8" width="108" height="16" uuid="a5e5394a-2518-4827-81ea-e7187fe15235">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-10" y="32" width="578" height="1" uuid="a38fb975-8118-4d7b-90df-acca6a8eadc6"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="-11" y="0" width="80" height="16" uuid="c727b67b-df72-40a7-95bf-ccf99cea7205">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{dataLcto} != null ? $F{dataLcto}: "")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="2" width="78" height="14" uuid="e8f86f8d-7f87-49f7-a164-2d84d42e3039"/>
+				<textFieldExpression><![CDATA[($F{documento} != null ? $F{documento}: "")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="0" width="210" height="16" uuid="4a1dbb09-3c37-4676-91ab-fab206a3616a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{historico}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="360" y="0" width="100" height="16" uuid="e878675a-651e-49ba-8a13-e00f5fa1ffeb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorLctoConvertido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="460" y="0" width="108" height="16" uuid="cb69aa4c-5b32-4d03-887a-bee0bc590302"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="528" y="8" width="40" height="20" uuid="d754ce0f-954a-406e-a614-440bdbe461eb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

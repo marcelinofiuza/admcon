@@ -1,0 +1,411 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+		<section class="r42-pagina">
+            
+            <h:form id="frm">            
+                <!-- Mensagem Form -->
+                <p:growl id="msg-frm" showDetail="true"/>  
+                            
+                <!-- Dialogo para selecionar banco e periodo -->
+                <p:dialog header="Banco e Período"
+                          width="600" 
+                          widgetVar="wgSelecaoBanco" 
+                          id="selecaoBanco"
+                          closable="false" 
+                          modal="true"                        
+                          resizable="false"                   
+                          responsive="true">                
+
+                    <p:panelGrid id="panelSelecao"
+                                 columns="2" 
+                                 layout="grid" 
+                                 styleClass="panelgrid-noborder r42-panelgrid"
+                                 columnClasses="ui-grid-col-3, ui-grid-col-9">
+                            
+                        <p:outputLabel value="Banco" for="banco" />     
+                        <p:column>
+                            <p:inputText id="banco" 
+                                         size="10"
+                                         value="#{controleLancamento.banco.idBanco}"
+                                         readonly="true"/>
+                                         
+                            <p:commandButton icon="fa fa-search" 
+                                             title="Pesquisar"
+                                             action="#{pesquisaBanco.abrirDialogo('pesquisaBanco')}"
+                                             process="@this"
+                                             update="@none">
+                                                 
+                                <p:ajax event="dialogReturn" 
+                                        listener="#{controleLancamento.bancoSelecionado}"
+                                        process="@this"                                             
+                                        update="panelSelecao"/>
+                                            
+                            </p:commandButton>                                
+                        </p:column>
+                        
+                        <p:outputLabel value="Descrição" for="descricao" />                                                                             
+                        <p:inputText id="descricao" size="50"
+                                     value="#{controleLancamento.banco.descricao}"
+                                     readonly="true"/>
+                                                             
+                        <p:outputLabel value="Periodo" for="periodos"/>
+                        <p:selectOneMenu id="periodos" value="#{controleLancamento.bancoPeriodo}"
+                                         converter="converterPeriodo">
+                            <f:selectItems value="#{controleLancamento.listaPeriodo}" 
+                                           var="periodo" 
+                                           itemLabel="#{periodo.dataPeriodo}" 
+                                           itemValue="#{periodo}"/>
+                        </p:selectOneMenu>                        
+                        
+                        <p:column>
+                            <p:commandButton icon="fa fa-check" 
+                                             title="Ok"
+                                             process="panelSelecao"                                             
+                                             update="toolbar tabela"
+                                             action="#{controleLancamento.confirmaBanco}"
+                                             disabled="#{controleLancamento.banco == null}"/>                        
+
+                            <p:commandButton icon="fa fa-close" 
+                                             title="Sair"
+                                             process="@this"                                        
+                                             action="Inicio.xhmtl?faces-redirect=true"/>
+                        </p:column>                        
+                        
+                    </p:panelGrid>                        
+                </p:dialog>
+                
+                <!-- Barra Ferramentas -->
+                <p:toolbar styleClass="r42-toolbar" id="toolbar">
+	                <p:toolbarGroup align="left">
+                        <p:commandButton    id="bto-novo" 
+                                            title="Novo" 
+                                            icon="fa fa-file-o"
+                                            actionListener="#{controleLancamento.novoLancamento}"
+                                            process="@this" 
+                                            update="dialogoLancamento" 
+                                            oncomplete="PF('wgDadosLancamento').show()">
+                                            <p:resetInput target="dialogoLancamento" />
+                        </p:commandButton>	
+                        <p:commandButton    id="bto-editar" 
+                                            title="Editar" 
+                                            icon="fa fa-pencil" 
+                                            process="@this" 
+                                            update="dialogoLancamento" 
+                                            oncomplete="PF('wgDadosLancamento').show()" 
+                                            disabled="#{controleLancamento.lctoSelect == null}"
+                                            actionListener="#{controleLancamento.editLcto}">
+                                            <p:resetInput target="dialogoLancamento" />
+                        </p:commandButton>  
+                        <p:commandButton    id="bto-excluir" 
+                                            title="Excluir" 
+                                            icon="fa fa-trash" 
+                                            process="@this"
+                                            disabled="#{controleLancamento.lctoSelect == null}" 
+                                            update="tabela msg-frm toolbar"
+                                            actionListener="#{controleLancamento.excluir}">
+                                            <p:confirm icon="fa fa-warning" header="Exclusão de Registro" message="Confirma a exclusão do Lançamento?" />
+                        </p:commandButton>    
+                        <span class="ui-separator">
+                            <span class="fa fa-fw fa-ellipsis-v"/>
+                        </span>
+                        <p:commandButton    id="bto-transferencia" 
+                                            title="Transferência" 
+                                            icon="fa fa-exchange" 
+                                            process="@this" 
+                                            update="dialogoTransferencia"
+                                            oncomplete="PF('wgDadosTransferencia').show()" 
+                                            actionListener="#{controleLancamento.novaTransferencia}">
+                                            <p:resetInput target="dialogoTransferencia" />
+                        </p:commandButton>   
+	                </p:toolbarGroup>
+	                
+                    <p:toolbarGroup align="right"  >
+                        <p:outputLabel value="#{controleLancamento.banco.idBanco}."/>
+                        <p:outputLabel value="#{controleLancamento.banco.descricao}"/>
+                        <p:spacer height="10"/>
+                        <p:outputLabel value="Periodo: #{controleLancamento.bancoPeriodo.dataPeriodo}"/>
+                        <p:spacer height="10"/>
+                        <p:commandButton    id="bto-troca" 
+                                            title="Selecionar Banco" 
+                                            icon="fa fa-refresh"
+                                            oncomplete="PF('wgSelecaoBanco').show();"/>                        
+                    </p:toolbarGroup>	                
+                </p:toolbar>
+                
+                <!-- Listagem dos dados -->
+                <p:dataTable value="#{controleLancamento.bancoPeriodo.lancamentos}" 
+                             var="lancamento" 
+                             id="tabela" 
+                             reflow="true" 
+                             rows="15" 
+                             paginator="true"
+                             paginatorPosition="top" 
+                             selectionMode="single" 
+                             rowKey="#{lancamento.idLcto}"
+                             selection="#{controleLancamento.lctoSelect}" 
+                             emptyMessage="Nenhum Lançamento encontrado">
+                             
+                    <!-- Evento ajax, que atuliza a barra de ferramentas, quando marca/desmarca uma linha -->
+                    <p:ajax event="rowSelect" update=":frm:toolbar" />
+                    <p:ajax event="rowUnselect" update=":frm:toolbar" />
+                                                 
+                    <!-- Colunas -->
+                    <p:column headerText="Data" width="80">
+                        <h:outputText value="#{lancamento.dataLcto}">
+                            <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>   
+                        </h:outputText>
+                    </p:column>      
+                    <p:column headerText="Origem" width="100">
+                        <h:outputText value="#{lancamento.origemLcto.descricao}" />
+                    </p:column>                                             
+                    <p:column headerText="Documento" width="100">
+                        <h:outputText value="#{lancamento.documento}" />
+                    </p:column>                          
+                    <p:column headerText="Conta">
+                        <h:outputText value="#{lancamento.conta.ideDescricao}" />
+                    </p:column>                                                              
+                    <p:column headerText="Valor" width="150">
+                        <h:outputText value="#{lancamento.valorLctoConvertido}" style="float: right">
+                            <f:convertNumber type="currency" currencySymbol=""/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Saldo" width="150">
+                        <h:outputText value="#{lancamento.saldo}" style="float: right">
+                            <f:convertNumber type="currency" currencySymbol=""/>
+                        </h:outputText>
+                    </p:column>                                                      
+                </p:dataTable>
+                
+                <!-- Dialogo de Lançamento -->
+                <p:dialog styleClass="r42-dialogo" 
+                          header="Lançamento" 
+                          widgetVar="wgDadosLancamento" 
+                          id="dialogoLancamento" 
+                          modal="true" 
+                          resizable="false"
+                          responsive="true">
+                    
+                    <!-- Barra de Ferramentas dialogo-->
+                    <p:defaultCommand target="bto-salvar" scope="dialogoLancamento" />
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton id="bto-salvar" 
+                                             title="Salvar" 
+                                             icon="fa fa-save" 
+                                             action="#{controleLancamento.salvar}" 
+                                             process="dialogoLancamento"
+                                             update="panelLancamento"
+                                             disabled="#{controleLancamento.lancamento.origemLcto.descricao != 'Banco'}"
+                                             oncomplete="if(!args.validationFailed) PF('wgDadosLancamento').hide()" />
+                        </p:toolbarGroup>
+                    </p:toolbar>
+
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />                    
+
+                    <!-- Dados Dialogo -->                    
+                    <p:tabView id="panelLancamento">
+                        
+                        <!-- Aba Dados Lançamento -->
+                        <p:tab title="Lcto Bancário">                                            
+		                    <p:panelGrid columns="2" 
+		                                 layout="grid" 
+		                                 styleClass="panelgrid-noborder r42-panelgrid"
+		                                 columnClasses="ui-grid-col-3, ui-grid-col-9">
+		                    
+		                        <p:outputLabel value="Tipo Lançamento" for="tipoLcto" />
+		                        <p:selectOneMenu id="tipoLcto" required="true"
+		                                         value="#{controleLancamento.lancamento.tipoLcto}">		                                         
+                                    
+                                    <p:ajax listener="#{controleLancamento.changeTipoLcto}" update="panelLancamento" />		                            
+		                            <f:selectItem itemLabel="Selecione" />
+		                            <f:selectItems value="#{controleEnums.debitoCredito}" 
+		                                           var="tipoLcto" 
+		                                           itemLabel="#{tipoLcto.descricao}" 
+		                                           itemValue="#{tipoLcto}"/>
+		                        </p:selectOneMenu>                    
+		                          
+		                        <p:outputLabel value="Data" for="data"/>
+		                        <p:calendar id="data" size="10"
+		                                    locale="pt_BR"
+		                                    value="#{controleLancamento.lancamento.dataLcto}"
+		                                    pattern="dd/MM/yyyy" mask="99/99/9999"
+		                                    showOn="button"
+		                                    required="true"/>
+
+		                        <p:outputLabel value="Documento" for="documento"/>
+		                        <p:column id="col-documento">
+                                    <p:inputText id="documento" size="15" maxlength="15" 
+		                                         value="#{controleLancamento.lancamento.documento}"
+		                                         onblur="value=value.toUpperCase()"
+		                                         required="true"/>
+		                                         
+                                    <p:spacer width="10"/>
+                                    <p:selectBooleanCheckbox id="cheque"
+                                                             rendered="#{controleLancamento.displayCheque}" 
+                                                             value="#{controleLancamento.lancamento.cheque}"/>
+                                    <p:outputLabel value=" Cheque" 
+                                                   for="cheque"
+                                                   rendered="#{controleLancamento.displayCheque}"/>
+                                </p:column>
+		                                       
+		                        <p:outputLabel value="Valor" for="valor"/>
+		                        <p:inputNumber id="valor" size="20"
+		                                       value="#{controleLancamento.lancamento.valorLcto}"
+		                                       decimalSeparator=","
+		                                       thousandSeparator="."
+		                                       required="true"/>                                     
+		
+		                        <p:outputLabel value="Conta Contábil" for="conta"/>                              
+		                        <p:column>                                
+		                            <p:inputText id="conta" size="10"
+		                                         value="#{controleLancamento.conta.idConta}"
+		                                         readonly="true"
+		                                         required="true"/>
+		
+		                            <p:commandButton icon="fa fa-search" 
+		                                             title="Pesquisar"
+		                                             action="#{pesquisaConta.abrirDialogo('pesquisaConta')}"
+		                                             process="@this"
+		                                             update="@none">
+		                                                 
+		                                <p:ajax event="dialogReturn" 
+		                                        listener="#{controleLancamento.contaSelecionada}"
+		                                        process="@this"                                             
+		                                        update="conta contaDescricao"/>
+		                                            
+		                            </p:commandButton>
+		                            <p:spacer width="10"/>                                                                         
+		                            <p:inputText id="contaDescricao" size="50"
+		                                         value="#{controleLancamento.conta.descricao}"
+		                                         readonly="true"/>                                
+		                        </p:column>
+		                        <p:column>
+		                            <p:outputLabel value="Histórico" for="historico"/>
+		                            <p:spacer/>
+		                            <h:outputText id="display" />
+		                        </p:column>                            
+		                        <p:inputTextarea id="historico" rows="5" cols="50" maxlength="250"
+		                                         value="#{controleLancamento.lancamento.historico}"
+		                                         onblur="value=value.toUpperCase()"
+		                                         counter="display"
+		                                         counterTemplate="({0})"
+		                                         required="true"/>
+		                                                  
+                            </p:panelGrid>
+                        </p:tab>         
+                    </p:tabView>
+                </p:dialog>  
+                
+                <!-- Dialogo de Transferencia -->
+                <p:dialog styleClass="r42-dialogo" 
+                          header="Lançamento" 
+                          widgetVar="wgDadosTransferencia" 
+                          id="dialogoTransferencia" 
+                          modal="true" 
+                          resizable="false"
+                          responsive="true">
+                    
+                    <!-- Barra de Ferramentas dialogo-->
+                    <p:defaultCommand target="bto-salvar-transf" scope="dialogoTransferencia" />
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton id="bto-salvar-transf" 
+                                             title="Salvar" 
+                                             icon="fa fa-save"  
+                                             action="#{controleLancamento.salvaTransferencia}"
+                                             process="dialogoTransferencia"
+                                             update="panelTransferencia"
+                                             oncomplete="if(!args.validationFailed) PF('wgDadosTransferencia').hide()" />
+                        </p:toolbarGroup>
+                    </p:toolbar>
+
+                    <p:messages id="menTransf" showDetail="false" autoUpdate="true" closable="true" />                    
+
+                    <!-- Dados Dialogo -->                    
+                    <p:tabView id="panelTransferencia">
+                        
+                        <!-- Aba Dados Transferencia -->
+                        <p:tab title="Transferência">                                            
+                            <p:panelGrid columns="2" 
+                                         layout="grid" 
+                                         styleClass="panelgrid-noborder r42-panelgrid"
+                                         columnClasses="ui-grid-col-3, ui-grid-col-9">
+                                  
+                                <p:outputLabel value="Data" for="dataTransf"/>
+                                <p:calendar id="dataTransf" size="10"
+                                            locale="pt_BR"
+                                            value="#{controleLancamento.lancamento.dataLcto}"
+                                            pattern="dd/MM/yyyy" mask="99/99/9999"
+                                            showOn="button"
+                                            required="true"/>
+
+                                <p:outputLabel value="Documento" for="documentoTransf"/>
+                                <p:column>
+                                    <p:inputText id="documentoTransf" size="15" maxlength="15" 
+                                                 value="#{controleLancamento.lancamento.documento}"
+                                                 onblur="value=value.toUpperCase()"
+                                                 required="true"/>
+                                                 
+                                    <p:spacer width="10"/>
+                                    <p:selectBooleanCheckbox id="chequeTransf"
+                                                             value="#{controleLancamento.lancamento.cheque}"/>
+                                    <p:outputLabel value=" Cheque" 
+                                                   for="chequeTransf"/>
+                                </p:column>
+                                               
+                                <p:outputLabel value="Valor" for="valorTransf"/>
+                                <p:inputNumber id="valorTransf" size="20"
+                                               value="#{controleLancamento.lancamento.valorLcto}"
+                                               decimalSeparator=","
+                                               thousandSeparator="."
+                                               required="true"/>                                     
+        
+                                <p:outputLabel value="Banco Destino" for="bancoTransf"/>                              
+                                <p:column>                                
+                                    <p:inputText id="bancoTransf" size="10"
+                                                 value="#{controleLancamento.bancoCredito.idBanco}"
+                                                 readonly="true"
+                                                 required="true"/>
+        
+                                    <p:commandButton icon="fa fa-search" 
+                                                     title="Pesquisar"
+                                                     action="#{pesquisaBanco.abrirDialogo('pesquisaBanco')}"
+                                                     process="@this"
+                                                     update="@none">
+                                                         
+                                        <p:ajax event="dialogReturn" 
+                                                listener="#{controleLancamento.bancoTransfSelecionada}"
+                                                process="@this"                                             
+                                                update="bancoTransf bancoTransfDescricao"/>
+                                                    
+                                    </p:commandButton>
+                                    <p:spacer width="10"/>                                                                         
+                                    <p:inputText id="bancoTransfDescricao" size="50"
+                                                 value="#{controleLancamento.bancoCredito.descricao}"
+                                                 readonly="true"/>                                
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Histórico" for="historico"/>
+                                    <p:spacer/>
+                                    <h:outputText id="display" />
+                                </p:column>                            
+                                <p:inputTextarea id="historico" rows="5" cols="50" maxlength="250"
+                                                 value="#{controleLancamento.lancamento.historico}"
+                                                 counter="display"
+                                                 counterTemplate="({0})"
+                                                 required="true"/>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                </p:dialog>
+                          
+            </h:form>
+		</section>
+	</ui:define>
+</ui:composition>
