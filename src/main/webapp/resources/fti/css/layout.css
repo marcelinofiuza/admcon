@@ -1,7 +1,7 @@
 /* BASE */
 body {
 	margin: 0;
-	font-size: 13px;
+	font-size: 10px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	background-image:
 		url("#{resource['fti/img/backgroundTamagu.png']}");

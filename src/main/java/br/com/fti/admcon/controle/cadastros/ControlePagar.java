@@ -1,4 +1,4 @@
-package br.com.fti.admcon.controle;
+package br.com.fti.admcon.controle.cadastros;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,165 +18,160 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.fti.admcon.entidade.empresa.Banco;
 import br.com.fti.admcon.entidade.empresa.BancoPeriodo;
-import br.com.fti.admcon.entidade.empresa.Cliente;
 import br.com.fti.admcon.entidade.empresa.Conta;
+import br.com.fti.admcon.entidade.empresa.Fornecedor;
 import br.com.fti.admcon.entidade.empresa.Lancamento;
-import br.com.fti.admcon.entidade.empresa.Receber;
+import br.com.fti.admcon.entidade.empresa.Pagar;
 import br.com.fti.admcon.enums.DebitoCredito;
 import br.com.fti.admcon.enums.OrigemLcto;
 import br.com.fti.admcon.servico.SerBanco;
-import br.com.fti.admcon.servico.SerReceber;
+import br.com.fti.admcon.servico.SerPagar;
 import br.com.fti.admcon.util.FacesMessages;
 
+
 /****************************************************************************
- * Classe controle para View da Tela do Lançamento a Receber
+ * Classe controle para View da Tela do Lançamento a Pagar
  * 
- * @author: Bob-Odin - 20/04/2017
+ * @author: Thayro Rodrigues - 24/04/2017
  ****************************************************************************/
+
 @Named
 @ViewScoped
-public class ControleReceber implements Serializable {
+public class ControlePagar implements Serializable {
 
 	/****************************************************************************
 	 * Variaveis e Dependências
 	 ****************************************************************************/
 	private static final long serialVersionUID = 1L;
-
-	private List<Receber> listaReceber = new ArrayList<Receber>();
+	
+	private List<Pagar> listaPagar = new ArrayList<Pagar>();
 	private List<Lancamento> baixas = new ArrayList<Lancamento>();
-	private Receber receber = new Receber();
-	private Receber receberSelect;
-	private Cliente cliente;
+	private Pagar pagar = new Pagar();
+	private Pagar pagarSelect;
+	private Fornecedor fornecedor;
 	private Conta conta;
 	private Lancamento lancamento = new Lancamento();
 	private Banco banco;
-
+	private boolean displayCheque = false;
+	
 	private boolean salvarTitulo = true;
 	
 	@Autowired
-	SerReceber serReceber;
+	SerPagar serPagar;
 	@Autowired
 	SerBanco serBanco;
 	@Autowired
 	FacesMessages mensagens;
-
+	
 	/****************************************************************************
 	 * Inicialização
 	 ****************************************************************************/
 	@PostConstruct
 	public void init() {
-		RequestContext.getCurrentInstance().execute("PF('wgSelecaoCliente').show();");
+		RequestContext.getCurrentInstance().execute("PF('wgSelecaoFornecedor').show();");
 	}
-
+	
 	/****************************************************************************
 	 * Salvar o lançamento a receber
 	 ****************************************************************************/
 	public void salvar() {
 		try {
-			receber.setConta(conta);
-			serReceber.salvar(receber);
-			confirmaCliente();
+			pagar.setConta(conta);
+			serPagar.salvar(pagar);
+			confirmaFornecedor();
 			mensagens.info("Registro salvo com sucesso!");
 			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:toolbar", "frm:tabela"));
-			receberSelect = null;
+			pagarSelect = null;
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().validationFailed();
 			mensagens.error(e.getMessage());
 		}
 	}
-
+	
 	/****************************************************************************
 	 * Novo o lançamento a receber
 	 ****************************************************************************/
 	public void novoLancamento() {	
 		salvarTitulo = true;
 		conta = new Conta();
-		receber = new Receber();
-		receber.setCliente(cliente);
-		receber.setLancamento(new Date());
-		receber.setValor(new BigDecimal(0));
-		receberSelect = null;
+		pagar = new Pagar();
+		pagar.setFornecedor(fornecedor);
+		pagar.setLancamento(new Date());
+		pagar.setValor(new BigDecimal(0));
+		pagarSelect = null;
 		baixas = new ArrayList<Lancamento>();
 	}
-
+	
 	/****************************************************************************
 	 * Novo o lançamento a receber
 	 ****************************************************************************/
 	public void editLancamento() {
 		salvarTitulo = true;
-		receber = receberSelect;
-		conta = receberSelect.getConta();
-		baixas = receberSelect.getBaixas();
-		if (receber.getBoleto() != null) {
-			salvarTitulo = false;
-			mensagens.warning("Título gerado por boleto!");
-		}
-		if (receber.getBaixas() != null && !receber.getBaixas().isEmpty()) {
+		pagar = pagarSelect;
+		conta = pagarSelect.getConta();
+		baixas = pagarSelect.getBaixas();
+		if (pagar.getBaixas() != null && !pagar.getBaixas().isEmpty()) {
 			salvarTitulo = false;
 			mensagens.warning("Título já está com baixa!");
 		}		
 	}
-
+	
 	/****************************************************************************
 	 * Excluir registro selecionado
 	 ****************************************************************************/
+	
 	public void excluir() {
 		try {
-			if (receberSelect.getBoleto() == null) {
-				serReceber.excluir(receberSelect);
-				confirmaCliente();
-				mensagens.info("Registro excluido com sucesso!");
-			} else {
-				mensagens.error("Título deve ser estornado pelo Boleto!");
-			}
+			serPagar.excluir(pagarSelect);
+			confirmaFornecedor();
+			mensagens.info("Registro excluido com sucesso!");
+			
 		} catch (Exception e) {
 			mensagens.error(e.getMessage());
 		}
-		receberSelect = null;
+		pagarSelect = null;
 		RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:tabela"));
 	}
-
+	
 	/****************************************************************************
-	 * Resgata o Cliente selecionado no dialogo
+	 * Resgata o Fornecedor selecionado no dialogo
 	 ****************************************************************************/
-	public void clienteSelecionado(SelectEvent event) {
-		cliente = (Cliente) event.getObject();
+	public void fornecedorSelecionado(SelectEvent event) {
+		fornecedor = (Fornecedor) event.getObject();
 	}
-
+	
 	/****************************************************************************
-	 * Efetua a confirmação do cliente selecionado, faz a busca das duplicatas
+	 * Efetua a confirmação do fornecedor selecionado, faz a busca das duplicatas
 	 ****************************************************************************/
-	public void confirmaCliente() {
-		if (cliente != null) {
-			listaReceber = serReceber.listarPorCliente(cliente);
-			RequestContext.getCurrentInstance().execute("PF('wgSelecaoCliente').hide();");
+	public void confirmaFornecedor() {
+		if (fornecedor != null) {
+			listaPagar = serPagar.listarPorFornecedor(fornecedor);
+			RequestContext.getCurrentInstance().execute("PF('wgSelecaoFornecedor').hide();");
 		}
 	}
-
+	
 	/****************************************************************************
 	 * Resgata a conta selecionada no dialogo
 	 ****************************************************************************/
 	public void contaSelecionada(SelectEvent event) {
 		conta = (Conta) event.getObject();
 	}
-
+	
 	/****************************************************************************
 	 * Preparar Nova baixa
 	 ****************************************************************************/
 	public void novaBaixa() {
 		lancamento = new Lancamento();
-		lancamento.setReceber(receberSelect);
+		lancamento.setPagar(pagarSelect);
 		banco = new Banco();		
-		if(receberSelect.getBoleto() != null){
-			banco = receberSelect.getBoleto().getBanco();
-		}
-		String historico = "RECEBIMENTO " +
-							receberSelect.getCliente().getRazaoSocial() +
+		
+		String historico = "PAGAMENTO " +
+							pagarSelect.getFornecedor().getRazaoSocial() +
 							" DUPLICATA " +
-							receberSelect.getDocumento();
+							pagarSelect.getDocumento();
 		
 		lancamento.setDataLcto(new Date());
-		lancamento.setValorBase(receberSelect.getSaldo());
+		lancamento.setValorBase(pagarSelect.getSaldo());
 		lancamento.setHistorico(historico);
 	}
 	
@@ -189,15 +184,15 @@ public class ControleReceber implements Serializable {
 			if(periodo != null){		
 				
 				lancamento.setBancoPeriodo(periodo);
-				lancamento.setConta(receberSelect.getCliente().getConta());
-				lancamento.setOrigemLcto(OrigemLcto.DCR);
-				lancamento.setTipoLcto(DebitoCredito.CREDITO);
+				lancamento.setConta(pagarSelect.getFornecedor().getConta());
+				lancamento.setOrigemLcto(OrigemLcto.DCP);
+				lancamento.setTipoLcto(DebitoCredito.DEBITO);
 								
-				receberSelect.addBaixa(lancamento);
-				serReceber.salvar(receberSelect);
+				pagarSelect.addBaixa(lancamento);
+				serPagar.salvar(pagarSelect);
 				
-				confirmaCliente();
-				receberSelect = null;
+				confirmaFornecedor();
+				pagarSelect = null;
 				RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:toolbar", "frm:tabela"));
 			}else{
 				FacesContext.getCurrentInstance().validationFailed();
@@ -209,7 +204,7 @@ public class ControleReceber implements Serializable {
 			mensagens.error(e.getMessage());
 		}		
 	}
-
+	
 	/****************************************************************************
 	 * Resgata o Banco selecionado no dialogo
 	 ****************************************************************************/
@@ -222,10 +217,10 @@ public class ControleReceber implements Serializable {
 	 ****************************************************************************/	
 	public void estornarBaixa(Lancamento baixa){
 		try {			
-			serReceber.estornarBaixa(receberSelect, baixa.getIdLcto());	
-			receberSelect = null;
+			serPagar.estornarBaixa(pagarSelect, baixa.getIdLcto());	
+			pagarSelect = null;
 
-			confirmaCliente();
+			confirmaFornecedor();
 			mensagens.info("Estorno efetuado com sucesso!");
 			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:toolbar", "frm:tabela"));
 			RequestContext.getCurrentInstance().execute("PF('wgDadosLancamento').hide();");
@@ -237,31 +232,58 @@ public class ControleReceber implements Serializable {
 	}
 	
 	/****************************************************************************
+	 * Evento quando é feita alteração no tipo de lançamento
+	 ****************************************************************************/
+	public void changeTipoLcto() {
+		lancamento.setCheque(false);
+		displayCheque = false;
+		if (lancamento.getTipoLcto() == DebitoCredito.DEBITO) {
+			displayCheque = true;
+		}
+	}
+	
+	/****************************************************************************
 	 * Gets e Sets do controle
 	 ****************************************************************************/
 
-	public Cliente getCliente() {
-		return cliente;
+	public List<Pagar> getListaPagar() {
+		return listaPagar;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setListaPagar(List<Pagar> listaPagar) {
+		this.listaPagar = listaPagar;
 	}
 
-	public List<Receber> getListaReceber() {
-		return listaReceber;
+	public List<Lancamento> getBaixas() {
+		return baixas;
 	}
 
-	public void setListaReceber(List<Receber> listaReceber) {
-		this.listaReceber = listaReceber;
+	public void setBaixas(List<Lancamento> baixas) {
+		this.baixas = baixas;
 	}
 
-	public Receber getReceber() {
-		return receber;
+	public Pagar getPagar() {
+		return pagar;
 	}
 
-	public void setReceber(Receber receber) {
-		this.receber = receber;
+	public void setPagar(Pagar pagar) {
+		this.pagar = pagar;
+	}
+
+	public Pagar getPagarSelect() {
+		return pagarSelect;
+	}
+
+	public void setPagarSelect(Pagar pagarSelect) {
+		this.pagarSelect = pagarSelect;
+	}
+
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	public Conta getConta() {
@@ -270,14 +292,6 @@ public class ControleReceber implements Serializable {
 
 	public void setConta(Conta conta) {
 		this.conta = conta;
-	}
-
-	public Receber getReceberSelect() {
-		return receberSelect;
-	}
-
-	public void setReceberSelect(Receber receberSelect) {
-		this.receberSelect = receberSelect;
 	}
 
 	public Lancamento getLancamento() {
@@ -300,12 +314,37 @@ public class ControleReceber implements Serializable {
 		return salvarTitulo;
 	}
 
-	public List<Lancamento> getBaixas() {
-		return baixas;
+	public void setSalvarTitulo(boolean salvarTitulo) {
+		this.salvarTitulo = salvarTitulo;
 	}
 
-	public void setBaixas(List<Lancamento> baixas) {
-		this.baixas = baixas;
+	public SerPagar getSerPagar() {
+		return serPagar;
 	}
 
+	public void setSerPagar(SerPagar serPagar) {
+		this.serPagar = serPagar;
+	}
+
+	public SerBanco getSerBanco() {
+		return serBanco;
+	}
+
+	public void setSerBanco(SerBanco serBanco) {
+		this.serBanco = serBanco;
+	}
+
+	public FacesMessages getMensagens() {
+		return mensagens;
+	}
+
+	public void setMensagens(FacesMessages mensagens) {
+		this.mensagens = mensagens;
+	}
+	
+	public boolean isDisplayCheque() {
+		return displayCheque;
+	}
+	
+	
 }

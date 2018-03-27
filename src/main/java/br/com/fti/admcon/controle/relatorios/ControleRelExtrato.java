@@ -1,4 +1,4 @@
-package br.com.fti.admcon.controle;
+package br.com.fti.admcon.controle.relatorios;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import br.com.fti.admcon.util.R42Data;
  ****************************************************************************/
 @Named
 @ManagedBean
-public class ControleExtrato implements Serializable {
+public class ControleRelExtrato implements Serializable {
 
 	/****************************************************************************
 	 * Variaveis e Dependências
@@ -52,8 +52,16 @@ public class ControleExtrato implements Serializable {
 		dataInicio = null;
 		dataFinal = null;
 		lancamentos = null; //new ArrayList<>();
+		exibePopUp();
 	}
 
+	/****************************************************************************
+	 * exibe tela de pop-up para seleção de empresa na inicialização
+	 ****************************************************************************/		
+	private void exibePopUp(){
+		RequestContext.getCurrentInstance().execute("PF('wgSelecao').show();");
+	}
+	
 	/****************************************************************************
 	 * Resgata o Banco selecionado no dialogo
 	 ****************************************************************************/

@@ -107,25 +107,25 @@ public class SerBanco {
 				break;
 			}
 
-			for (Lancamento bancoLcto : bancoPeriodo.getLancamentos()) {
+			for (Lancamento lancamento : bancoPeriodo.getLancamentos()) {
 
 				// se a data está fora do periodo solicidado, proximo
-				if (bancoLcto.getDataLcto().before(inicio)) {
+				if (lancamento.getDataLcto().before(inicio)) {
 					continue;
 				}
 
 				// se a data está fora do perido solicitado, finaliza
-				if (bancoLcto.getDataLcto().after(fim)) {
+				if (lancamento.getDataLcto().after(fim)) {
 					break;
 				}
 
 				// Adiciona lancamento
-				lancamentos.add(bancoLcto);
+				lancamentos.add(lancamento);
 			}
 		}
 
 		// Monta saldo inicial
-		Lancamento bancoLcto = new Lancamento();
+		Lancamento lancamento = new Lancamento();
 		BigDecimal saldoAnterior = new BigDecimal(0);
 		
 		try {
@@ -134,17 +134,17 @@ public class SerBanco {
 
 		}
 		
-		bancoLcto.setHistorico("SALDO ANTERIOR");
-		bancoLcto.setValorLcto(new BigDecimal(0));
-		bancoLcto.setSaldo(saldoAnterior);
+		lancamento.setHistorico("SALDO ANTERIOR");
+		lancamento.setValorLcto(new BigDecimal(0));
+		lancamento.setSaldo(saldoAnterior);
 
 		if (saldoAnterior.signum() == -1) {
-			bancoLcto.setTipoLcto(DebitoCredito.DEBITO);
+			lancamento.setTipoLcto(DebitoCredito.DEBITO);
 		} else {
-			bancoLcto.setTipoLcto(DebitoCredito.CREDITO);
+			lancamento.setTipoLcto(DebitoCredito.CREDITO);
 		}
 
-		lancamentos.add(0, bancoLcto);
+		lancamentos.add(0, lancamento);
 
 		return lancamentos;
 
@@ -156,7 +156,7 @@ public class SerBanco {
 	public void montaSaldo(Banco banco, Date inicio, Date fim) {
 
 		Date dataDe = R42Data.inicioMes(inicio);
-		Date dataAte = R42Data.fimMes(fim);
+		//Date dataAte = R42Data.fimMes(fim);
 
 		BigDecimal saldoInicial = new BigDecimal(0);
 
@@ -172,9 +172,9 @@ public class SerBanco {
 				continue;
 			}
 
-			if (periodo.getDataFinal().compareTo(dataAte) > 0) {
-				continue;
-			}
+//			if (periodo.getDataFinal().compareTo(dataAte) > 0) {
+//				continue;
+//			}
 
 			periodo.setSaldoInicial(saldoInicial);
 

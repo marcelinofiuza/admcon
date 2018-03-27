@@ -14,9 +14,14 @@
 			</p:submenu>
 			<p:submenu label="Contas a Receber">
 				<p:menuitem value="Receber" outcome="Receber"/>
-				<p:menuitem value="Cobrança" outcome="Cobranca"/>
-				<p:menuitem value="Boleto" outcome="Boleto"/>
-				<p:menuitem value="Retorno" outcome="BoletoRetorno"/>
+				<p:submenu label="Boleto">
+					<p:menuitem value="Gerar Cobrança" outcome="Cobranca"/>
+					<p:menuitem value="Emissão Boleto" outcome="Boleto"/>
+					<p:menuitem value="Retorno Boleto" outcome="BoletoRetorno"/>				
+				</p:submenu>
+				<p:submenu label="Relatórios">
+					<p:menuitem value="Receber" outcome="RelReceber"/>
+				</p:submenu>	
 			</p:submenu>
 			<p:submenu label="Contas a Pagar">
 				<p:menuitem value="Pagar" outcome="Pagar" />

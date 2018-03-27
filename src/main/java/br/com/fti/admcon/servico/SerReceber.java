@@ -1,6 +1,7 @@
 package br.com.fti.admcon.servico;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import br.com.fti.admcon.entidade.empresa.Boleto;
 import br.com.fti.admcon.entidade.empresa.Cliente;
 import br.com.fti.admcon.entidade.empresa.Receber;
 import br.com.fti.admcon.repositorio.empresa.RepReceber;
+import br.com.fti.admcon.util.R42Data;
 import br.com.fti.admcon.entidade.empresa.Lancamento;
 
 /****************************************************************************
@@ -173,6 +175,44 @@ public class SerReceber {
 	 ****************************************************************************/
 	public Receber buscarPorBoletoEBoletoItem(Long idBoleto, Long idItem) {
 		return repReceber.findByIdBoletoAndIdBoletoItem(idBoleto, idItem);
+	}
+
+	/****************************************************************************
+	 * Metodo para buscar Titulos a receber por lancamento e vencimento
+	 ****************************************************************************/
+	public List<Receber> buscarPorLancamentoEVencimento(Date lctoDe, Date lctoAte, Date vctoDe, Date vctoAte) {
+
+		Date lancamentoDe = lctoDe;
+		Date lancamentoAte = lctoAte;
+		Date vencimentoDe = vctoDe;
+		Date vencimentoAte = vctoAte;
+
+		if (lctoDe == null) {
+			try {
+				lancamentoDe = R42Data.stringToDate("01011000");
+				lancamentoAte = R42Data.stringToDate("31129999");
+			} catch (Exception e) {
+			}
+		} else {
+			if (lctoAte == null) {
+				lancamentoAte = lctoDe;
+			}
+		}
+
+		if (vctoDe == null) {
+			try {
+				vencimentoDe = R42Data.stringToDate("01011000");
+				vencimentoAte = R42Data.stringToDate("31129999");
+			} catch (Exception e) {
+			}
+		} else {
+			if (vctoAte == null) {
+				vencimentoAte = lctoDe;
+			}
+		}		
+		
+		return repReceber.findByLancamentoBetweenAndVencimentoBetween(lancamentoDe, lancamentoAte, vencimentoDe, vencimentoAte);
+
 	}
 
 }

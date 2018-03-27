@@ -1,5 +1,6 @@
 package br.com.fti.admcon.repositorio.empresa;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,5 +34,11 @@ public interface RepReceber extends JpaRepository<Receber, Long> {
 	 ****************************************************************************/
 	@Query(value="select * from receber where id_boleto = ?1 and id_item = ?2",nativeQuery=true)
 	Receber findByIdBoletoAndIdBoletoItem(Long idBoleto, Long idItem);
+
+	/****************************************************************************
+	 * Busca os titulos pela data de lancamento e vencimento
+	 ****************************************************************************/
+	List<Receber> findByLancamentoBetweenAndVencimentoBetween(Date lctoDe, Date lctoAte, Date vencDe, Date vencAte);
+	
 	
 }

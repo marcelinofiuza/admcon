@@ -1,4 +1,4 @@
-package br.com.fti.admcon.controle;
+package br.com.fti.admcon.controle.cadastros;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

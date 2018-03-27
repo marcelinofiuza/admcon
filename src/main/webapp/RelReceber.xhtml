@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+		<section class="r42-pagina">
+
+			<!-- execução inicial-->
+			<f:metadata>
+				<f:viewAction action="#{controleRelReceber.iniciar()}" />
+			</f:metadata>
+
+
+			<h:form id="frm">
+				<!-- Mensagem Form -->
+				<p:growl id="msg-frm" showDetail="true" />
+
+              <!-- Dialogo para selecionar os lançamentos -->
+                <p:dialog id="selecao" 
+                	      header="Parâmetro Seleção"
+                          width="600" 
+                          widgetVar="wgSelecao"                          
+                          closable="false" 
+                          modal="true"                        
+                          resizable="false"                   
+                          responsive="true">                
+
+                    <p:panelGrid id="panelSelecao"
+                                 columns="2" 
+                                 layout="grid" 
+                                 styleClass="panelgrid-noborder r42-panelgrid"
+                                 columnClasses="ui-grid-col-3, ui-grid-col-9">
+                            
+                                            
+                        
+                    </p:panelGrid>                        
+                </p:dialog>
+                
+                <!-- Barra Ferramentas -->
+                <p:toolbar styleClass="r42-toolbar" id="toolbar">
+					<p:toolbarGroup align="left">
+						<p:commandButton id="bto-filtro" 
+                                         title="Filtrar" 
+                                         icon="fa fa-filter"
+                                         oncomplete="PF('wgSelecao').show();"/>  
+                                         
+						<p:commandButton id="bto-print" 
+										 title="Imprimir" 
+										 icon="fa fa-print" 
+										 disabled="#{controleExtrato.lancamentos == null}"
+										 ajax="false"
+										 immediate="true"
+										 process="@this"/>                                         
+	                </p:toolbarGroup>
+	                
+                    <p:toolbarGroup align="right" styleClass="r42-toolbar-right">
+		                <p:outputLabel value="Títulos a Receber"/>
+	                </p:toolbarGroup>	 
+	            </p:toolbar>  
+	            
+				<!-- Listagem dos dados -->
+				<p:dataTable value="#{controleRelReceber.lancamentos}"
+					var="receber" 
+					id="tabela"
+					reflow="true" 
+					rows="17"
+					paginator="true" 
+					paginatorPosition="top"
+					emptyMessage="Nenhum Lançamento encontrado">
+
+					<!-- Colunas -->
+					<p:column headerText="Unid." width="70" sortBy="#{receber.cliente.unidade}">
+						<h:outputText value="#{receber.cliente.unidade}" />
+					</p:column>
+					<p:column headerText="Cliente" sortBy="#{receber.cliente.fantasia}">
+						<h:outputText value="#{receber.cliente.fantasia}" />
+					</p:column>
+					<p:column headerText="Documento" width="100" sortBy="#{receber.documento}">
+						<h:outputText value="#{receber.documento}" />
+					</p:column>									
+					<p:column headerText="Vcto" width="80" sortBy="#{receber.vencimento}">
+						<h:outputText value="#{receber.vencimento}">
+							<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+										
+					<p:column headerText="Valor" width="80">
+						<h:outputText value="#{receber.valor}"
+							styleClass="r42-positivo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Acrescimos" width="80">
+						<h:outputText value="#{receber.acrescimos}"
+							styleClass="r42-positivo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Descontos" width="80">
+						<h:outputText value="#{receber.descontos}"
+							styleClass="r42-negativo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Recebido" width="80">
+						<h:outputText value="#{receber.recebido}"
+							styleClass="r42-positivo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					
+				</p:dataTable>
+			</h:form>
+		</section>
+	</ui:define>
+</ui:composition>
