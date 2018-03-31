@@ -6,6 +6,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -55,6 +56,35 @@ public class R42Util {
 	 ****************************************************************************/
 	public static Empresa resgataEmpresa() {
 		return resgataUsuario().getEmpresaWork();
+	}
+
+	/****************************************************************************
+	 * Seta atributo aliatório
+	 * 
+	 * @param id
+	 *            - Nome do parametro
+	 * @param valores
+	 *            - Map com valores
+	 **************************************************************************/
+	public static void setAtributo(String id, Map<String, Object> valores) {
+		HttpSession httpSessao = getSessao();
+		httpSessao.setAttribute(id, valores);		
+	}
+
+	/****************************************************************************
+	 * Resgata atributo aliatório
+	 * 
+	 * @param id
+	 *          - Nome do parametro a ser resgatado
+	 * @return - 
+	 * 			- Mapa dos parametros
+	 ****************************************************************************/
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> getAtributo(String id) {
+		HttpSession httpSessao = getSessao();		
+		Map<String, Object> valores = (Map<String, Object>) httpSessao.getAttribute(id);
+		httpSessao.removeAttribute(id);
+		return valores;
 	}
 
 	/****************************************************************************

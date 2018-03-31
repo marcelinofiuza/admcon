@@ -397,7 +397,7 @@ public class ControleBoleto implements Serializable {
 	 ****************************************************************************/
 	public void estornarTitulos() {
 		try {			
-			List<Receber> listaReceber = serReceber.listarPorBoleto(boletoSelect);
+			List<Receber> listaReceber = serReceber.listarTitulos(boletoSelect);
 			serReceber.excluir(listaReceber);
 			boletoSelect.setStatusBoleto(StatusBoleto.ABERTO);
 			serBoleto.salvar(boletoSelect);

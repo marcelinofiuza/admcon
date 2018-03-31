@@ -148,7 +148,7 @@ public class ControleReceber implements Serializable {
 	 ****************************************************************************/
 	public void confirmaCliente() {
 		if (cliente != null) {
-			listaReceber = serReceber.listarPorCliente(cliente);
+			listaReceber = serReceber.listarTitulos(cliente);
 			RequestContext.getCurrentInstance().execute("PF('wgSelecaoCliente').hide();");
 		}
 	}

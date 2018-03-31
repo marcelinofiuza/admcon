@@ -18,78 +18,127 @@
 				<!-- Mensagem Form -->
 				<p:growl id="msg-frm" showDetail="true" />
 
-              <!-- Dialogo para selecionar os lançamentos -->
-                <p:dialog id="selecao" 
-                	      header="Parâmetro Seleção"
-                          width="600" 
-                          widgetVar="wgSelecao"                          
-                          closable="false" 
-                          modal="true"                        
-                          resizable="false"                   
-                          responsive="true">                
+				<!-- Dialogo para selecionar os lançamentos -->
+				<p:dialog id="selecao" header="Parâmetro Seleção" width="600"
+					widgetVar="wgSelecao" closable="false" modal="true"
+					resizable="false" responsive="true">
 
-                    <p:panelGrid id="panelSelecao"
-                                 columns="2" 
-                                 layout="grid" 
-                                 styleClass="panelgrid-noborder r42-panelgrid"
-                                 columnClasses="ui-grid-col-3, ui-grid-col-9">
-                            
-                                            
-                        
-                    </p:panelGrid>                        
-                </p:dialog>
-                
-                <!-- Barra Ferramentas -->
-                <p:toolbar styleClass="r42-toolbar" id="toolbar">
+					<p:panelGrid id="panelSelecao" columns="2" layout="grid"
+						styleClass="panelgrid-noborder r42-panelgrid"
+						columnClasses="ui-grid-col-3, ui-grid-col-9">
+
+						<p:outputLabel value="Cliente" />
+						<p:column>
+							<p:commandButton id="bto-add-cliente" icon="fa fa-user-plus"
+								action="#{listaSelecaoCliente.abrirDialogo('listaSelecaoCliente',controleRelReceber.clientes)}"
+								process="@this" update="@none">
+
+								<p:ajax event="dialogReturn"
+									listener="#{controleRelReceber.retListaClientes}"
+									process="@this" update="panelSelecao" />
+
+							</p:commandButton>
+							<p:spacer height="10" />
+							<p:outputLabel
+								value="Selecionados: #{controleRelReceber.totalClientes}" />
+						</p:column>
+
+						<p:outputLabel value="Lançamento" />
+						<p:column>
+							<p:calendar id="lctoDe" size="10" locale="pt_BR"
+								value="#{controleRelReceber.lctoDe}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+
+							<p:spacer height="10" />
+
+							<p:calendar id="lctoAte" size="10" locale="pt_BR"
+								value="#{controleRelReceber.lctoAte}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+						</p:column>
+
+						<p:outputLabel value="Vencimento" />
+						<p:column>
+							<p:calendar id="vctoDe" size="10" locale="pt_BR"
+								value="#{controleRelReceber.vctoDe}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+
+							<p:spacer height="10" />
+
+							<p:calendar id="vctoAte" size="10" locale="pt_BR"
+								value="#{controleRelReceber.vctoAte}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+						</p:column>
+
+						<p:defaultCommand target="bto-pesquisa" scope="selecao" />
+						<p:column>
+							<p:commandButton id="bto-pesquisa" title="Pesquisar"
+								icon="fa fa-check" action="#{controleRelReceber.pesquisar}"
+								process="selecao" update="toolbar tabela"
+								oncomplete="if(!args.validationFailed) PF('wgSelecao').hide();" />
+
+							<p:commandButton icon="fa fa-close" title="Sair" process="@this"
+								oncomplete="PF('wgSelecao').hide();" />
+						</p:column>
+
+					</p:panelGrid>
+				</p:dialog>
+
+				<!-- Barra Ferramentas -->
+				<p:toolbar styleClass="r42-toolbar" id="toolbar">
 					<p:toolbarGroup align="left">
-						<p:commandButton id="bto-filtro" 
-                                         title="Filtrar" 
-                                         icon="fa fa-filter"
-                                         oncomplete="PF('wgSelecao').show();"/>  
-                                         
-						<p:commandButton id="bto-print" 
-										 title="Imprimir" 
-										 icon="fa fa-print" 
-										 disabled="#{controleExtrato.lancamentos == null}"
-										 ajax="false"
-										 immediate="true"
-										 process="@this"/>                                         
-	                </p:toolbarGroup>
-	                
-                    <p:toolbarGroup align="right" styleClass="r42-toolbar-right">
-		                <p:outputLabel value="Títulos a Receber"/>
-	                </p:toolbarGroup>	 
-	            </p:toolbar>  
-	            
+						<p:commandButton id="bto-filtro" title="Filtrar"
+							icon="fa fa-filter" oncomplete="PF('wgSelecao').show();" />
+
+						<p:commandButton id="bto-print" title="Imprimir"
+							icon="fa fa-print"
+							disabled="#{controleExtrato.lancamentos == null}" ajax="false"
+							immediate="true" process="@this" />
+					</p:toolbarGroup>
+
+					<p:toolbarGroup align="right" styleClass="r42-toolbar-right">
+						<p:outputLabel value="Títulos a Receber" />
+					</p:toolbarGroup>
+				</p:toolbar>
+
 				<!-- Listagem dos dados -->
-				<p:dataTable value="#{controleRelReceber.lancamentos}"
-					var="receber" 
-					id="tabela"
-					reflow="true" 
-					rows="17"
-					paginator="true" 
-					paginatorPosition="top"
-					emptyMessage="Nenhum Lançamento encontrado">
+				<p:dataTable value="#{controleRelReceber.lancamentos}" var="receber"
+							 id="tabela" 
+							 reflow="true" 
+							 rows="17" 
+							 paginator="true"
+							 sortBy="#{receber.cliente.unidade}"
+							 paginatorPosition="top" 
+							 emptyMessage="Nenhum Lançamento encontrado">
+
+					<p:ajax event="sort" listener="#{controleRelReceber.onSort}"/>
 
 					<!-- Colunas -->
-					<p:column headerText="Unid." width="70" sortBy="#{receber.cliente.unidade}">
+					<p:column headerText="Unid." width="70"
+						sortBy="#{receber.cliente.unidade}">
 						<h:outputText value="#{receber.cliente.unidade}" />
 					</p:column>
 					<p:column headerText="Cliente" sortBy="#{receber.cliente.fantasia}">
 						<h:outputText value="#{receber.cliente.fantasia}" />
 					</p:column>
-					<p:column headerText="Documento" width="100" sortBy="#{receber.documento}">
+					<p:column headerText="Lcto" width="80"
+						sortBy="#{receber.lancamento}">
+						<h:outputText value="#{receber.lancamento}">
+							<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Documento" width="100"
+						sortBy="#{receber.documento}">
 						<h:outputText value="#{receber.documento}" />
-					</p:column>									
-					<p:column headerText="Vcto" width="80" sortBy="#{receber.vencimento}">
+					</p:column>
+					<p:column headerText="Vcto" width="80"
+						sortBy="#{receber.vencimento}">
 						<h:outputText value="#{receber.vencimento}">
 							<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
-										
+					
 					<p:column headerText="Valor" width="80">
-						<h:outputText value="#{receber.valor}"
-							styleClass="r42-positivo">
+						<h:outputText value="#{receber.valor}" styleClass="r42-positivo">
 							<f:convertNumber type="currency" currencySymbol="" />
 						</h:outputText>
 					</p:column>
@@ -112,6 +161,32 @@
 						</h:outputText>
 					</p:column>
 					
+					<p:summaryRow listener="#{controleRelReceber.somarTotal}" >
+						<p:column colspan="5" style="text-align:right" >
+							<h:outputText value="Total:" />
+						</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelReceber.somaValor}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelReceber.somaAcrescimos}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelReceber.somaDescontos}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>		
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelReceber.somaRecebido}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>	
+					</p:summaryRow>
+
 				</p:dataTable>
 			</h:form>
 		</section>

@@ -1,5 +1,6 @@
 package br.com.fti.admcon.repositorio.empresa;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,12 @@ public interface RepReceber extends JpaRepository<Receber, Long> {
 	 * Busca os titulos pela data de lancamento e vencimento
 	 ****************************************************************************/
 	List<Receber> findByLancamentoBetweenAndVencimentoBetween(Date lctoDe, Date lctoAte, Date vencDe, Date vencAte);
+	
+	/****************************************************************************
+	 * Busca os titulos pela data de lancamento e vencimento e cliente
+	 ****************************************************************************/
+	List<Receber> findByLancamentoBetweenAndVencimentoBetweenAndClienteIn
+	(Date lctoDe, Date lctoAte, Date vencDe, Date vencAte, Collection<Cliente> cliente);
 	
 	
 }

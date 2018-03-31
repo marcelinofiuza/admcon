@@ -1,6 +1,7 @@
 package br.com.fti.admcon.servico;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -157,30 +158,30 @@ public class SerReceber {
 	}
 
 	/****************************************************************************
+	 * Metodo para buscar Receber por Boleto e BoletoItem
+	 ****************************************************************************/
+	public Receber buscarTitulo(Long idBoleto, Long idItem) {
+		return repReceber.findByIdBoletoAndIdBoletoItem(idBoleto, idItem);
+	}
+	
+	/****************************************************************************
 	 * Metodo para Listar lançamentos a receber por cliente
 	 ****************************************************************************/
-	public List<Receber> listarPorCliente(Cliente cliente) {
+	public List<Receber> listarTitulos(Cliente cliente) {
 		return repReceber.findByCliente(cliente);
 	}
 
 	/****************************************************************************
 	 * Metodo para Listar lançamentos a receber por boleto
 	 ****************************************************************************/
-	public List<Receber> listarPorBoleto(Boleto boleto) {
+	public List<Receber> listarTitulos(Boleto boleto) {
 		return repReceber.findByBoleto(boleto);
-	}
-
-	/****************************************************************************
-	 * Metodo para buscar Receber por Boleto e BoletoItem
-	 ****************************************************************************/
-	public Receber buscarPorBoletoEBoletoItem(Long idBoleto, Long idItem) {
-		return repReceber.findByIdBoletoAndIdBoletoItem(idBoleto, idItem);
 	}
 
 	/****************************************************************************
 	 * Metodo para buscar Titulos a receber por lancamento e vencimento
 	 ****************************************************************************/
-	public List<Receber> buscarPorLancamentoEVencimento(Date lctoDe, Date lctoAte, Date vctoDe, Date vctoAte) {
+	public List<Receber> listarTitulos(Date lctoDe, Date lctoAte, Date vctoDe, Date vctoAte, Collection<Cliente> clientes) {
 
 		Date lancamentoDe = lctoDe;
 		Date lancamentoAte = lctoAte;
@@ -190,7 +191,11 @@ public class SerReceber {
 		if (lctoDe == null) {
 			try {
 				lancamentoDe = R42Data.stringToDate("01011000");
-				lancamentoAte = R42Data.stringToDate("31129999");
+				if (lctoAte == null) {
+					lancamentoAte = R42Data.stringToDate("31129999");
+				} else {
+					lancamentoAte = lctoAte;
+				}
 			} catch (Exception e) {
 			}
 		} else {
@@ -202,17 +207,26 @@ public class SerReceber {
 		if (vctoDe == null) {
 			try {
 				vencimentoDe = R42Data.stringToDate("01011000");
-				vencimentoAte = R42Data.stringToDate("31129999");
+				if (vctoAte == null) {
+					vencimentoAte = R42Data.stringToDate("31129999");
+				} else {
+					vencimentoAte = vctoAte;
+				}
 			} catch (Exception e) {
 			}
 		} else {
 			if (vctoAte == null) {
-				vencimentoAte = lctoDe;
+				vencimentoAte = vctoDe;
 			}
-		}		
-		
-		return repReceber.findByLancamentoBetweenAndVencimentoBetween(lancamentoDe, lancamentoAte, vencimentoDe, vencimentoAte);
+		}
 
+		if(clientes==null || clientes.isEmpty()) {
+			return repReceber.findByLancamentoBetweenAndVencimentoBetween
+					(lancamentoDe, lancamentoAte, vencimentoDe, vencimentoAte);			
+		}else {
+			return repReceber.findByLancamentoBetweenAndVencimentoBetweenAndClienteIn
+					(lancamentoDe, lancamentoAte, vencimentoDe, vencimentoAte, clientes);
+		}
 	}
 
 }

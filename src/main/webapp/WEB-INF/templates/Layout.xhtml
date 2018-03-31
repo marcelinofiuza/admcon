@@ -18,6 +18,7 @@
     <title>AdmCon</title>
 
 	<h:outputStylesheet library="fti" name="css/layout.css" />
+	<h:outputStylesheet library="fti" name="css/primefaces.css" />
       
     <h:outputScript target="body" library="primefaces" name="jquery/jquery.js" />
     <h:outputScript target="body" library="fti" name="js/app.js" />
@@ -31,10 +32,13 @@
 	        <h:link outcome="Inicio.xhtml">
 	            <h:graphicImage library="fti" name="img/logoadmcon.png" />
 	        </h:link>
-	        <p:outputLabel style="font-size:18pt; margin-left:30px"  value="#{controlePrincipal.empresa.fantasia}"/>
 	    </p:toolbarGroup>
 	    
-	    <p:toolbarGroup align="right" styleClass="r42-hright">
+	    <p:toolbarGroup align="left" styleClass="r42-empresa">
+	        <p:outputLabel styleClass="r42-empresa" value="#{controlePrincipal.empresa.fantasia}"/>
+	    </p:toolbarGroup>
+	    	    
+	    <p:toolbarGroup align="right" styleClass="r42-usuario">
 	        <p:outputLabel value="#{controlePrincipal.usuario.nome}"/>  
 	    </p:toolbarGroup>
 	</p:toolbar>
