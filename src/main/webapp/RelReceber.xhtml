@@ -69,6 +69,13 @@
 								mask="99/99/9999" showOn="button" />
 						</p:column>
 
+						<p:outputLabel for="status" value="Status" />
+						<p:selectOneRadio id="status" value="#{controleRelReceber.status}">
+							<f:selectItem itemLabel="Aberto" itemValue="A" />
+							<f:selectItem itemLabel="Baixado" itemValue="B" />
+							<f:selectItem itemLabel="Todos" itemValue="T" />
+						</p:selectOneRadio>
+
 						<p:defaultCommand target="bto-pesquisa" scope="selecao" />
 						<p:column>
 							<p:commandButton id="bto-pesquisa" title="Pesquisar"
@@ -87,30 +94,23 @@
 				<p:toolbar styleClass="r42-toolbar" id="toolbar">
 					<p:toolbarGroup align="left">
 						<p:commandButton id="bto-filtro" title="Filtrar"
-							icon="fa fa-filter" oncomplete="PF('wgSelecao').show();" />
-
-						<p:commandButton id="bto-print" title="Imprimir"
-							icon="fa fa-print"
-							disabled="#{controleExtrato.lancamentos == null}" ajax="false"
-							immediate="true" process="@this" />
+										 icon="fa fa-filter" 
+										 oncomplete="PF('wgSelecao').show();" />							
 					</p:toolbarGroup>
 
 					<p:toolbarGroup align="right" styleClass="r42-toolbar-right">
 						<p:outputLabel value="Títulos a Receber" />
 					</p:toolbarGroup>
+
 				</p:toolbar>
 
 				<!-- Listagem dos dados -->
 				<p:dataTable value="#{controleRelReceber.lancamentos}" var="receber"
-							 id="tabela" 
-							 reflow="true" 
-							 rows="17" 
-							 paginator="true"
-							 sortBy="#{receber.cliente.unidade}"
-							 paginatorPosition="top" 
-							 emptyMessage="Nenhum Lançamento encontrado">
+					id="tabela" reflow="true" rows="17" paginator="true"
+					sortBy="#{receber.cliente.unidade}" paginatorPosition="top"
+					emptyMessage="Nenhum Lançamento encontrado">
 
-					<p:ajax event="sort" listener="#{controleRelReceber.onSort}"/>
+					<p:ajax event="sort" listener="#{controleRelReceber.onSort}" />
 
 					<!-- Colunas -->
 					<p:column headerText="Unid." width="70"
@@ -136,7 +136,7 @@
 							<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>
-					
+
 					<p:column headerText="Valor" width="80">
 						<h:outputText value="#{receber.valor}" styleClass="r42-positivo">
 							<f:convertNumber type="currency" currencySymbol="" />
@@ -160,9 +160,10 @@
 							<f:convertNumber type="currency" currencySymbol="" />
 						</h:outputText>
 					</p:column>
-					
-					<p:summaryRow listener="#{controleRelReceber.somarTotal}" >
-						<p:column colspan="5" style="text-align:right" >
+
+					<p:summaryRow listener="#{controleRelReceber.somarTotal}">
+						
+						<p:column colspan="5" style="text-align:right">
 							<h:outputText value="Total:" />
 						</p:column>
 						<p:column style="text-align:right">
@@ -179,12 +180,12 @@
 							<h:outputText value="#{controleRelReceber.somaDescontos}">
 								<f:convertNumber type="currency" currencySymbol="" />
 							</h:outputText>
-						</p:column>		
+						</p:column>
 						<p:column style="text-align:right">
 							<h:outputText value="#{controleRelReceber.somaRecebido}">
 								<f:convertNumber type="currency" currencySymbol="" />
 							</h:outputText>
-						</p:column>	
+						</p:column>
 					</p:summaryRow>
 
 				</p:dataTable>

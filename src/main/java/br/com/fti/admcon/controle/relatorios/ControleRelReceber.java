@@ -51,8 +51,12 @@ public class ControleRelReceber implements Serializable {
 	private BigDecimal somaDescontos;
 	private BigDecimal somaRecebido;
 
+	private String status = "T";
+	
+	private Boolean somatorio;
+
 	private List<Cliente> clientes = new ArrayList<Cliente>();
-	private List<Receber> lancamentos;
+	private List<Receber> lancamentos = new ArrayList<Receber>();
 
 	/* sem get e set - uso interno */
 	private String sortColumnCase = "UNID.";
@@ -62,7 +66,7 @@ public class ControleRelReceber implements Serializable {
 	 ****************************************************************************/
 	public void iniciar() {
 		clientes = new ArrayList<Cliente>();
-		lancamentos = null;
+		lancamentos = new ArrayList<Receber>();
 		RequestContext.getCurrentInstance().execute("PF('wgSelecao').show();");
 	}
 
@@ -71,11 +75,27 @@ public class ControleRelReceber implements Serializable {
 	 ****************************************************************************/
 	public void pesquisar() {
 
+		lancamentos = new ArrayList<Receber>();
+		List<Receber> lctos = new ArrayList<Receber>();
+
 		if (lctoDe != null || lctoAte != null || vctoDe != null || vctoAte != null || !clientes.isEmpty()) {
-			lancamentos = serReceber.listarTitulos(lctoDe, lctoAte, vctoDe, vctoAte, clientes);
+			lctos = serReceber.listarTitulos(lctoDe, lctoAte, vctoDe, vctoAte, clientes);
 		} else {
 			mensagens.warning("Nenhum parâmetro informado");
 		}
+
+		for (Receber receber : lctos) {
+
+			if (status.equalsIgnoreCase("A") && !receber.isQuitado()) {
+				lancamentos.add(receber);
+			} else if (status.equalsIgnoreCase("B") && receber.isQuitado()) {
+				lancamentos.add(receber);
+			} else if (status.equalsIgnoreCase("T")){
+				lancamentos.add(receber);
+			}
+
+		}
+
 		RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:toolbar", "frm:tabela"));
 	}
 
@@ -215,4 +235,20 @@ public class ControleRelReceber implements Serializable {
 		return somaRecebido;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Boolean getSomatorio() {
+		return somatorio;
+	}
+
+	public void setSomatorio(Boolean somatorio) {
+		this.somatorio = somatorio;
+	}
+	
 }
