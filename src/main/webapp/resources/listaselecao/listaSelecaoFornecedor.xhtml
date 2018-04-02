@@ -7,7 +7,7 @@
 <h:head>
 
 	<meta charset="UTF-8" />
-	<title>Selecionar Clientes</title>
+	<title>Selecionar Fornecedores</title>
 
 	<h:outputStylesheet library="fti" name="css/ajudapesquisa.css" />
 
@@ -16,7 +16,7 @@
 <h:body>
 	<!-- execução inicial-->
 	<f:metadata>
-		<f:viewAction action="#{listaSelecaoCliente.preparaTela()}" />
+		<f:viewAction action="#{listaSelecaoFornecedor.preparaTela()}" />
 	</f:metadata>
 			
 	<h:form id="frm">
@@ -24,21 +24,21 @@
 		
 			<h:panelGrid id="panel-pesquisa" columns="3" class="r42-panel-dados">
 
-				<p:outputLabel value="Cliente" for="cliente" />
-				<p:inputText id="cliente" 
+				<p:outputLabel value="Fornecedor" for="fornecedor" />
+				<p:inputText id="fornecedor" 
 				             size="60" 
 				             maxlength="80"
-							 value="#{listaSelecaoCliente.entidade.razaoSocial}" 
+							 value="#{listaSelecaoFornecedor.entidade.razaoSocial}" 
 							 readonly="true" />
 
 				<p:commandButton icon="fa fa-search" 
 								 title="Pesquisar"
-								 action="#{pesquisaCliente.abrirDialogo('pesquisaCliente')}"
+								 action="#{pesquisaFornecedor.abrirDialogo('pesquisaFornecedor')}"
 								 process="@this" 
 								 update="@none">
 
 					<p:ajax event="dialogReturn"
-						 listener="#{listaSelecaoCliente.objetoSelecionado}"
+						 listener="#{listaSelecaoFornecedor.objetoSelecionado}"
 						 process="@this" 
 						 update="panel-pesquisa bto-adicionar" />
 
@@ -54,32 +54,32 @@
 							 title="Adicionar"
 							 icon="fa fa-plus" 
 							 update="panel-pesquisa tabela bto-confirmar @this"
-			 				 disabled="#{listaSelecaoCliente.entidade == null}" 
+			 				 disabled="#{listaSelecaoFornecedor.entidade == null}" 
 			 				 process="@this"
-							 actionListener="#{listaSelecaoCliente.adicionar}" />
+							 actionListener="#{listaSelecaoFornecedor.adicionar}" />
 
 			<p:commandButton id="bto-remover" 
 							 title="Remover" 
 							 icon="fa fa-minus"
 							 update="tabela bto-confirmar @this"
-							 disabled="#{listaSelecaoCliente.entidadeSelecionada == null}"							 
+							 disabled="#{listaSelecaoFornecedor.entidadeSelecionada == null}"							 
 							 process="@this"
-							 actionListener="#{listaSelecaoCliente.remover}" />
+							 actionListener="#{listaSelecaoFornecedor.remover}" />
 
 			<p:commandButton id="bto-confirmar" 
 							 title="Confirmar" 
 							 icon="fa fa-check"
 							 process="@this"							 
-               				 action="#{listaSelecaoCliente.confirmar(listaSelecaoCliente.listaEntidades)}" />
+               				 action="#{listaSelecaoFornecedor.confirmar(listaSelecaoFornecedor.listaEntidades)}" />
 
 			<p:dataTable id="tabela"
-			             value="#{listaSelecaoCliente.listaEntidades}"
-						 var="cliente"  
+			             value="#{listaSelecaoFornecedor.listaEntidades}"
+						 var="fornecedor"  
 						 rows="10" paginator="true"
 					     paginatorPosition="top" selectionMode="single"
-						 rowKey="#{cliente.idCliente}"
-						 selection="#{listaSelecaoCliente.entidadeSelecionada}"
-					     emptyMessage="Nenhum cliente selecionado">
+						 rowKey="#{fornecedor.idFornecedor}"
+						 selection="#{listaSelecaoFornecedor.entidadeSelecionada}"
+					     emptyMessage="Nenhum fornecedor selecionado">
 
 				<!-- Evento ajax, quando marca/desmarca uma linha -->
                 <p:ajax event="rowSelect"   update=":frm:bto-remover"/>
@@ -87,13 +87,10 @@
 
 				<!-- Colunas -->
 				<p:column headerText="Código" width="70">
-					<h:outputText value="#{cliente.idCliente}" />
-				</p:column>
-				<p:column headerText="Unidade" width="70">
-					<h:outputText value="#{cliente.unidade}" />
+					<h:outputText value="#{fornecedor.idFornecedor}" />
 				</p:column>
 				<p:column headerText="Fantasia">
-					<h:outputText value="#{cliente.fantasia}" />
+					<h:outputText value="#{fornecedor.fantasia}" />
 				</p:column>
 
 			</p:dataTable>

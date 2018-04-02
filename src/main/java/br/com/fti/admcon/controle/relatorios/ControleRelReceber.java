@@ -53,8 +53,6 @@ public class ControleRelReceber implements Serializable {
 
 	private String status = "T";
 	
-	private Boolean somatorio;
-
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private List<Receber> lancamentos = new ArrayList<Receber>();
 
@@ -100,7 +98,7 @@ public class ControleRelReceber implements Serializable {
 	}
 
 	/****************************************************************************
-	 * Resgata o Cliente selecionado no dialogo
+	 * Resgata lista de clientes selecionados
 	 ****************************************************************************/
 	public void retListaClientes(SelectEvent event) {
 
@@ -157,6 +155,9 @@ public class ControleRelReceber implements Serializable {
 		}
 	}
 
+	/****************************************************************************
+	 * Soma os valores
+	 ****************************************************************************/	
 	private void somaValores(Receber lancamento) {
 		this.somaValor = this.somaValor.add(lancamento.getValor());
 		this.somaAcrescimos = this.somaAcrescimos.add(lancamento.getAcrescimos());
@@ -241,14 +242,6 @@ public class ControleRelReceber implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public Boolean getSomatorio() {
-		return somatorio;
-	}
-
-	public void setSomatorio(Boolean somatorio) {
-		this.somatorio = somatorio;
 	}
 	
 }

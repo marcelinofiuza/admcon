@@ -17,6 +17,172 @@
 				<!-- Mensagem Form -->
 				<p:growl id="msg-frm" showDetail="true" />
 
+				<!-- Dialogo para selecionar os lançamentos -->
+				<p:dialog id="selecao" header="Parâmetro Seleção" width="600"
+					widgetVar="wgSelecao" closable="false" modal="true"
+					resizable="false" responsive="true">
+
+					<p:panelGrid id="panelSelecao" columns="2" layout="grid"
+						styleClass="panelgrid-noborder r42-panelgrid"
+						columnClasses="ui-grid-col-3, ui-grid-col-9">
+
+						<p:outputLabel value="Fornecedor" />
+						<p:column>
+							<p:commandButton id="bto-add-fornecedor" icon="fa fa-user-plus"
+								action="#{listaSelecaoFornecedor.abrirDialogo('listaSelecaoFornecedor',controleRelPagar.fornecedores)}"
+								process="@this" update="@none">
+
+								<p:ajax event="dialogReturn"
+									listener="#{controleRelPagar.retListaFornecedores}"
+									process="@this" update="panelSelecao" />
+
+							</p:commandButton>
+							<p:spacer height="10" />
+							<p:outputLabel value="Selecionados: #{controleRelPagar.totalFornecedores}" />
+						</p:column>
+
+						<p:outputLabel value="Lançamento" />
+						<p:column>
+							<p:calendar id="lctoDe" size="10" locale="pt_BR"
+								value="#{controleRelPagar.lctoDe}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+
+							<p:spacer height="10" />
+
+							<p:calendar id="lctoAte" size="10" locale="pt_BR"
+								value="#{controleRelPagar.lctoAte}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+						</p:column>
+
+						<p:outputLabel value="Vencimento" />
+						<p:column>
+							<p:calendar id="vctoDe" size="10" locale="pt_BR"
+								value="#{controleRelPagar.vctoDe}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+
+							<p:spacer height="10" />
+
+							<p:calendar id="vctoAte" size="10" locale="pt_BR"
+								value="#{controleRelPagar.vctoAte}" pattern="dd/MM/yyyy"
+								mask="99/99/9999" showOn="button" />
+						</p:column>
+
+						<p:outputLabel for="status" value="Status" />
+						<p:selectOneRadio id="status" value="#{controleRelPagar.status}">
+							<f:selectItem itemLabel="Aberto" itemValue="A" />
+							<f:selectItem itemLabel="Baixado" itemValue="B" />
+							<f:selectItem itemLabel="Todos" itemValue="T" />
+						</p:selectOneRadio>
+
+						<p:defaultCommand target="bto-pesquisa" scope="selecao" />
+						<p:column>
+							<p:commandButton id="bto-pesquisa" title="Pesquisar"
+								icon="fa fa-check" action="#{controleRelPagar.pesquisar}"
+								process="selecao" update="toolbar tabela"
+								oncomplete="if(!args.validationFailed) PF('wgSelecao').hide();" />
+
+							<p:commandButton icon="fa fa-close" title="Sair" process="@this"
+								oncomplete="PF('wgSelecao').hide();" />
+						</p:column>
+
+					</p:panelGrid>
+				</p:dialog>
+				
+				<!-- Barra Ferramentas -->
+				<p:toolbar styleClass="r42-toolbar" id="toolbar">
+					<p:toolbarGroup align="left">
+						<p:commandButton id="bto-filtro" title="Filtrar"
+										 icon="fa fa-filter" 
+										 oncomplete="PF('wgSelecao').show();" />							
+					</p:toolbarGroup>
+
+					<p:toolbarGroup align="right" styleClass="r42-toolbar-right">
+						<p:outputLabel value="Títulos a Pagar" />
+					</p:toolbarGroup>
+				</p:toolbar>
+							
+				<!-- Listagem dos dados -->
+				<p:dataTable value="#{controleRelPagar.lancamentos}" var="pagar"
+					id="tabela" reflow="true" rows="17" paginator="true"
+					sortBy="#{pagar.vencimento}" paginatorPosition="top"
+					emptyMessage="Nenhum Lançamento encontrado">
+
+					<p:ajax event="sort" listener="#{controleRelPagar.onSort}" />
+
+					<!-- Colunas -->
+					<p:column headerText="Id" width="70"
+						sortBy="#{pagar.fornecedor.idFornecedor}">
+						<h:outputText value="#{pagar.fornecedor.idFornecedor}" />
+					</p:column>
+					<p:column headerText="Fornecedor" sortBy="#{pagar.fornecedor.fantasia}">
+						<h:outputText value="#{pagar.fornecedor.fantasia}" />
+					</p:column>
+					<p:column headerText="Lcto" width="80" sortBy="#{pagar.lancamento}">
+						<h:outputText value="#{pagar.lancamento}">
+							<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Documento" width="100" sortBy="#{pagar.documento}">
+						<h:outputText value="#{pagar.documento}" />
+					</p:column>
+					<p:column headerText="Vcto" width="80" sortBy="#{pagar.vencimento}">
+						<h:outputText value="#{pagar.vencimento}">
+							<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valor" width="80">
+						<h:outputText value="#{pagar.valor}" styleClass="r42-positivo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Acrescimos" width="80">
+						<h:outputText value="#{pagar.acrescimos}" styleClass="r42-positivo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Descontos" width="80">
+						<h:outputText value="#{pagar.descontos}"
+							styleClass="r42-negativo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Pago" width="80">
+						<h:outputText value="#{pagar.pago}"
+							styleClass="r42-positivo">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+
+					<p:summaryRow listener="#{controleRelPagar.somarTotal}">
+						
+						<p:column colspan="5" style="text-align:right">
+							<h:outputText value="Total:" />
+						</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelPagar.somaValor}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelPagar.somaAcrescimos}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelPagar.somaDescontos}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+						<p:column style="text-align:right">
+							<h:outputText value="#{controleRelPagar.somaPago}">
+								<f:convertNumber type="currency" currencySymbol="" />
+							</h:outputText>
+						</p:column>
+					</p:summaryRow>
+
+				</p:dataTable>
+												
 			</h:form>
 		</section>
 	</ui:define>
