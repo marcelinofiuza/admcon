@@ -59,7 +59,7 @@ public class ControleRelReceber implements Serializable {
 	private List<Receber> lancamentos = new ArrayList<Receber>();
 
 	/* sem get e set - uso interno */
-	private String sortColumnCase = "UNID.";
+	private String sortColumnCase = "VCTO";
 
 	/****************************************************************************
 	 * Inicialização

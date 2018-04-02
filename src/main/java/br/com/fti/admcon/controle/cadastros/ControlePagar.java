@@ -145,7 +145,7 @@ public class ControlePagar implements Serializable {
 	 ****************************************************************************/
 	public void confirmaFornecedor() {
 		if (fornecedor != null) {
-			listaPagar = serPagar.listarPorFornecedor(fornecedor);
+			listaPagar = serPagar.listarTitulos(fornecedor);
 			RequestContext.getCurrentInstance().execute("PF('wgSelecaoFornecedor').hide();");
 		}
 	}

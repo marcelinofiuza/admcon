@@ -107,7 +107,7 @@
 				<!-- Listagem dos dados -->
 				<p:dataTable value="#{controleRelReceber.lancamentos}" var="receber"
 					id="tabela" reflow="true" rows="17" paginator="true"
-					sortBy="#{receber.cliente.unidade}" paginatorPosition="top"
+					sortBy="#{receber.vencimento}" paginatorPosition="top"
 					emptyMessage="Nenhum Lançamento encontrado">
 
 					<p:ajax event="sort" listener="#{controleRelReceber.onSort}" />

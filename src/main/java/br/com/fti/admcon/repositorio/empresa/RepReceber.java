@@ -45,7 +45,7 @@ public interface RepReceber extends JpaRepository<Receber, Long> {
 	 * Busca os titulos pela data de lancamento e vencimento e cliente
 	 ****************************************************************************/
 	List<Receber> findByLancamentoBetweenAndVencimentoBetweenAndClienteIn
-	(Date lctoDe, Date lctoAte, Date vencDe, Date vencAte, Collection<Cliente> cliente);
+	(Date lctoDe, Date lctoAte, Date vencDe, Date vencAte, Collection<Cliente> clientes);
 	
 	
 }
