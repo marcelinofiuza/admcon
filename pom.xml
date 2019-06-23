@@ -58,14 +58,20 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 			<scope>runtime</scope>
-		</dependency>		
+		</dependency>
 
 		<!-- JSF + PRIMEFACES -->
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.joinfaces</groupId>
 			<artifactId>jsf-spring-boot-starter</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>all-themes</artifactId>

@@ -9,8 +9,8 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.fti.admcon.entidade.empresa.Cliente;
-import br.com.fti.admcon.servico.SerCliente;
+import br.com.fti.admcon.modulos.entidades.empresa.Cliente;
+import br.com.fti.admcon.modulos.servicos.SerCliente;
 
 /****************************************************************************
  * Classe controle para View de Pesquisa de Clientes

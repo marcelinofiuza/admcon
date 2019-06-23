@@ -22,7 +22,7 @@
 					<p:toolbarGroup align="left">
 						<p:commandButton    id="bto-novo" 
 											title="Novo" 
-											icon="fa fa-file-o" 
+											icon="fa fa-file" 
 											actionListener="#{controleCliente.novoCadastro}"
 											process="@this" 
 											update="dialogo" 
@@ -96,7 +96,7 @@
 					<p:column headerText="CPF" width="150" sortBy="#{cliente.cpf}">
 						<h:outputText value="#{cliente.cpf}" />
 					</p:column>
-					<p:column headerText="CNPJ" width="150" sortBy="#{cliente.cnpj}">
+					<p:column headerText="CNPJ" width="180" sortBy="#{cliente.cnpj}">
 						<h:outputText value="#{cliente.cnpj}" />
 					</p:column>
 				</p:dataTable>

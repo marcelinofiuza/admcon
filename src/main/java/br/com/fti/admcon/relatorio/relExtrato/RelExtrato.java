@@ -2,9 +2,9 @@ package br.com.fti.admcon.relatorio.relExtrato;
 
 import java.util.List;
 
-import br.com.fti.admcon.entidade.empresa.Lancamento;
+import br.com.fti.admcon.modulos.entidades.empresa.Lancamento;
 import br.com.fti.admcon.relatorio.Relatorio;
-import br.com.fti.admcon.util.R42Util;
+import br.com.fti.admcon.util.ferramentas.R42Util;
 
 /****************************************************************************
  * Relatórido de extrato bancário

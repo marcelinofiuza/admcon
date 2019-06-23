@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.fti.admcon.util.R42Data;
+import br.com.fti.admcon.util.ferramentas.R42Data;
 
 /****************************************************************************
  * Classe para letura retorno CNAB Bradesco 400

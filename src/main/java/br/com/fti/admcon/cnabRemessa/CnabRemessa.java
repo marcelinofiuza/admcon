@@ -6,11 +6,11 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.fti.admcon.entidade.empresa.Boleto;
-import br.com.fti.admcon.entidade.empresa.BoletoItem;
-import br.com.fti.admcon.entidade.global.Empresa;
-import br.com.fti.admcon.util.R42Util;
-import br.com.fti.admcon.entidade.empresa.BancoCarteira;
+import br.com.fti.admcon.modulos.entidades.empresa.BancoCarteira;
+import br.com.fti.admcon.modulos.entidades.empresa.Boleto;
+import br.com.fti.admcon.modulos.entidades.empresa.BoletoItem;
+import br.com.fti.admcon.modulos.entidades.global.Empresa;
+import br.com.fti.admcon.util.ferramentas.R42Util;
 
 /****************************************************************************
  * Classe Base para geração arquivo CNAB

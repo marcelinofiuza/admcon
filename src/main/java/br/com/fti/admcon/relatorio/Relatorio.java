@@ -32,7 +32,7 @@ public class Relatorio {
 	public ByteArrayOutputStream baos;
 	public InputStream stream;
 	public Map<String, Object> parameters;
-	public String path = "/br/com/fti/admcon/jasper/";
+	public String path = "/br/com/fti/admcon/relatorio/jasper/";
 	public List<Object> lista;
 
 	/************************************************************************

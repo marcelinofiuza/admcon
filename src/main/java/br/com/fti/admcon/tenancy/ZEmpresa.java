@@ -9,8 +9,8 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
-import br.com.fti.admcon.entidade.global.Empresa;
-import br.com.fti.admcon.util.R42Util;
+import br.com.fti.admcon.modulos.entidades.global.Empresa;
+import br.com.fti.admcon.util.ferramentas.R42Util;
 
 @MappedSuperclass
 @FilterDef(name = "tenant", parameters = { @ParamDef(name = "id", type = "long") })

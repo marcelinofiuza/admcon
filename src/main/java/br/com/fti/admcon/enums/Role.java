@@ -8,7 +8,28 @@ package br.com.fti.admcon.enums;
 public enum Role {
 	
 	ADMIN("Administrador"),
-	USUARIO("Usuario");
+	
+	BANCO("Cadastro Banco"),
+	CLIENTE("Cadastro Cliente"),
+	FORNECEDOR("Cadastro Fornecedor"),
+	CONTA("Cadastro Conta Contábil"),
+	
+	CTAS_RECEBER("Contas Receber"),
+	GERAR_COBRANCA("Gerar Cobrança"),
+	EMISSAO_BOLETO("Emissão Boleto"),
+	RETORNO_BOLETO("Retorno Boleto"),
+	REL_RECEBER("Relatório Receber"),
+	
+	CTAS_PAGAR("Contas Pagar"),
+	REL_PAGAR("Relatório Pagar"),
+	
+	LANCAMENTO("Lançamentos Bancário"),
+	EXTRATO("Extrato Bancário"),
+	
+	EMPRESA("Cadastro Empresa"),
+	USUARIO("Cadastro Usuario"),
+	MIGRACAO("Migração Dados");
+	
 	
 	private String descricao;
 

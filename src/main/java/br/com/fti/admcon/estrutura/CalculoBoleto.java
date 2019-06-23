@@ -3,12 +3,12 @@ package br.com.fti.admcon.estrutura;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import br.com.fti.admcon.entidade.empresa.Boleto;
-import br.com.fti.admcon.entidade.empresa.BoletoItem;
-import br.com.fti.admcon.entidade.empresa.Cobranca;
-import br.com.fti.admcon.entidade.empresa.CobrancaItem;
 import br.com.fti.admcon.enums.StatusBoleto;
-import br.com.fti.admcon.util.R42Data;
+import br.com.fti.admcon.modulos.entidades.empresa.Boleto;
+import br.com.fti.admcon.modulos.entidades.empresa.BoletoItem;
+import br.com.fti.admcon.modulos.entidades.empresa.Cobranca;
+import br.com.fti.admcon.modulos.entidades.empresa.CobrancaItem;
+import br.com.fti.admcon.util.ferramentas.R42Data;
 
 public class CalculoBoleto {
 

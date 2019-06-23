@@ -2,8 +2,8 @@ package br.com.fti.admcon.cnabRemessa;
 
 import java.util.Date;
 
-import br.com.fti.admcon.entidade.empresa.BoletoItem;
-import br.com.fti.admcon.util.R42Util;
+import br.com.fti.admcon.modulos.entidades.empresa.BoletoItem;
+import br.com.fti.admcon.util.ferramentas.R42Util;
 
 /****************************************************************************
  * Classe para geração arquivo CNAB Bradesco 400

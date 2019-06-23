@@ -3,40 +3,40 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:form>
+	<h:form id="frm">
         
 		<p:panelMenu style="width: 210px" toggleable="true">
 			<p:submenu label="Cadastros">
-			    <p:menuitem value="Banco" outcome="Banco" />
-				<p:menuitem value="Cliente" outcome="Cliente"/>
-				<p:menuitem value="Fornecedor" outcome="Fornecedor"/>
-				<p:menuitem value="Conta Contábil" outcome="Conta"/>
+			    <p:menuitem value="Banco" outcome="Banco" rendered="#{controlePrincipal.authorityCheck('BANCO')}"/>
+				<p:menuitem value="Cliente" outcome="Cliente" rendered="#{controlePrincipal.authorityCheck('CLIENTE')}"/>
+				<p:menuitem value="Fornecedor" outcome="Fornecedor" rendered="#{controlePrincipal.authorityCheck('FORNECEDOR')}"/>
+				<p:menuitem value="Conta Contábil" outcome="Conta" rendered="#{controlePrincipal.authorityCheck('CONTA')}"/>
 			</p:submenu>
 			<p:submenu label="Contas a Receber">
-				<p:menuitem value="Receber" outcome="Receber"/>
+				<p:menuitem value="Receber" outcome="Receber" rendered="#{controlePrincipal.authorityCheck('CTAS_RECEBER')}"/>
 				<p:submenu label="Boleto">
-					<p:menuitem value="Gerar Cobrança" outcome="Cobranca"/>
-					<p:menuitem value="Emissão Boleto" outcome="Boleto"/>
-					<p:menuitem value="Retorno Boleto" outcome="BoletoRetorno"/>				
+					<p:menuitem value="Gerar Cobrança" outcome="Cobranca" rendered="#{controlePrincipal.authorityCheck('GERAR_COBRANCA')}"/>
+					<p:menuitem value="Emissão Boleto" outcome="Boleto" rendered="#{controlePrincipal.authorityCheck('EMISSAO_BOLETO')}"/>
+					<p:menuitem value="Retorno Boleto" outcome="BoletoRetorno" rendered="#{controlePrincipal.authorityCheck('RETORNO_BOLETO')}"/>				
 				</p:submenu>
 				<p:submenu label="Relatórios">
-					<p:menuitem value="Receber" outcome="RelReceber"/>
+					<p:menuitem value="Receber" outcome="RelReceber" rendered="#{controlePrincipal.authorityCheck('REL_RECEBER')}"/>
 				</p:submenu>	
 			</p:submenu>
 			<p:submenu label="Contas a Pagar">
-				<p:menuitem value="Pagar" outcome="Pagar" />
+				<p:menuitem value="Pagar" outcome="Pagar" rendered="#{controlePrincipal.authorityCheck('CTAS_PAGAR')}"/>
 				<p:submenu label="Relatórios">
-					<p:menuitem value="Pagar" outcome="RelPagar"/>
+					<p:menuitem value="Pagar" outcome="RelPagar" rendered="#{controlePrincipal.authorityCheck('REL_PAGAR')}"/>
 				</p:submenu>				
 			</p:submenu>
             <p:submenu label="Movimento Bancário">
-                <p:menuitem value="Lançamento" outcome="Lancamento"/>
-                <p:menuitem value="Extrato" outcome="Extrato"/>
+                <p:menuitem value="Lançamento" outcome="Lancamento" rendered="#{controlePrincipal.authorityCheck('LANCAMENTO')}"/>
+                <p:menuitem value="Extrato" outcome="Extrato" rendered="#{controlePrincipal.authorityCheck('EXTRATO')}"/>
             </p:submenu>			
             <p:submenu label="Configurações">               
-            	<p:menuitem value="Empresa"  outcome="Empresa"/> 
-                <p:menuitem value="Usuários" outcome="Usuario"/>
-                <p:menuitem value="Migração" outcome="Migracao"/>
+            	<p:menuitem value="Empresa"  outcome="Empresa" rendered="#{controlePrincipal.authorityCheck('EMPRESA')}"/> 
+                <p:menuitem value="Usuários" outcome="Usuario" rendered="#{controlePrincipal.authorityCheck('USUARIO')}"/>
+                <p:menuitem value="Migração" outcome="Migracao" rendered="#{controlePrincipal.authorityCheck('MIGRACAO')}"/>
             </p:submenu>			
 		</p:panelMenu>
 

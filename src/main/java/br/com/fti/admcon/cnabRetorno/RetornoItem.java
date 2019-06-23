@@ -3,8 +3,8 @@ package br.com.fti.admcon.cnabRetorno;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import br.com.fti.admcon.entidade.empresa.Receber;
 import br.com.fti.admcon.enums.StatusRetorno;
+import br.com.fti.admcon.modulos.entidades.empresa.Receber;
 
 public class RetornoItem {
 

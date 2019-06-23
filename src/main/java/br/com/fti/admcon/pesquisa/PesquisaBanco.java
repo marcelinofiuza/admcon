@@ -9,8 +9,8 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.fti.admcon.entidade.empresa.Banco;
-import br.com.fti.admcon.servico.SerBanco;
+import br.com.fti.admcon.modulos.entidades.empresa.Banco;
+import br.com.fti.admcon.modulos.servicos.SerBanco;
 
 
 /****************************************************************************

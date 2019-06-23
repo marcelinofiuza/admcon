@@ -2,56 +2,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
 <h:head>
-
+		
 	<f:facet name="first">
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link rel="shortcut icon" href="#{resource['fti/img/favicon.ico']}" type="image/x-icon"/>
-        <link rel="icon" href="#{resource['fti/img/favicon.ico']}" type="image/x-icon"/>		
+		<link rel="shortcut icon" href="#{resource['fti/img/favicon.ico']}"
+			type="image/x-icon" />
+		<link rel="icon" href="#{resource['fti/img/favicon.ico']}"
+			type="image/x-icon" />
 	</f:facet>
 
-    <title>AdmCon</title>
+	<title>ADM-Con</title>
 
 	<h:outputStylesheet library="fti" name="css/layout.css" />
 	<h:outputStylesheet library="fti" name="css/primefaces.css" />
-      
-    <h:outputScript target="body" library="primefaces" name="jquery/jquery.js" />
-    <h:outputScript target="body" library="fti" name="js/app.js" />
+	<h:outputScript target="body" library="primefaces" name="jquery/jquery.js" />
+	<h:outputScript target="body" library="fti" name="js/app.js" />
 
 </h:head>
 
 <h:body>
- 
+
 	<p:toolbar id="tbLayout" styleClass="r42-header">
-	    <p:toolbarGroup align="left" styleClass="r42-hleft">
-	        <h:link outcome="Inicio.xhtml">
-	            <h:graphicImage library="fti" name="img/logoadmcon.png" />
-	        </h:link>
-	    </p:toolbarGroup>
-	    
-	    <p:toolbarGroup align="left" styleClass="r42-empresa">
-	        <p:outputLabel styleClass="r42-empresa" value="#{controlePrincipal.empresa.fantasia}"/>
-	    </p:toolbarGroup>
-	    	    
-	    <p:toolbarGroup align="right" styleClass="r42-usuario">
-	        <p:outputLabel value="#{controlePrincipal.usuario.nome}"/>  
-	    </p:toolbarGroup>
+		<p:toolbarGroup align="left" styleClass="r42-hleft">
+			<h:link outcome="Inicio.xhtml">
+				<h:graphicImage styleClass="r42-inicio" library="fti" name="img/inicio.png" />
+			</h:link>
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="left" styleClass="r42-empresa">
+			<p:outputLabel styleClass="r42-empresa"
+				value="#{controlePrincipal.empresa.fantasia}" />
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right" styleClass="r42-usuario">
+			<p:outputLabel value="#{controlePrincipal.usuario.nome}" />
+		</p:toolbarGroup>
 	</p:toolbar>
-   
-    <ui:insert name="content" />
-    
-    <!-- Dialogo de confirmação padrão -->
-    <ui:include src="/WEB-INF/templates/DialogoConfirmacao.xhtml" />      
-    
-    <p:panel class="r42-footer">
-	   <p>FTI Software</p>
+
+	<ui:insert name="content" />
+
+	<!-- Dialogo de confirmação padrão -->
+	<ui:include src="/WEB-INF/templates/DialogoConfirmacao.xhtml" />
+
+	<!-- 
+	<p:panel class="r42-footer">
+		<p>FTI Software</p>
 	</p:panel>
-	
+	 -->
+
 </h:body>
 
 </html>

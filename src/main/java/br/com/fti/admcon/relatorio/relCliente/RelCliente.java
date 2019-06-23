@@ -3,10 +3,10 @@ package br.com.fti.admcon.relatorio.relCliente;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.fti.admcon.entidade.empresa.Cliente;
-import br.com.fti.admcon.entidade.empresa.ClienteContatos;
+import br.com.fti.admcon.modulos.entidades.empresa.Cliente;
+import br.com.fti.admcon.modulos.entidades.empresa.ClienteContatos;
 import br.com.fti.admcon.relatorio.Relatorio;
-import br.com.fti.admcon.util.R42Util;
+import br.com.fti.admcon.util.ferramentas.R42Util;
 
 
 /****************************************************************************

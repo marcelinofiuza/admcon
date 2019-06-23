@@ -9,8 +9,8 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.fti.admcon.entidade.empresa.Fornecedor;
-import br.com.fti.admcon.servico.SerFornecedor;
+import br.com.fti.admcon.modulos.entidades.empresa.Fornecedor;
+import br.com.fti.admcon.modulos.servicos.SerFornecedor;
 
 /****************************************************************************
  * Classe controle para View de Pesquisa de Fornecedor

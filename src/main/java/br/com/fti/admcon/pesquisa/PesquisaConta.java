@@ -11,8 +11,8 @@ import javax.inject.Named;
 import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.fti.admcon.entidade.empresa.Conta;
-import br.com.fti.admcon.servico.SerConta;
+import br.com.fti.admcon.modulos.entidades.empresa.Conta;
+import br.com.fti.admcon.modulos.servicos.SerConta;
 
 /****************************************************************************
  * Classe controle para View de Pesquisa de Conta Contábil

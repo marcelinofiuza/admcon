@@ -34,16 +34,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.frameOptions()
 					.sameOrigin()
 				.and()
-					.formLogin().loginPage("/R42Login.xhtml").permitAll()
-					.failureUrl("/R42Login.xhtml?error").permitAll()
+					.formLogin().loginPage("/Login.xhtml").permitAll()
+					.failureUrl("/Login.xhtml?error").permitAll()
 					.defaultSuccessUrl("/Inicio.xhtml?ok")
 				.and()
 					.logout().permitAll()
+				.and()
+					.exceptionHandling()
+						.accessDeniedPage("/AcessoNegado.xhtml")
 				.and().csrf().disable().authorizeRequests()
 					.antMatchers("/javax.faces.resource/**").permitAll()
 					.antMatchers("/resources/resvut42/**").permitAll()
 					.antMatchers("/WEB-INF/**").permitAll()
-					.antMatchers("/Usuario.xhtml").hasRole("ADMIN")
+					
+					.antMatchers("/Banco.xhtml").hasAnyRole("ADMIN","BANCO")
+					.antMatchers("/Cliente.xhtml").hasAnyRole("ADMIN","CLIENTE")
+					.antMatchers("/Fornecedor.xhtml").hasAnyRole("ADMIN","FORNECEDOR")
+					.antMatchers("/Conta.xhtml").hasAnyRole("ADMIN","CONTA")
+					
+					.antMatchers("/Receber.xhtml").hasAnyRole("ADMIN","CTAS_RECEBER")
+					.antMatchers("/Cobranca.xhtml").hasAnyRole("ADMIN","GERAR_COBRANCA")
+					.antMatchers("/Boleto.xhtml").hasAnyRole("ADMIN","EMISSAO_BOLETO")
+					.antMatchers("/BoletoRetorno.xhtml").hasAnyRole("ADMIN","RETORNO_BOLETO")				
+					.antMatchers("/RelReceber.xhtml").hasAnyRole("ADMIN","REL_RECEBER")
+					
+					.antMatchers("/Pagar.xhtml").hasAnyRole("ADMIN","CTAS_PAGAR")
+					.antMatchers("/RelPagar.xhtml").hasAnyRole("ADMIN","REL_PAGAR")
+					
+					.antMatchers("/Lancamento.xhtml").hasAnyRole("ADMIN","LANCAMENTO")
+					.antMatchers("/Extrato.xhtml").hasAnyRole("ADMIN","EXTRATO")
+
+					.antMatchers("/Empresa.xhtml").hasAnyRole("ADMIN","EMPRESA")
+					.antMatchers("/Usuario.xhtml").hasAnyRole("ADMIN","USUARIO")					
+					.antMatchers("/Migracao.xhtml").hasAnyRole("ADMIN","MIGRACAO")
+			
 					.anyRequest().authenticated();
 		} catch (Exception e) {
 			// TODO: handle exception

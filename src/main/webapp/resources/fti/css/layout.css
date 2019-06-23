@@ -1,9 +1,9 @@
 /* BASE */
 body {
 	margin: 0;
-	font-size: 13px;
+	font-size: 10px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	background-image: url("#{resource['fti/img/backgroundTamagu.png']}");
+	background-image: url("#{resource['fti/img/background.png']}");
 }
 
 /* Configuração Layout.xhtml */
@@ -11,7 +11,7 @@ body {
 	top: 1px;
 	right: 1px;
 	left: 1px;
-	font-size: 18pt;	
+	font-size: 18pt;
 }
 
 .r42-footer {
@@ -29,13 +29,16 @@ body {
 	font-style: oblique;
 }
 
+.r42-inicio {
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
 .r42-empresa {
-	
-	margin-top: 25px; 
+	margin-top: 25px;
 	margin-left: 50px;
 	font-size: 15pt;
 	text-shadow: blue;
-	
 }
 
 .r42-usuario {

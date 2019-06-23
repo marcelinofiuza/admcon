@@ -8,8 +8,8 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.fti.admcon.entidade.global.Empresa;
-import br.com.fti.admcon.servico.SerEmpresa;
+import br.com.fti.admcon.modulos.entidades.global.Empresa;
+import br.com.fti.admcon.modulos.servicos.SerEmpresa;
 
 /****************************************************************************
  * Classe controle para View de Pesquisa de Empresas

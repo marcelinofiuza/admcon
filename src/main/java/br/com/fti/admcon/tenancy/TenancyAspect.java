@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fti.admcon.entidade.global.Empresa;
-import br.com.fti.admcon.util.R42Util;
+import br.com.fti.admcon.modulos.entidades.global.Empresa;
+import br.com.fti.admcon.util.ferramentas.R42Util;
 
 @Aspect
 @Transactional(propagation = Propagation.REQUIRED)
@@ -21,7 +21,7 @@ public class TenancyAspect {
 	@Autowired
 	private EntityManager manager;
 	
-	@Before("execution(* br.com.fti.admcon.repositorio.empresa.*.*(..))")
+	@Before("execution(* br.com.fti.admcon.modulos.repositorio.empresa.*.*(..))")
 	public void definirTenant() {
 		Empresa empresa = R42Util.resgataEmpresa();		
 		manager.unwrap(Session.class).enableFilter("tenant").setParameter("id", empresa.getIdEmpresa());

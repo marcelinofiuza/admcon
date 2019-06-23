@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import br.com.fti.admcon.entidade.global.Usuario;
-import br.com.fti.admcon.entidade.global.UsuarioRoles;
-import br.com.fti.admcon.servico.SerUsuario;
+import br.com.fti.admcon.modulos.entidades.global.Usuario;
+import br.com.fti.admcon.modulos.entidades.global.UsuarioRoles;
+import br.com.fti.admcon.modulos.servicos.SerUsuario;
 
 /****************************************************************************
  * Classe de configuração do usuário
