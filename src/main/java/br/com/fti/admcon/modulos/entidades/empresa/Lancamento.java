@@ -32,14 +32,14 @@ import br.com.fti.admcon.tenancy.ZEmpresa;
 
 
 /****************************************************************************
- * Entidade BancoLcto, para gravação dos lançamentos contábeis
+ * Entidade Lancamento, para gravação dos lançamentos contábeis
  * 
  * @author Bob-Odin - 22/03/2017
  ****************************************************************************/
 @Entity
 public class Lancamento extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6570030840432695306L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

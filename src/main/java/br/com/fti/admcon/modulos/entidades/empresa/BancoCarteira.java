@@ -25,7 +25,7 @@ import br.com.fti.admcon.tenancy.ZEmpresa;
 @Entity
 public class BancoCarteira extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4844493810847295600L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

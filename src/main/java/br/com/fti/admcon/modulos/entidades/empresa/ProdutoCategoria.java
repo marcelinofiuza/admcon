@@ -13,14 +13,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import br.com.fti.admcon.tenancy.ZEmpresa;
 
 /****************************************************************************
- * Entidade Cobrança Item Desenvolvido por :
+ * Entidade Produto Categoria Desenvolvido por :
  * 
  * @author Bob-Odin - 27/06/2019
  ****************************************************************************/
-
+@Entity
 public class ProdutoCategoria extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5984668645399715338L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

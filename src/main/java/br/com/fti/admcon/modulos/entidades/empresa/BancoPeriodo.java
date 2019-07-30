@@ -35,7 +35,7 @@ import br.com.fti.admcon.util.ferramentas.R42Data;
 @Entity
 public class BancoPeriodo extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4279595237102962346L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

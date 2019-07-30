@@ -2,7 +2,10 @@ package br.com.fti.admcon.modulos.entidades.empresa;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 
@@ -19,14 +24,15 @@ import org.springframework.format.annotation.NumberFormat;
 import br.com.fti.admcon.tenancy.ZEmpresa;
 
 /****************************************************************************
- * Entidade Banco Desenvolvido por :
+ * Entidade Produto Desenvolvido por :
  * 
  * @author Bob-Odin - 24/06/2018
  ****************************************************************************/
-
+@Entity
 public class Produto extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 708834415820005620L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,26 +46,43 @@ public class Produto extends ZEmpresa implements Serializable {
 	private ProdutoCategoria categoria;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idUM")
-	private ProdutoUM produtoUM;
+	@JoinColumn(name = "idUm")
+	private ProdutoUm produtoUM;
 
 	private boolean controlaEstoque;
 
 	private boolean ativo;
 
-	
+	@Transient
+	@DecimalMin(value = "0.000", message = "Não pode ser menor que 0,000")
+	@DecimalMax(value = "9999.999", message = "Máximo deve ser 9.999,999")
+	@NumberFormat(pattern = "#,##0.000")
 	private BigDecimal saldoEstoque;
 
+	@Transient
+	@DecimalMin(value = "0.00", message = "Não pode ser menor que 0,00")
+	@DecimalMax(value = "9999.99", message = "Máximo deve ser 9.999,99")
+	@NumberFormat(pattern = "#,##0.00")	
 	private BigDecimal valorCusto;
 
-	@DecimalMin(value = "100,000", message = "Não pode ser menor que 1,000")
-	@DecimalMax(value = "99999999.99", message = "Máximo deve ser 99.999.999,99")
-	@NumberFormat(pattern = "#,##0.00")	
+	@DecimalMin(value = "0.000", message = "Não pode ser menor que 0,000")
+	@DecimalMax(value = "9999.99", message = "Máximo deve ser 9.999,99")
+	@NumberFormat(pattern = "#,##0.000")
 	private BigDecimal aliqAcrescimo;
 
+	@DecimalMin(value = "0.00", message = "Não pode ser menor que 0,00")
+	@DecimalMax(value = "99999999.99", message = "Máximo deve ser 99.999.999,99")
+	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valorAcrescimo;
 
+	@DecimalMin(value = "0.00", message = "Não pode ser menor que 0,00")
+	@DecimalMax(value = "99999999.99", message = "Máximo deve ser 99.999.999,99")
+	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal precoVenda;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "idComponente")
+	private List<ProdutoComponente> componente = new ArrayList<ProdutoComponente>();
 
 	public Long getIdProduto() {
 		return idProduto;
@@ -85,11 +108,11 @@ public class Produto extends ZEmpresa implements Serializable {
 		this.categoria = categoria;
 	}
 
-	public ProdutoUM getProdutoUM() {
+	public ProdutoUm getProdutoUM() {
 		return produtoUM;
 	}
 
-	public void setProdutoUM(ProdutoUM produtoUM) {
+	public void setProdutoUM(ProdutoUm produtoUM) {
 		this.produtoUM = produtoUM;
 	}
 
@@ -147,6 +170,14 @@ public class Produto extends ZEmpresa implements Serializable {
 
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
+	}
+
+	public List<ProdutoComponente> getComponente() {
+		return componente;
+	}
+
+	public void setComponente(List<ProdutoComponente> componente) {
+		this.componente = componente;
 	}
 
 	@Override

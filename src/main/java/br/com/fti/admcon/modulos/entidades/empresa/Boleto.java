@@ -36,7 +36,7 @@ import br.com.fti.admcon.tenancy.ZEmpresa;
 @Entity
 public class Boleto extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3452852491737648998L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

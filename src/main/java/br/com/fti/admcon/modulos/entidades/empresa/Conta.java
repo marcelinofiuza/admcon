@@ -32,7 +32,7 @@ import br.com.fti.admcon.tenancy.ZEmpresa;
 @Entity
 public class Conta extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7186722637034240606L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

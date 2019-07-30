@@ -22,7 +22,7 @@ import br.com.fti.admcon.tenancy.ZEmpresa;
 @Entity
 public class FornecedorContatos extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4076600252988511220L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

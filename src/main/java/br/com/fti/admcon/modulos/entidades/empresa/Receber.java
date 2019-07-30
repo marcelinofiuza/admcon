@@ -36,7 +36,7 @@ import br.com.fti.admcon.tenancy.ZEmpresa;
 @Entity
 public class Receber extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3925018919136483473L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -15,34 +15,34 @@ import org.springframework.format.annotation.NumberFormat;
 import br.com.fti.admcon.tenancy.ZEmpresa;
 
 /****************************************************************************
- * Entidade Cobrança Item Desenvolvido por :
+ * Entidade Produto UM Desenvolvido por :
  * 
  * @author Bob-Odin - 27/06/2019
  ****************************************************************************/
+@Entity
+public class ProdutoUm extends ZEmpresa implements Serializable {
 
-public class ProdutoUM extends ZEmpresa implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -352975428642532199L;
 
 	@Id
 	@Column(length = 5)
-	private String idUM;
+	private String idUm;
 
 	@NotEmpty
 	@Column(length = 50)
 	private String descricao;
 
 	@DecimalMin(value = "0.0000", message = "Não pode ser menor que 0,0000")
-	@DecimalMax(value = "99999999.9999", message = "Máximo deve ser 9999,9999")	
+	@DecimalMax(value = "99999999.9999", message = "Máximo deve ser 9999,9999")
 	@NumberFormat(pattern = "#,##0.0000")
 	private BigDecimal numeral;
 
-	public String getIdUM() {
-		return idUM;
+	public String getIdUm() {
+		return idUm;
 	}
 
-	public void setIdUM(String idUM) {
-		this.idUM = idUM;
+	public void setIdUm(String idUm) {
+		this.idUm = idUm;
 	}
 
 	public String getDescricao() {
@@ -65,7 +65,7 @@ public class ProdutoUM extends ZEmpresa implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((idUM == null) ? 0 : idUM.hashCode());
+		result = prime * result + ((idUm == null) ? 0 : idUm.hashCode());
 		return result;
 	}
 
@@ -77,11 +77,11 @@ public class ProdutoUM extends ZEmpresa implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProdutoUM other = (ProdutoUM) obj;
-		if (idUM == null) {
-			if (other.idUM != null)
+		ProdutoUm other = (ProdutoUm) obj;
+		if (idUm == null) {
+			if (other.idUm != null)
 				return false;
-		} else if (!idUM.equals(other.idUM))
+		} else if (!idUm.equals(other.idUm))
 			return false;
 		return true;
 	}
