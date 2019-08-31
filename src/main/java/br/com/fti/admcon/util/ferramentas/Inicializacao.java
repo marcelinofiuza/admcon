@@ -25,7 +25,7 @@ public class Inicializacao {
 	@EventListener
 	public void usuarioPadrao(ApplicationReadyEvent event) {
 
-		Usuario usuario = serUsuario.buscarPorCredencial("ADMCON");
+		Usuario usuario = serUsuario.buscarPorCredencial("JEDI");
 
 		if (usuario == null) {
 			try {

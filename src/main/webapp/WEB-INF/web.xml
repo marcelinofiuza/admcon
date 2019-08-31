@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-	version="3.1">
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    metadata-complete="false" 
+    version="3.0">
+
 
 	<display-name>ADM-Con</display-name>
 
@@ -40,5 +43,22 @@
 		<extension>woff2</extension>
 		<mime-type>application/x-font-woff2</mime-type>
 	</mime-mapping>
-
+<!-- 
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>portal</web-resource-name>
+			<description>This is the protected area of the application.</description>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>Requires users to be authenticated but does not require them to be authorized.</description>
+			<role-name>*</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<description>Encryption is not required for this area.</description>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+ -->
+ 
 </web-app>

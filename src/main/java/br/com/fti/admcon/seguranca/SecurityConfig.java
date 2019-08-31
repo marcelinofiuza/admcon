@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().csrf().disable().authorizeRequests()
 					.antMatchers("/javax.faces.resource/**").permitAll()
 					.antMatchers("/resources/resvut42/**").permitAll()
-					.antMatchers("/WEB-INF/**").permitAll()
+					.antMatchers("/WEB-INF/**").permitAll()					
 					
 					.antMatchers("/Banco.xhtml").hasAnyRole("ADMIN","BANCO")
 					.antMatchers("/Cliente.xhtml").hasAnyRole("ADMIN","CLIENTE")
