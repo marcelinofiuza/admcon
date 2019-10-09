@@ -21,6 +21,8 @@ import javax.validation.constraints.DecimalMin;
 
 import org.springframework.format.annotation.NumberFormat;
 
+import br.com.fti.admcon.modulos.entidades.global.Categoria;
+import br.com.fti.admcon.modulos.entidades.global.UnidadeMedida;
 import br.com.fti.admcon.tenancy.ZEmpresa;
 
 /****************************************************************************
@@ -30,7 +32,6 @@ import br.com.fti.admcon.tenancy.ZEmpresa;
  ****************************************************************************/
 @Entity
 public class Produto extends ZEmpresa implements Serializable {
-
 
 	private static final long serialVersionUID = 708834415820005620L;
 
@@ -42,12 +43,16 @@ public class Produto extends ZEmpresa implements Serializable {
 	private String descricao;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idGrupo")
+	private ProdutoGrupo grupo;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idCategoria")
-	private ProdutoCategoria categoria;
+	private Categoria categoria;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idUm")
-	private ProdutoUm produtoUM;
+	private UnidadeMedida unidadeMedida;
 
 	private boolean controlaEstoque;
 
@@ -62,7 +67,7 @@ public class Produto extends ZEmpresa implements Serializable {
 	@Transient
 	@DecimalMin(value = "0.00", message = "Não pode ser menor que 0,00")
 	@DecimalMax(value = "9999.99", message = "Máximo deve ser 9.999,99")
-	@NumberFormat(pattern = "#,##0.00")	
+	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valorCusto;
 
 	@DecimalMin(value = "0.000", message = "Não pode ser menor que 0,000")
@@ -100,20 +105,28 @@ public class Produto extends ZEmpresa implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public ProdutoCategoria getCategoria() {
+	public ProdutoGrupo getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(ProdutoGrupo grupo) {
+		this.grupo = grupo;
+	}
+
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(ProdutoCategoria categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 
-	public ProdutoUm getProdutoUM() {
-		return produtoUM;
+	public UnidadeMedida getProdutoUM() {
+		return unidadeMedida;
 	}
 
-	public void setProdutoUM(ProdutoUm produtoUM) {
-		this.produtoUM = produtoUM;
+	public void setProdutoUM(UnidadeMedida unidadeMedida) {
+		this.unidadeMedida = unidadeMedida;
 	}
 
 	public boolean isControlaEstoque() {

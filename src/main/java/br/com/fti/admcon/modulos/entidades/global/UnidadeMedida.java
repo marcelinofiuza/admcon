@@ -1,10 +1,12 @@
-package br.com.fti.admcon.modulos.entidades.empresa;
+package br.com.fti.admcon.modulos.entidades.global;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -12,21 +14,23 @@ import javax.validation.constraints.DecimalMin;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
 
-import br.com.fti.admcon.tenancy.ZEmpresa;
-
 /****************************************************************************
  * Entidade Produto UM Desenvolvido por :
  * 
  * @author Bob-Odin - 27/06/2019
  ****************************************************************************/
 @Entity
-public class ProdutoUm extends ZEmpresa implements Serializable {
+public class UnidadeMedida implements Serializable {
 
 	private static final long serialVersionUID = -352975428642532199L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long idUm;
+
+	@NotEmpty
 	@Column(length = 5)
-	private String idUm;
+	private String unidade;
 
 	@NotEmpty
 	@Column(length = 50)
@@ -37,12 +41,20 @@ public class ProdutoUm extends ZEmpresa implements Serializable {
 	@NumberFormat(pattern = "#,##0.0000")
 	private BigDecimal numeral;
 
-	public String getIdUm() {
+	public Long getIdUm() {
 		return idUm;
 	}
 
-	public void setIdUm(String idUm) {
+	public void setIdUm(Long idUm) {
 		this.idUm = idUm;
+	}
+
+	public String getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(String unidade) {
+		this.unidade = unidade;
 	}
 
 	public String getDescricao() {
@@ -77,7 +89,7 @@ public class ProdutoUm extends ZEmpresa implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProdutoUm other = (ProdutoUm) obj;
+		UnidadeMedida other = (UnidadeMedida) obj;
 		if (idUm == null) {
 			if (other.idUm != null)
 				return false;

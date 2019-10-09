@@ -1,4 +1,4 @@
-package br.com.fti.admcon.modulos.entidades.empresa;
+package br.com.fti.admcon.modulos.entidades.global;
 
 import java.io.Serializable;
 
@@ -10,15 +10,13 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import br.com.fti.admcon.tenancy.ZEmpresa;
-
 /****************************************************************************
  * Entidade Produto Categoria Desenvolvido por :
  * 
  * @author Bob-Odin - 27/06/2019
  ****************************************************************************/
 @Entity
-public class ProdutoCategoria extends ZEmpresa implements Serializable {
+public class Categoria implements Serializable {
 
 	private static final long serialVersionUID = 5984668645399715338L;
 
@@ -63,7 +61,7 @@ public class ProdutoCategoria extends ZEmpresa implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProdutoCategoria other = (ProdutoCategoria) obj;
+		Categoria other = (Categoria) obj;
 		if (idCategoria == null) {
 			if (other.idCategoria != null)
 				return false;

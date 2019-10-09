@@ -42,4 +42,15 @@ public class SerProduto {
 	public List<Produto> listarTodos() {
 		return repProduto.findAll();
 	}
+	
+	/****************************************************************************
+	 * Metodo para Validar e excluir
+	 ****************************************************************************/
+	public void excluir(Produto produto) throws Exception {
+		try {
+			repProduto.delete(produto);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}	
 }

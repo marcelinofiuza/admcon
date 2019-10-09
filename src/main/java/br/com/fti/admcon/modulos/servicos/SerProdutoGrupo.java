@@ -6,40 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fti.admcon.modulos.entidades.global.UnidadeMedida;
-import br.com.fti.admcon.modulos.repositorio.global.RepProdutoUm;
+import br.com.fti.admcon.modulos.entidades.empresa.ProdutoGrupo;
+import br.com.fti.admcon.modulos.repositorio.empresa.RepProdutoGrupo;
 
 /****************************************************************************
  * Classe Serviço Regras de negócio do Banco Desenvolvido por :
  * 
- * @author Bob-Odin - 01/03/2017
+ * @author Bob-Odin - 09/10/2019
  ****************************************************************************/
 @Service
 @Transactional
-public class SerProdutoUm {
+public class SerProdutoGrupo {
 
 	/****************************************************************************
 	 * Variaveis e Dependências
 	 ****************************************************************************/
 	@Autowired
-	RepProdutoUm repProdutoUm;
+	RepProdutoGrupo repProdutoGrupo;
 	
-	/****************************************************************************
-	 * Metodo para Validar e salvar
-	 ****************************************************************************/
-	public void salvar(UnidadeMedida produtoUm) throws Exception {
-		try {
-		//	validarSalvar(produtoUm);
-			repProdutoUm.save(produtoUm);
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-	}
 	
 	/****************************************************************************
 	 * Metodo para Listar todos os registros
 	 ****************************************************************************/
-	public List<UnidadeMedida> listarTodos() {
-		return repProdutoUm.findAll();
+	public List<ProdutoGrupo> listarTodos() {
+		return repProdutoGrupo.findAll();
 	}
+	
 }

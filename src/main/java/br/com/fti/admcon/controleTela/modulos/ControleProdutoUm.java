@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.fti.admcon.modulos.entidades.empresa.ProdutoUm;
+import br.com.fti.admcon.modulos.entidades.global.UnidadeMedida;
 import br.com.fti.admcon.modulos.servicos.SerProdutoUm;
 import br.com.fti.admcon.util.ferramentas.FacesMessages;
 
@@ -28,9 +28,9 @@ public class ControleProdutoUm implements Serializable {
 	 ****************************************************************************/
 	private static final long serialVersionUID = 1L;
 
-	private List<ProdutoUm> listaUm = new ArrayList<ProdutoUm>();
-	private ProdutoUm umEdicao = new ProdutoUm();
-	private ProdutoUm umSelect;
+	private List<UnidadeMedida> listaUm = new ArrayList<UnidadeMedida>();
+	private UnidadeMedida umEdicao = new UnidadeMedida();
+	private UnidadeMedida umSelect;
 
 	@Autowired
 	SerProdutoUm serProdutoUm;
@@ -58,23 +58,23 @@ public class ControleProdutoUm implements Serializable {
 	 * Gets e Sets do controle
 	 ****************************************************************************/
 
-	public List<ProdutoUm> getListaUm() {
+	public List<UnidadeMedida> getListaUm() {
 		return listaUm;
 	}
 
-	public ProdutoUm getUmEdicao() {
+	public UnidadeMedida getUmEdicao() {
 		return umEdicao;
 	}
 
-	public void setUmEdicao(ProdutoUm umEdicao) {
+	public void setUmEdicao(UnidadeMedida umEdicao) {
 		this.umEdicao = umEdicao;
 	}
 
-	public ProdutoUm getUmSelect() {
+	public UnidadeMedida getUmSelect() {
 		return umSelect;
 	}
 
-	public void setUmSelect(ProdutoUm umSelect) {
+	public void setUmSelect(UnidadeMedida umSelect) {
 		this.umSelect = umSelect;
 	}
 
