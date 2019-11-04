@@ -135,7 +135,6 @@ public class ControleBanco implements Serializable {
 	public void novoCadastro() {
 		preparaTela();
 		bancoEdicao = new Banco();
-
 	}
 
 	/****************************************************************************

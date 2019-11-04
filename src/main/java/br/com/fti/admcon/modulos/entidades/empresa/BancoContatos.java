@@ -26,7 +26,7 @@ public class BancoContatos extends ZEmpresa implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long idContato;
+	private Long idContato;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "idBanco")

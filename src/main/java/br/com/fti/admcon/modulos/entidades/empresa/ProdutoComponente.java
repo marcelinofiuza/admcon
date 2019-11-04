@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,9 +33,15 @@ public class ProdutoComponente extends ZEmpresa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idComponente;
 
+	// Faz referencia com join do produto
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "idProduto")
-	private Produto produtoItem;
+	private Produto produto;
+
+	// Produto da lista de componentes
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idItem")
+	private Produto itemProduto = new Produto();
 
 	@NotNull(message = "Quantidade não pode ser menor que zero")
 	@DecimalMin(value = "0.01", message = "Não pode ser menor que 0,01")
@@ -50,12 +57,20 @@ public class ProdutoComponente extends ZEmpresa implements Serializable {
 		this.idComponente = idComponente;
 	}
 
-	public Produto getProdutoItem() {
-		return produtoItem;
+	public Produto getProduto() {
+		return produto;
 	}
 
-	public void setProdutoItem(Produto produtoItem) {
-		this.produtoItem = produtoItem;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+
+	public Produto getItemProduto() {
+		return itemProduto;
+	}
+
+	public void setItemProduto(Produto itemProduto) {
+		this.itemProduto = itemProduto;
 	}
 
 	public BigDecimal getQtdUtilizada() {

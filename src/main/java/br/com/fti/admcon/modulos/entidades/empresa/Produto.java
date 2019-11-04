@@ -86,8 +86,8 @@ public class Produto extends ZEmpresa implements Serializable {
 	private BigDecimal precoVenda;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "idComponente")
-	private List<ProdutoComponente> componente = new ArrayList<ProdutoComponente>();
+	@JoinColumn(name = "idProduto")
+	private List<ProdutoComponente> componentes = new ArrayList<ProdutoComponente>();
 
 	public Long getIdProduto() {
 		return idProduto;
@@ -185,12 +185,12 @@ public class Produto extends ZEmpresa implements Serializable {
 		this.precoVenda = precoVenda;
 	}
 
-	public List<ProdutoComponente> getComponente() {
-		return componente;
+	public List<ProdutoComponente> getComponentes() {
+		return componentes;
 	}
 
-	public void setComponente(List<ProdutoComponente> componente) {
-		this.componente = componente;
+	public void setComponentes(List<ProdutoComponente> componentes) {
+		this.componentes = componentes;
 	}
 
 	@Override

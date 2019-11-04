@@ -9,10 +9,13 @@ CREATE TABLE unidade_medida (
   PRIMARY KEY (id_um)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('UN',  'Unidade', '1');
-INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('PAR', 'Pares', '2');
-INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('PC',  'Peça', '1');
-INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('CJ',  'Conjunto', '1');
+INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('UN',   'Unidade', '1');
+INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('PAR',  'Pares', '2');
+INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('PC',   'Peça', '1');
+INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('CJ',   'Conjunto', '1');
+INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('DEZ',  'Dezena', '10');
+INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('CEM',  'Centena', '100');
+INSERT INTO unidade_medida (unidade, descricao, numeral) VALUES ('MIL',  'Milheiro', '1000');
 
 /***************************************/
 /*TABELA PRODUTO CATEGORIA             */
@@ -69,10 +72,13 @@ CREATE TABLE produto (
 CREATE TABLE produto_componente (
   id_componente bigint(20) NOT NULL AUTO_INCREMENT,
   zempresa bigint(20) DEFAULT NULL,
-  qtd_utilizada decimal(19,2) NOT NULL,
+  qtd_utilizada  decimal(19,2) NOT NULL,
+  id_item bigint(20) DEFAULT NULL,
   id_produto bigint(20) DEFAULT NULL,
   PRIMARY KEY (id_componente),
-  KEY (id_produto),
-  CONSTRAINT FOREIGN KEY (id_componente) REFERENCES produto (id_produto),
+  KEY (id_item),
+  KEY (id_produto),  
+  CONSTRAINT FOREIGN KEY (id_item) REFERENCES produto (id_produto),
   CONSTRAINT FOREIGN KEY (id_produto) REFERENCES produto (id_produto)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

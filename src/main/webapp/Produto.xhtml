@@ -85,13 +85,18 @@
 					responsive="true">
 
 					<!-- Barra de Ferramentas dialogo-->
-					<p:defaultCommand target="bto-salvar" scope="dialogo" />
+					<p:defaultCommand target="bto-none" scope="dialogo" />
 					<p:toolbar>
 						<p:toolbarGroup align="left">
+
+							<p:commandButton id="bto-none" style="display:none"
+								process="dialogo" update="panel-dados" />
+
 							<p:commandButton id="bto-salvar" title="Salvar" icon="fa fa-save"
 								action="#{controleProduto.salvar}" process="dialogo"
 								update="panel-dados"
-								oncomplete="if(!args.validationFailed) PF('wgDados').hide()" />
+								oncomplete="if(!args.exceptionThrown) PF('wgDados').hide()" />
+
 						</p:toolbarGroup>
 					</p:toolbar>
 
@@ -124,22 +129,19 @@
 									value="#{controleProduto.produtoEdicao.grupo}"
 									converter="converterGrupo">
 									<f:selectItem itemLabel="Selecione" />
-									<f:selectItems value="#{controleProduto.grupos}"
-										var="grupo" itemLabel="#{grupo.descricao}"
-										itemValue="#{grupo}" />
+									<f:selectItems value="#{controleProduto.grupos}" var="grupo"
+										itemLabel="#{grupo.descricao}" itemValue="#{grupo}" />
 								</p:selectOneMenu>
 
 								<p:outputLabel value="Unid. medida" for="um" />
-								<p:selectOneMenu id="um"
-								    var="produtoUM"
+								<p:selectOneMenu id="um" var="produtoUM"
 									value="#{controleProduto.produtoEdicao.produtoUM}"
 									converter="converterUnidMedida">
 									<f:selectItem itemLabel="Selecione" />
 									<f:selectItems value="#{controleProduto.produtoUMs}"
-									               var="itm_um"
-										           itemValue="#{itm_um}"
-										           itemLabel="#{itm_um.unidade}" />
-										
+										var="itm_um" itemValue="#{itm_um}"
+										itemLabel="#{itm_um.unidade}" />
+
 									<p:column style="width:10%">
 										<h:outputText value="#{produtoUM.unidade}" />
 									</p:column>
@@ -169,13 +171,64 @@
 
 						</p:tab>
 
+						<p:tab title="Componente">
+
+							<p:commandButton id="bto-add" title="Novo" icon="fa fa-plus"
+								action="#{controleProduto.addComponente}" process="@this"
+								update="tabComponente" />
+
+							<p:commandButton id="bto-vld" title="Validar" icon="fa fa-gears"
+								action="#{controleProduto.validarComponentes}" process="@this"
+								update="tabComponente" />
+
+							<!-- Lista de componentes -->
+							<p:dataTable value="#{controleProduto.componentes}"
+								var="componente" id="tabComponente" rows="15" paginator="true"
+								paginatorPosition="top" editable="true" editMode="cell">
+
+								<p:ajax event="cellEdit"
+									listener="#{controleProduto.onCellEdit}" update="tabComponente" />
+
+								<p:column headerText="Id Produto" width="80">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{componente.itemProduto.idProduto}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="cpmIdProduto" value="#{componente.itemProduto.idProduto}" />
+										</f:facet>										
+									</p:cellEditor>
+								</p:column>
+
+								<p:column headerText="Produto descrição">
+									<h:outputText value="#{componente.itemProduto.descricao}" />
+								</p:column>
+
+								<p:column headerText="Quantidade" width="80">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{componente.qtdUtilizada}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="cpmQtdUtilizada" value="#{componente.qtdUtilizada}"/>
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column headerText="#" width="35">
+									<p:commandButton icon="fa fa-trash" title="Remover"
+										action="#{controleProduto.removeComponente(componente)}"
+										process="@this" update="tabComponente" />
+								</p:column>
+							</p:dataTable>
+						</p:tab>
+
 						<!-- Aba Estoque -->
 						<p:tab title="Estoque">
 
 							<p:panelGrid columns="2" layout="grid"
 								styleClass="panelgrid-noborder r42-panelgrid"
 								columnClasses="ui-grid-col-3, ui-grid-col-9">
-
 
 								<p:outputLabel value="Saldo estoque" for="saldoEstoque" />
 								<p:inputNumber id="saldoEstoque" size="20"
@@ -208,6 +261,7 @@
 							</p:panelGrid>
 
 						</p:tab>
+
 					</p:tabView>
 
 				</p:dialog>
