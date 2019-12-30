@@ -1,4 +1,4 @@
-package br.com.fti.admcon.modulos.entidades.global;
+package br.com.fti.admcon.modulos.entidades.empresa;
 
 import java.io.Serializable;
 
@@ -10,13 +10,15 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import br.com.fti.admcon.tenancy.ZEmpresa;
+
 /****************************************************************************
  * Entidade Produto Categoria Desenvolvido por :
  * 
  * @author Bob-Odin - 27/06/2019
  ****************************************************************************/
 @Entity
-public class Categoria implements Serializable {
+public class ProdutoCategoria extends ZEmpresa implements Serializable {
 
 	private static final long serialVersionUID = 5984668645399715338L;
 
@@ -28,7 +30,12 @@ public class Categoria implements Serializable {
 	@Column(length = 50)
 	private String descricao;
 
-	
+	private boolean componente;
+
+	private boolean estoque;
+
+	private boolean venda;
+
 	public Long getIdCategoria() {
 		return idCategoria;
 	}
@@ -44,7 +51,31 @@ public class Categoria implements Serializable {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
+
+	public boolean isComponente() {
+		return componente;
+	}
+
+	public void setComponente(boolean componente) {
+		this.componente = componente;
+	}
+
+	public boolean isEstoque() {
+		return estoque;
+	}
+
+	public void setEstoque(boolean estoque) {
+		this.estoque = estoque;
+	}
+
+	public boolean isVenda() {
+		return venda;
+	}
+
+	public void setVenda(boolean venda) {
+		this.venda = venda;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -61,7 +92,7 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		ProdutoCategoria other = (ProdutoCategoria) obj;
 		if (idCategoria == null) {
 			if (other.idCategoria != null)
 				return false;

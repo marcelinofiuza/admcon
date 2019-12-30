@@ -89,6 +89,12 @@ body {
 	overflow: auto !important;
 }
 
+.r42-dialogo3 {
+	width: 50% !important;
+	height: 60% !important;
+	overflow: auto !important;
+}
+
 .r42-panelgrid {
 	margin-top: 5px;
 }

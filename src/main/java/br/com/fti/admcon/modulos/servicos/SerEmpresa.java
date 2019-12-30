@@ -73,12 +73,12 @@ public class SerEmpresa {
 	private void ajustarDados(Empresa empresa) {
 		
 		// Seta null no cnpj quando estiver em branco para validação
-		if (empresa.getCnpj().isEmpty()) {
+		if (empresa.getCnpj() != null && empresa.getCnpj().isEmpty()) {
 			empresa.setCnpj(null);
 		}
 
 		// Seta null no cpf quando estiver em branco para validação
-		if (empresa.getCpf().isEmpty()) {
+		if (empresa.getCpf() !=null && empresa.getCpf().isEmpty()) {
 			empresa.setCpf(null);
 		}
 

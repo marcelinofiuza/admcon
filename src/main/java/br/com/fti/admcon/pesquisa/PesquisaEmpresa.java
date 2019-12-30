@@ -23,7 +23,7 @@ public class PesquisaEmpresa extends AbstrataPesquisa implements Serializable {
 	/****************************************************************************
 	 * Variaveis e Dependências
 	 ****************************************************************************/
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6345167120471580536L;
 	private List<Empresa> listaEmpresas;
 	private String razaoSocial = "";
 	private String fantasia = "";

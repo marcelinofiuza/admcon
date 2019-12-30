@@ -21,8 +21,6 @@ import javax.validation.constraints.DecimalMin;
 
 import org.springframework.format.annotation.NumberFormat;
 
-import br.com.fti.admcon.modulos.entidades.global.Categoria;
-import br.com.fti.admcon.modulos.entidades.global.UnidadeMedida;
 import br.com.fti.admcon.tenancy.ZEmpresa;
 
 /****************************************************************************
@@ -48,13 +46,11 @@ public class Produto extends ZEmpresa implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idCategoria")
-	private Categoria categoria;
+	private ProdutoCategoria categoria;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idUm")
-	private UnidadeMedida unidadeMedida;
-
-	private boolean controlaEstoque;
+	@JoinColumn(name = "idMedida")
+	private ProdutoMedida medida;
 
 	private boolean ativo;
 
@@ -113,28 +109,20 @@ public class Produto extends ZEmpresa implements Serializable {
 		this.grupo = grupo;
 	}
 
-	public Categoria getCategoria() {
+	public ProdutoCategoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(ProdutoCategoria categoria) {
 		this.categoria = categoria;
 	}
 
-	public UnidadeMedida getProdutoUM() {
-		return unidadeMedida;
+	public ProdutoMedida getMedida() {
+		return medida;
 	}
 
-	public void setProdutoUM(UnidadeMedida unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
-
-	public boolean isControlaEstoque() {
-		return controlaEstoque;
-	}
-
-	public void setControlaEstoque(boolean controlaEstoque) {
-		this.controlaEstoque = controlaEstoque;
+	public void setMedida(ProdutoMedida medida) {
+		this.medida = medida;
 	}
 
 	public boolean isAtivo() {

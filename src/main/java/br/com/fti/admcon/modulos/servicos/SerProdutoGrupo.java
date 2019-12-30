@@ -23,13 +23,36 @@ public class SerProdutoGrupo {
 	 ****************************************************************************/
 	@Autowired
 	RepProdutoGrupo repProdutoGrupo;
-	
-	
+
 	/****************************************************************************
 	 * Metodo para Listar todos os registros
 	 ****************************************************************************/
 	public List<ProdutoGrupo> listarTodos() {
 		return repProdutoGrupo.findAll();
 	}
+
+	/****************************************************************************
+	 * Salvar grupos
+	 ****************************************************************************/
+	public List<ProdutoGrupo> salvar(List<ProdutoGrupo> grupos) throws Exception {
+		try {
+			return repProdutoGrupo.save(grupos);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
 	
+	/****************************************************************************
+	 * Excluir grupo
+	 ****************************************************************************/
+	public void excluir(ProdutoGrupo grupo) throws Exception {
+		try {
+			repProdutoGrupo.delete(grupo);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+
+
+
 }

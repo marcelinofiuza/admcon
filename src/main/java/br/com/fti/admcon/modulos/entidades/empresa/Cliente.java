@@ -45,11 +45,11 @@ public class Cliente extends ZEmpresa implements Serializable {
 	@Column(length = 40, nullable = false)
 	private String fantasia;
 
-	@CNPJ
+	//@CNPJ
 	@Column(length = 18, nullable = true)
 	private String cnpj;
 
-	@CPF
+	//@CPF
 	@Column(length = 14, nullable = true)
 	private String cpf;
 

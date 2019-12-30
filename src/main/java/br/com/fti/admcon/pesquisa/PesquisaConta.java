@@ -23,10 +23,11 @@ import br.com.fti.admcon.modulos.servicos.SerConta;
 @ViewScoped
 public class PesquisaConta extends AbstrataPesquisa implements Serializable {
 
+
 	/****************************************************************************
 	 * Variaveis e Dependências
 	 ****************************************************************************/
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6295543030628787292L;
 	private TreeNode treeContas;
 
 	@Autowired

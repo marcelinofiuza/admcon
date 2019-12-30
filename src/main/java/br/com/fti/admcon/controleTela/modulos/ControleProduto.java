@@ -1,7 +1,6 @@
 package br.com.fti.admcon.controleTela.modulos;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,18 +10,19 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.fti.admcon.modulos.entidades.empresa.Produto;
+import br.com.fti.admcon.modulos.entidades.empresa.ProdutoCategoria;
 import br.com.fti.admcon.modulos.entidades.empresa.ProdutoComponente;
 import br.com.fti.admcon.modulos.entidades.empresa.ProdutoGrupo;
-import br.com.fti.admcon.modulos.entidades.global.Categoria;
-import br.com.fti.admcon.modulos.entidades.global.UnidadeMedida;
+import br.com.fti.admcon.modulos.entidades.empresa.ProdutoMedida;
 import br.com.fti.admcon.modulos.servicos.SerProduto;
 import br.com.fti.admcon.modulos.servicos.SerProdutoCategoria;
 import br.com.fti.admcon.modulos.servicos.SerProdutoGrupo;
-import br.com.fti.admcon.modulos.servicos.SerProdutoUm;
+import br.com.fti.admcon.modulos.servicos.SerProdutoMedida;
+import br.com.fti.admcon.pesquisa.PesquisaProduto;
 import br.com.fti.admcon.util.ferramentas.FacesMessages;
 
 /****************************************************************************
@@ -44,12 +44,14 @@ public class ControleProduto implements Serializable {
 	private Produto produtoSelect;
 
 	private List<ProdutoGrupo> grupos;
-	private List<Categoria> categorias;
-	private List<UnidadeMedida> produtoUMs;
+	private List<ProdutoCategoria> categorias;
+	private List<ProdutoMedida> medidas;
 
 	private final long newItem = 9000000;
 	private long nextItem = newItem;
+
 	private List<ProdutoComponente> componentes;
+	private ProdutoComponente itemComponente;
 
 	@Autowired
 	SerProduto serProduto;
@@ -58,7 +60,9 @@ public class ControleProduto implements Serializable {
 	@Autowired
 	SerProdutoCategoria serProdutoCategoria;
 	@Autowired
-	SerProdutoUm serProdutoUm;
+	SerProdutoMedida serProdutoMedida;
+	@Autowired
+	PesquisaProduto pesquisaProduto;
 
 	@Autowired
 	FacesMessages mensagens;
@@ -68,7 +72,13 @@ public class ControleProduto implements Serializable {
 	 ****************************************************************************/
 	@PostConstruct
 	public void preparaTela() {
+
+		// Dados para montar lists
+		grupos = serProdutoGrupo.listarTodos();
+		categorias = serProdutoCategoria.listarTodos();
+		medidas = serProdutoMedida.listarTodos();
 		componentes = new ArrayList<>();
+
 	}
 
 	/****************************************************************************
@@ -87,10 +97,6 @@ public class ControleProduto implements Serializable {
 		produtoSelect = null;
 		listaProdutos = serProduto.listarTodos();
 
-		// Dados para montar lists
-		grupos = serProdutoGrupo.listarTodos();
-		categorias = serProdutoCategoria.listarTodos();
-		produtoUMs = serProdutoUm.listarTodos();
 	}
 
 	/****************************************************************************
@@ -99,29 +105,30 @@ public class ControleProduto implements Serializable {
 	public void salvar() {
 		try {
 
+			// faz a verificação de novos componentes
 			for (ProdutoComponente componente : componentes) {
 				if (componente.getIdComponente() != null && componente.getIdComponente() > newItem) {
 					componente.setIdComponente(null);
 				}
 			}
-			
-            produtoEdicao.setComponentes(null);
+
+			produtoEdicao.setComponentes(null);
 			produtoEdicao.setComponentes(componentes);
 			serProduto.salvar(produtoEdicao);
 
 			listar();
 			mensagens.info("Registro salvo com sucesso!");
 			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:toolbar", "frm:tabela"));
-			
+
 		} catch (Exception e) {
-			
+
 			for (ProdutoComponente componente : componentes) {
-				if (componente.getIdComponente() == null ) {
+				if (componente.getIdComponente() == null) {
 					nextItem++;
 					componente.setIdComponente(nextItem);
 				}
 			}
-			
+
 			RequestContext.getCurrentInstance().addCallbackParam("exceptionThrown", true);
 			mensagens.error(e.getMessage());
 		}
@@ -140,7 +147,6 @@ public class ControleProduto implements Serializable {
 	 ****************************************************************************/
 	public void editCadastro() {
 		produtoEdicao = produtoSelect;
-		componentes = produtoEdicao.getComponentes();
 	}
 
 	/****************************************************************************
@@ -159,12 +165,30 @@ public class ControleProduto implements Serializable {
 	}
 
 	/****************************************************************************
+	 * Edita componente produto selecionado
+	 ****************************************************************************/
+	public void editComponente() {
+		componentes = null;
+
+		if (produtoSelect.getCategoria().isComponente()) {
+
+			componentes = produtoSelect.getComponentes();
+			RequestContext.getCurrentInstance().execute("PF('wgDadosCpt').show();");
+
+		} else {
+			mensagens.warning(
+					"Categoria do produto " + produtoSelect.getCategoria().getDescricao() + " não permite componente");
+			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:tabela"));
+		}
+	}
+
+	/****************************************************************************
 	 * Add Componente
 	 ****************************************************************************/
 	public void addComponente() {
 		nextItem++;
 		ProdutoComponente componente = new ProdutoComponente();
-		componente.setProduto(produtoEdicao);
+		componente.setProduto(produtoSelect);
 		componente.setIdComponente(this.nextItem);
 		componentes.add(componente);
 	}
@@ -177,36 +201,19 @@ public class ControleProduto implements Serializable {
 	}
 
 	/****************************************************************************
-	 * Edita Produto
+	 * Abre dialogo de pesquisa para componente
 	 ****************************************************************************/
-	public void onCellEdit(CellEditEvent event) {
+	public void pesquisaComponente(ProdutoComponente componente) {
+		pesquisaProduto.abrirDialogo("pesquisaProduto");
+		itemComponente = componente;
+	}
 
-		try {
-
-			Long oldValue = (Long) event.getOldValue();
-			Long newValue = (Long) event.getNewValue();
-			int row = event.getRowIndex();
-
-			ProdutoComponente pc;
-
-			if (newValue != null && !newValue.equals(oldValue)) {
-
-				pc = componentes.get(row);
-
-				Produto lProduto = serProduto.buscarPorId(newValue);
-
-				if (lProduto != null && lProduto.getIdProduto() != null) {
-					pc.setItemProduto(lProduto);
-					pc.setQtdUtilizada(new BigDecimal(1));
-					componentes.set(row, pc);
-				}
-
-			}
-
-		} catch (Exception e) {
-
-		}
-
+	/****************************************************************************
+	 * Componente selecionado no dialogo de pesquisa
+	 ****************************************************************************/
+	public void componenteSelecionado(SelectEvent event) {
+		Produto prdCpt = (Produto) event.getObject();
+		itemComponente.setItemProduto(prdCpt);
 	}
 
 	/****************************************************************************
@@ -215,10 +222,12 @@ public class ControleProduto implements Serializable {
 	public void validarComponentes() {
 
 		try {
-			produtoEdicao.setComponentes(componentes);
-			produtoEdicao = serProduto.validaComponentes(produtoEdicao);
-			mensagens.info("Componentes validados!");
-			RequestContext.getCurrentInstance().update(Arrays.asList("frm:panel-dados"));
+
+			produtoSelect.setComponentes(componentes);
+			produtoEdicao = serProduto.validaComponentes(produtoSelect);
+			salvar();
+
+			RequestContext.getCurrentInstance().execute("PF('wgDadosCpt').hide();");
 
 		} catch (Exception e) {
 			mensagens.error(e.getMessage());
@@ -226,6 +235,134 @@ public class ControleProduto implements Serializable {
 
 	}
 
+	/****************************************************************************
+	 * Add Unidade de Medida
+	 ****************************************************************************/
+	public void addMedida() {
+		medidas.add(new ProdutoMedida());
+	}
+
+	/****************************************************************************
+	 * Remove Unidade de Medida
+	 ****************************************************************************/
+	public void removeMedida(ProdutoMedida medida) {
+
+		if (medida.getIdMedida() != null) {
+
+			try {
+				serProdutoMedida.excluir(medida);
+				medidas.remove(medida);
+				mensagens.info("Unidade de Medida excluida com sucesso!");
+			} catch (Exception e) {
+				mensagens.error(e.getMessage());
+			}
+
+		} else {
+			medidas.remove(medida);
+			mensagens.info("Unidade de Medida removida com sucesso!");
+		}
+
+	}
+
+	/****************************************************************************
+	 * Salvar Unidade de Medida
+	 ****************************************************************************/
+	public void salvarUM() {
+
+		try {
+			medidas = serProdutoMedida.salvar(medidas);
+			mensagens.info("Registro salvo com sucesso!");
+		} catch (Exception e) {
+			mensagens.error(e.getMessage());
+		}
+
+	}
+
+	/****************************************************************************
+	 * Add Categoria
+	 ****************************************************************************/
+	public void addCategoria() {
+		categorias.add(new ProdutoCategoria());
+	}
+
+	/****************************************************************************
+	 * Remove Categoria
+	 ****************************************************************************/
+	public void removeCategoria(ProdutoCategoria categoria) {
+
+		if (categoria.getIdCategoria() != null) {
+
+			try {
+				serProdutoCategoria.excluir(categoria);
+				categorias.remove(categoria);
+				mensagens.info("Categoria excluida com sucesso!");
+			} catch (Exception e) {
+				mensagens.error(e.getMessage());
+			}
+
+		} else {
+			categorias.remove(categoria);
+			mensagens.info("Categoria removida com sucesso!");
+		}
+	}
+
+	/****************************************************************************
+	 * Salvar Categoria
+	 ****************************************************************************/
+	public void salvarCategoria() {
+
+		try {
+			categorias = serProdutoCategoria.salvar(categorias);
+			mensagens.info("Registro salvo com sucesso!");
+		} catch (Exception e) {
+			mensagens.error(e.getMessage());
+		}
+
+	}
+
+	/****************************************************************************
+	 * Add Grupo
+	 ****************************************************************************/
+	public void addGrupo() {
+		grupos.add(new ProdutoGrupo());
+	}
+
+	/****************************************************************************
+	 * Remove Grupo
+	 ****************************************************************************/
+	public void removeGrupo(ProdutoGrupo grupo) {
+
+		if (grupo.getIdGrupo() != null) {
+
+			try {
+				serProdutoGrupo.excluir(grupo);
+				grupos.remove(grupo);
+				mensagens.info("Grupo excluido com sucesso!");
+			} catch (Exception e) {
+				mensagens.error(e.getMessage());
+			}
+
+		} else {
+			grupos.remove(grupo);
+			mensagens.info("Grupo removido com sucesso!");
+		}
+	}
+
+	/****************************************************************************
+	 * Salvar Grupo
+	 ****************************************************************************/
+	public void salvarGrupo() {
+
+		try {
+			grupos = serProdutoGrupo.salvar(grupos);
+			mensagens.info("Registro salvo com sucesso!");
+		} catch (Exception e) {
+			mensagens.error(e.getMessage());
+		}
+
+	}
+
+	
 	/****************************************************************************
 	 * Gets e Sets do controle
 	 ****************************************************************************/
@@ -253,32 +390,16 @@ public class ControleProduto implements Serializable {
 		return grupos;
 	}
 
-	public void setGrupos(List<ProdutoGrupo> grupos) {
-		this.grupos = grupos;
-	}
-
-	public List<Categoria> getCategorias() {
+	public List<ProdutoCategoria> getCategorias() {
 		return categorias;
 	}
 
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
-	}
-
-	public List<UnidadeMedida> getProdutoUMs() {
-		return produtoUMs;
-	}
-
-	public void setProdutoUMs(List<UnidadeMedida> produtoUMs) {
-		this.produtoUMs = produtoUMs;
+	public List<ProdutoMedida> getMedidas() {
+		return medidas;
 	}
 
 	public List<ProdutoComponente> getcomponentes() {
 		return componentes;
-	}
-
-	public void setProdutoComponentes(List<ProdutoComponente> componentes) {
-		this.componentes = componentes;
 	}
 
 }

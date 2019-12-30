@@ -75,6 +75,13 @@ public class SerProduto {
 	}
 
 	/****************************************************************************
+	 * Retornar uma lista de produtos filtrando por Like descrição
+	 ****************************************************************************/
+	public List<Produto> listarPorDescricao(String descricao) {
+		return repProduto.findByDescricaoContaining(descricao);
+	}
+
+	/****************************************************************************
 	 * Metodo para validar lista de componentes
 	 ****************************************************************************/
 	public Produto validaComponentes(Produto produto) throws Exception {
@@ -96,7 +103,7 @@ public class SerProduto {
 					throw new Exception("Erro item " + (i + 1) + ". Produto não pode ser componente dele mesmo");
 				}
 			}
-			
+
 			try {
 				buscarPorId(idPrdCorrente);
 			} catch (Exception e) {
@@ -115,16 +122,16 @@ public class SerProduto {
 					throw new Exception("Produto duplicado item " + (i + 1) + " com item " + (j + 1));
 				}
 			}
-						
+
 			componentes.get(i).setProduto(produto);
 
 		}
-		
-		
+
 		produto.setComponentes(null);
 		produto.setComponentes(componentes);
 
 		return produto;
 	}
 
+	
 }

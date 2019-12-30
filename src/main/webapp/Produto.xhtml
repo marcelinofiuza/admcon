@@ -21,6 +21,7 @@
 				<!-- Barra Ferramentas -->
 				<p:toolbar styleClass="r42-toolbar" id="toolbar">
 					<p:toolbarGroup align="left">
+
 						<p:commandButton id="bto-novo" title="Novo" icon="fa fa-file"
 							actionListener="#{controleProduto.novoCadastro}" process="@this"
 							update="dialogo" oncomplete="PF('wgDados').show()">
@@ -41,6 +42,40 @@
 							<p:confirm icon="fa fa-warning" header="Exclusão de Registro"
 								message="Confirma a exclusão do Produto?" />
 						</p:commandButton>
+
+						<span class="ui-separator"> <span
+							class="fa fa-fw fa-ellipsis-v" />
+						</span>
+
+						<p:commandButton id="bto-componente" title="Componentes"
+							icon="fa fa-list-ul" process="@this" update="dialogoCpt"
+							disabled="#{controleProduto.produtoSelect == null}"
+							actionListener="#{controleProduto.editComponente}">
+							<p:resetInput target="dialogoCpt" />
+						</p:commandButton>
+
+						<span class="ui-separator"> <span
+							class="fa fa-fw fa-ellipsis-v" />
+						</span>
+
+						<p:commandButton id="bto-grupos" title="Grupos" icon="fa fa-group"
+							process="@this" update="dialogoGrupo"
+							oncomplete="PF('wgDadosGrupo').show()">
+							<p:resetInput target="dialogoGrupo" />
+						</p:commandButton>
+
+						<p:commandButton id="bto-medidas" title="Und.Medidas"
+							icon="fa fa-ticket" process="@this" update="dialogoUM"
+							oncomplete="PF('wgDadosUM').show()">
+							<p:resetInput target="dialogoUM" />
+						</p:commandButton>
+
+						<p:commandButton id="bto-categoria" title="Categorias"
+							icon="fa fa-tags" process="@this" update="dialogoCat"
+							oncomplete="PF('wgDadosCat').show()">
+							<p:resetInput target="dialogoCat" />
+						</p:commandButton>
+
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right" styleClass="r42-toolbar-right">
 						<p:outputLabel value="Produtos" />
@@ -60,21 +95,23 @@
 					<p:ajax event="rowUnselect" update=":frm:toolbar" />
 
 					<!-- Colunas -->
-					<p:column headerText="Id" width="50" sortBy="#{produto.idProduto}">
+					<p:column headerText="Id" width="30" sortBy="#{produto.idProduto}">
 						<h:outputText value="#{produto.idProduto}" />
 					</p:column>
-					<p:column headerText="Descrição" width="300"
-						sortBy="#{produto.descricao}">
+					<p:column headerText="Descrição" sortBy="#{produto.descricao}">
 						<h:outputText value="#{produto.descricao}" />
+					</p:column>
+					<p:column headerText="Grupo" width="100"
+						sortBy="#{produto.grupo.descricao}">
+						<h:outputText value="#{produto.grupo.descricao}" />
 					</p:column>
 					<p:column headerText="Categoria" width="100"
 						sortBy="#{produto.categoria.descricao}">
 						<h:outputText value="#{produto.categoria.descricao}" />
 					</p:column>
-					<p:column headerText="Unidade Medida" width="100"
-						sortBy="#{produto.produtoUM.idUm}">
-						<h:outputText
-							value="#{produto.produtoUM.unidade} - #{produto.produtoUM.descricao}" />
+					<p:column headerText="Und.Medida" width="100"
+						sortBy="#{produto.medida.descricao}">
+						<h:outputText value="#{produto.medida.descricao}" />
 					</p:column>
 				</p:dataTable>
 
@@ -86,6 +123,7 @@
 
 					<!-- Barra de Ferramentas dialogo-->
 					<p:defaultCommand target="bto-none" scope="dialogo" />
+					<!-- botão default desativa <ENTER> -->
 					<p:toolbar>
 						<p:toolbarGroup align="left">
 
@@ -133,23 +171,6 @@
 										itemLabel="#{grupo.descricao}" itemValue="#{grupo}" />
 								</p:selectOneMenu>
 
-								<p:outputLabel value="Unid. medida" for="um" />
-								<p:selectOneMenu id="um" var="produtoUM"
-									value="#{controleProduto.produtoEdicao.produtoUM}"
-									converter="converterUnidMedida">
-									<f:selectItem itemLabel="Selecione" />
-									<f:selectItems value="#{controleProduto.produtoUMs}"
-										var="itm_um" itemValue="#{itm_um}"
-										itemLabel="#{itm_um.unidade}" />
-
-									<p:column style="width:10%">
-										<h:outputText value="#{produtoUM.unidade}" />
-									</p:column>
-									<p:column>
-										<h:outputText value="#{produtoUM.descricao}" />
-									</p:column>
-								</p:selectOneMenu>
-
 								<p:outputLabel value="Categoria" for="categoria" />
 								<p:selectOneMenu id="categoria"
 									value="#{controleProduto.produtoEdicao.categoria}"
@@ -159,68 +180,22 @@
 										var="categoria" itemLabel="#{categoria.descricao}"
 										itemValue="#{categoria}" />
 								</p:selectOneMenu>
+
+								<p:outputLabel value="Und.Medida" for="medida" />
+								<p:selectOneMenu id="medida"
+									value="#{controleProduto.produtoEdicao.medida}"
+									converter="converterMedida">
+									<f:selectItem itemLabel="Selecione" />
+									<f:selectItems value="#{controleProduto.medidas}" var="medida"
+										itemLabel="#{medida.descricao}" itemValue="#{medida}" />
+								</p:selectOneMenu>
+
 								<h:outputText value="Ativo" />
 								<p:selectBooleanCheckbox
 									value="#{controleProduto.produtoEdicao.ativo}" />
 
-								<h:outputText value="Controla estoque" />
-								<p:selectBooleanCheckbox
-									value="#{controleProduto.produtoEdicao.controlaEstoque}" />
-
 							</p:panelGrid>
 
-						</p:tab>
-
-						<p:tab title="Componente">
-
-							<p:commandButton id="bto-add" title="Novo" icon="fa fa-plus"
-								action="#{controleProduto.addComponente}" process="@this"
-								update="tabComponente" />
-
-							<p:commandButton id="bto-vld" title="Validar" icon="fa fa-gears"
-								action="#{controleProduto.validarComponentes}" process="@this"
-								update="tabComponente" />
-
-							<!-- Lista de componentes -->
-							<p:dataTable value="#{controleProduto.componentes}"
-								var="componente" id="tabComponente" rows="15" paginator="true"
-								paginatorPosition="top" editable="true" editMode="cell">
-
-								<p:ajax event="cellEdit"
-									listener="#{controleProduto.onCellEdit}" update="tabComponente" />
-
-								<p:column headerText="Id Produto" width="80">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText value="#{componente.itemProduto.idProduto}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:inputText id="cpmIdProduto" value="#{componente.itemProduto.idProduto}" />
-										</f:facet>										
-									</p:cellEditor>
-								</p:column>
-
-								<p:column headerText="Produto descrição">
-									<h:outputText value="#{componente.itemProduto.descricao}" />
-								</p:column>
-
-								<p:column headerText="Quantidade" width="80">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText value="#{componente.qtdUtilizada}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:inputText id="cpmQtdUtilizada" value="#{componente.qtdUtilizada}"/>
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
-
-								<p:column headerText="#" width="35">
-									<p:commandButton icon="fa fa-trash" title="Remover"
-										action="#{controleProduto.removeComponente(componente)}"
-										process="@this" update="tabComponente" />
-								</p:column>
-							</p:dataTable>
 						</p:tab>
 
 						<!-- Aba Estoque -->
@@ -264,6 +239,328 @@
 
 					</p:tabView>
 
+				</p:dialog>
+
+				<!-- Dialogo componente -->
+				<p:dialog styleClass="r42-dialogo"
+					header="Componentes do Produto #{controleProduto.produtoEdicao.idProduto}"
+					widgetVar="wgDadosCpt" id="dialogoCpt" modal="true"
+					resizable="false" responsive="true">
+
+					<!-- Barra de Ferramentas dialogo-->
+					<p:defaultCommand target="bto-noneCpt" scope="dialogoCpt" />
+					<!-- botão default desativa <ENTER> -->
+					<p:toolbar>
+						<p:toolbarGroup align="left">
+
+							<p:commandButton id="bto-noneCpt" style="display:none"
+								process="dialogoCpt" update="tabComponente" />
+
+							<p:commandButton id="bto-OkCpt" title="Salvar" icon="fa fa-save"
+								action="#{controleProduto.validarComponentes}"
+								process="dialogoCpt" update="tabComponente"
+								oncomplete="if(!args.exceptionThrown) PF('wgDadosCpt').hide()" />
+
+							<p:commandButton id="bto-add" title="Novo" icon="fa fa-plus"
+								action="#{controleProduto.addComponente}" process="@this"
+								update="tabComponente" />
+
+						</p:toolbarGroup>
+					</p:toolbar>
+
+					<p:messages showDetail="false" autoUpdate="true" closable="true" />
+
+					<!-- Lista de componentes -->
+					<p:dataTable value="#{controleProduto.componentes}"
+						var="componente" id="tabComponente" rows="15" paginator="true"
+						paginatorPosition="top">
+
+						<!-- Colunas -->
+						<p:column width="20">
+							<p:rowToggler />
+						</p:column>
+						<p:column headerText="Componente" width="80">
+							<h:outputText value="#{componente.itemProduto.idProduto}" />
+						</p:column>
+
+						<p:column headerText="Descrição">
+							<h:outputText value="#{componente.itemProduto.descricao}" />
+						</p:column>
+
+						<p:column headerText="Quantidade" width="80">
+							<h:outputText value="#{componente.qtdUtilizada}"
+								style="float: right">
+								<f:convertNumber type="currency" currencySymbol=""
+									minFractionDigits="3" pattern="#0.000" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="U.M." width="20">
+							<h:outputText value="#{componente.itemProduto.medida.unidade}" />
+						</p:column>
+
+						<p:column headerText="#" width="30">
+							<p:commandButton icon="fa fa-trash" title="Remover"
+								action="#{controleProduto.removeComponente(componente)}"
+								process="@this" update="tabComponente" />
+						</p:column>
+
+						<p:rowExpansion>
+							<p:panelGrid id="rowExp" columns="2" layout="grid"
+								styleClass="panelgrid-noborder r42-panelgrid"
+								columnClasses="ui-grid-col-1, ui-grid-col-11">
+
+								<p:outputLabel value="Componente" for="idComponente" />
+								<p:column>
+									<p:inputText id="idComponente" size="10" maxlength="10"
+										value="#{componente.itemProduto.idProduto}" readonly="true" />
+
+									<p:commandButton icon="fa fa-search" title="Pesquisar"
+										action="#{controleProduto.pesquisaComponente(componente)}"
+										process="@this" update="@none">
+
+										<p:ajax event="dialogReturn"
+											listener="#{controleProduto.componenteSelecionado}"
+											process="@this" update="rowExp" />
+									</p:commandButton>
+
+									<p:inputText id="cptDescricao" size="50" maxlength="50"
+										value="#{componente.itemProduto.descricao}" readonly="true" />
+
+								</p:column>
+
+								<p:outputLabel value="Quantidade" for="qtdUtilizada" />
+								<p:inputNumber id="qtdUtilizada" size="20"
+									value="#{componente.qtdUtilizada}" decimalPlaces="3"
+									decimalSeparator="," thousandSeparator="." />
+
+
+								<p:commandButton icon="fa fa-check" title="ok"
+									process="tabComponente" update="tabComponente" />
+							</p:panelGrid>
+						</p:rowExpansion>
+
+					</p:dataTable>
+				</p:dialog>
+
+
+
+				<!-- Dialogo Unidade de Medida -->
+				<p:dialog styleClass="r42-dialogo" header="Unidade de Medida"
+					widgetVar="wgDadosUM" id="dialogoUM" modal="true" resizable="false"
+					responsive="true">
+
+					<!-- Barra de Ferramentas dialogo-->
+					<p:defaultCommand target="bto-noneUM" scope="dialogoUM" />
+					<!-- botão default desativa <ENTER> -->
+					<p:toolbar>
+						<p:toolbarGroup align="left">
+
+							<p:commandButton id="bto-noneUM" style="display:none"
+								process="dialogoUM" update="tabMedida" />
+
+							<p:commandButton id="bto-OkUM" title="Salvar" icon="fa fa-save"
+								action="#{controleProduto.salvarUM}" process="@this"
+								update="tabMedida" />
+
+							<p:commandButton id="bto-addUM" title="Novo" icon="fa fa-plus"
+								action="#{controleProduto.addMedida}" process="@this"
+								update="tabMedida" />
+
+						</p:toolbarGroup>
+					</p:toolbar>
+
+					<p:messages showDetail="false" autoUpdate="true" closable="true" />
+
+					<!-- Lista de Unidades de Medida -->
+					<p:dataTable value="#{controleProduto.medidas}" var="medida"
+						id="tabMedida" rows="15" paginator="true" paginatorPosition="top">
+
+						<!-- Colunas -->
+						<p:column width="20">
+							<p:rowToggler />
+						</p:column>
+						<p:column headerText="Unidade" width="80">
+							<h:outputText value="#{medida.unidade}" />
+						</p:column>
+						<p:column headerText="Descrição">
+							<h:outputText value="#{medida.descricao}" />
+						</p:column>
+						<p:column headerText="Numeral" width="80">
+							<h:outputText value="#{medida.numeral}" style="float: right">
+								<f:convertNumber type="currency" currencySymbol=""
+									minFractionDigits="3" pattern="#0.000" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="#" width="30">
+							<p:commandButton icon="fa fa-trash" title="Remover"
+								action="#{controleProduto.removeMedida(medida)}" process="@this"
+								update="tabMedida" />
+						</p:column>
+
+						<p:rowExpansion>
+							<p:panelGrid id="rowExpUM" columns="2" layout="grid"
+								styleClass="panelgrid-noborder r42-panelgrid"
+								columnClasses="ui-grid-col-1, ui-grid-col-11">
+
+								<p:outputLabel value="Unidade" for="unidade" />
+								<p:inputText id="unidade" size="10" maxlength="10"
+									value="#{medida.unidade}" />
+
+								<p:outputLabel value="Descrição" for="umDescricao" />
+								<p:inputText id="umDescricao" size="20"
+									value="#{medida.descricao}" />
+
+								<p:outputLabel value="Numeral" for="umNumeral" />
+								<p:inputNumber id="umNumeral" size="20"
+									value="#{medida.numeral}" decimalPlaces="3"
+									decimalSeparator="," thousandSeparator="." />
+
+
+								<p:commandButton icon="fa fa-check" title="ok"
+									process="tabMedida" update="tabMedida" />
+							</p:panelGrid>
+						</p:rowExpansion>
+
+					</p:dataTable>
+				</p:dialog>
+
+
+
+				<!-- Dialogo Categoria -->
+				<p:dialog styleClass="r42-dialogo" header="Categoria"
+					widgetVar="wgDadosCat" id="dialogoCat" modal="true"
+					resizable="false" responsive="true">
+
+					<!-- Barra de Ferramentas dialogo-->
+					<p:defaultCommand target="bto-noneCat" scope="dialogoCat" />
+					<!-- botão default desativa <ENTER> -->
+					<p:toolbar>
+						<p:toolbarGroup align="left">
+
+							<p:commandButton id="bto-noneCat" style="display:none"
+								process="dialogoCat" update="tabCategoria" />
+
+							<p:commandButton id="bto-OkCat" title="Salvar" icon="fa fa-save"
+								action="#{controleProduto.salvarCategoria}" process="@this"
+								update="tabCategoria" />
+
+							<p:commandButton id="bto-addCat" title="Novo" icon="fa fa-plus"
+								action="#{controleProduto.addCategoria}" process="@this"
+								update="tabCategoria" />
+
+						</p:toolbarGroup>
+					</p:toolbar>
+
+					<p:messages showDetail="false" autoUpdate="true" closable="true" />
+
+					<!-- Lista de Categoria -->
+					<p:dataTable value="#{controleProduto.categorias}" var="categoria"
+						id="tabCategoria" rows="15" paginator="true"
+						paginatorPosition="top">
+
+						<!-- Colunas -->
+						<p:column width="20">
+							<p:rowToggler />
+						</p:column>
+						<p:column headerText="Descrição">
+							<h:outputText value="#{categoria.descricao}" />
+						</p:column>
+						<p:column headerText="Componente" width="80">
+							<p:selectBooleanCheckbox value="#{categoria.componente}" />
+						</p:column>
+						<p:column headerText="Estoque" width="80">
+							<p:selectBooleanCheckbox value="#{categoria.estoque}" />
+						</p:column>
+						<p:column headerText="Venda" width="80">
+							<p:selectBooleanCheckbox value="#{categoria.venda}" />
+						</p:column>
+						<p:column headerText="#" width="30">
+							<p:commandButton icon="fa fa-trash" title="Remover"
+								action="#{controleProduto.removeCategoria(categoria)}"
+								process="@this" update="tabCategoria" />
+						</p:column>
+
+
+						<p:rowExpansion id="rowExpElem">
+							<p:panelGrid id="rowExpCat" columns="2" layout="grid"
+								styleClass="panelgrid-noborder r42-panelgrid"
+								columnClasses="ui-grid-col-1, ui-grid-col-11">
+
+								<p:outputLabel value="Descrição" for="catDescricao" />
+								<p:inputText id="catDescricao" size="20"
+									value="#{categoria.descricao}" />
+
+								<p:commandButton icon="fa fa-check" title="ok"
+									update="tabCategoria" process="tabCategoria" />
+
+							</p:panelGrid>
+						</p:rowExpansion>
+
+					</p:dataTable>
+				</p:dialog>
+
+
+				<!-- Dialogo Grupo -->
+				<p:dialog styleClass="r42-dialogo" header="Grupo"
+					widgetVar="wgDadosGrupo" id="dialogoGrupo" modal="true"
+					resizable="false" responsive="true">
+
+					<!-- Barra de Ferramentas dialogo-->
+					<p:defaultCommand target="bto-noneGrupo" scope="dialogoGrupo" />
+					<!-- botão default desativa <ENTER> -->
+					<p:toolbar>
+						<p:toolbarGroup align="left">
+
+							<p:commandButton id="bto-noneGrupo" style="display:none"
+								process="dialogoGrupo" update="tabGrupo" />
+
+							<p:commandButton id="bto-OkGrupo" title="Salvar"
+								icon="fa fa-save" action="#{controleProduto.salvarGrupo}"
+								process="@this" update="tabGrupo" />
+
+							<p:commandButton id="bto-addGrupo" title="Novo" icon="fa fa-plus"
+								action="#{controleProduto.addGrupo}" process="@this"
+								update="tabGrupo" />
+
+						</p:toolbarGroup>
+					</p:toolbar>
+
+					<p:messages showDetail="false" autoUpdate="true" closable="true" />
+
+					<!-- Lista de Grupos -->
+					<p:dataTable value="#{controleProduto.grupos}" var="grupo"
+						id="tabGrupo" rows="15" paginator="true" paginatorPosition="top">
+
+						<!-- Colunas -->
+						<p:column width="20">
+							<p:rowToggler />
+						</p:column>
+						<p:column headerText="Descrição">
+							<h:outputText value="#{grupo.descricao}" />
+						</p:column>
+						<p:column headerText="#" width="30">
+							<p:commandButton icon="fa fa-trash" title="Remover"
+								action="#{controleProduto.removeGrupo(grupo)}"
+								process="@this" update="tabGrupo" />
+						</p:column>
+						
+						<p:rowExpansion>
+							<p:panelGrid id="rowExpGrupo" columns="2" layout="grid"
+								styleClass="panelgrid-noborder r42-panelgrid"
+								columnClasses="ui-grid-col-1, ui-grid-col-11">
+
+								<p:outputLabel value="Descrição" for="grupoDescricao" />
+								<p:inputText id="grupoDescricao" size="20"
+									value="#{grupo.descricao}" />
+
+								<p:commandButton icon="fa fa-check" title="ok" update="tabGrupo"
+									process="tabGrupo" />
+
+							</p:panelGrid>
+						</p:rowExpansion>
+
+					</p:dataTable>
 				</p:dialog>
 
 			</h:form>

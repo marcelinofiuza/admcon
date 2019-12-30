@@ -24,7 +24,7 @@ public class PesquisaCobranca extends AbstrataPesquisa implements Serializable {
 	/****************************************************************************
 	 * Variaveis e Dependências
 	 ****************************************************************************/
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2753056828980219546L;
 	private List<Cobranca> listaCobranca;
 
 	@Autowired

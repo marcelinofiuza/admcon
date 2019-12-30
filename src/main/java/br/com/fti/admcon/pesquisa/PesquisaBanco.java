@@ -25,7 +25,7 @@ public class PesquisaBanco extends AbstrataPesquisa implements Serializable {
 	/****************************************************************************
 	 * Variaveis e Dependências
 	 ****************************************************************************/
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 30232441813740834L;
 	private List<Banco> listaBancos;
 
 	@Autowired

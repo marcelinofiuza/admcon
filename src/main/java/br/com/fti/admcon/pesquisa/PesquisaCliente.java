@@ -24,7 +24,7 @@ public class PesquisaCliente extends AbstrataPesquisa implements Serializable {
 	/****************************************************************************
 	 * Variaveis e Dependências
 	 ****************************************************************************/
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6149789170396740453L;
 	private List<Cliente> listaClientes = new ArrayList<Cliente>();
 	private String razaoSocial = "";
 	private String unidade = "";

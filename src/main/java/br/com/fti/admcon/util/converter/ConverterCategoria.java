@@ -5,7 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.fti.admcon.modulos.entidades.global.Categoria;
+import br.com.fti.admcon.modulos.entidades.empresa.ProdutoCategoria;
 
 /****************************************************************************
  * Classe de conversão da lista da categoria de produtos
@@ -15,7 +15,7 @@ import br.com.fti.admcon.modulos.entidades.global.Categoria;
 @FacesConverter(value = "converterCategoria")
 public class ConverterCategoria implements Converter {
 
-	Categoria pc;
+	private ProdutoCategoria pc;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -28,7 +28,7 @@ public class ConverterCategoria implements Converter {
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
-		pc = (Categoria) value;
+		pc = (ProdutoCategoria) value;
 		if (pc != null && pc.getIdCategoria() != null) {
 			component.getAttributes().put(Long.toString(pc.getIdCategoria()), pc);
 			return Long.toString(pc.getIdCategoria());

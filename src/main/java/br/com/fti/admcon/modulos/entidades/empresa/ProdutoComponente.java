@@ -44,9 +44,9 @@ public class ProdutoComponente extends ZEmpresa implements Serializable {
 	private Produto itemProduto = new Produto();
 
 	@NotNull(message = "Quantidade não pode ser menor que zero")
-	@DecimalMin(value = "0.01", message = "Não pode ser menor que 0,01")
-	@DecimalMax(value = "99999999.99", message = "Máximo deve ser 99.999.999,99")
-	@NumberFormat(pattern = "#,##0.00")
+	@DecimalMin(value = "0.001", message = "Não pode ser menor que 0,001")
+	@DecimalMax(value = "99999999.999", message = "Máximo deve ser 99.999.999,999")
+	@NumberFormat(pattern = "#,##0.000")
 	private BigDecimal qtdUtilizada;
 
 	public Long getIdComponente() {
