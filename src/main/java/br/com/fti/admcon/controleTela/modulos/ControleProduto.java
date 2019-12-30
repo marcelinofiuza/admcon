@@ -165,6 +165,23 @@ public class ControleProduto implements Serializable {
 	}
 
 	/****************************************************************************
+	 * Edita estoque do produto selecionado
+	 ****************************************************************************/
+	public void editEstoque() {
+
+		if (produtoSelect.getCategoria().isEstoque()) {
+
+			produtoEdicao = produtoSelect;
+			RequestContext.getCurrentInstance().execute("PF('wgDadosEstoque').show();");
+
+		} else {
+			mensagens.warning(
+					"Categoria do produto " + produtoSelect.getCategoria().getDescricao() + " não controla estoque");
+			RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:tabela"));
+		}
+	}
+	
+	/****************************************************************************
 	 * Edita componente produto selecionado
 	 ****************************************************************************/
 	public void editComponente() {
