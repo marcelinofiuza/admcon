@@ -5,35 +5,35 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.fti.admcon.modulos.entidades.global.UnidadeMedida;
+import br.com.fti.admcon.enums.TrueFalse;
+
 
 /****************************************************************************
- * Classe de conversão da lista da categoria de produtos
+ * Classe de conversão True / False
  * 
- * @author: Bob-Odin - 02/10/2019
+ * @author: Bob-Odin - 27/12/2019
  ****************************************************************************/
-@FacesConverter(value = "converterUnidMedida")
-public class ConverterUnidMedida implements Converter {
+@FacesConverter(value = "converterTrueFalse")
+public class ConverterTrueFalse implements Converter {
 
-	UnidadeMedida um;
+	private TrueFalse tf;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		if (value != null && !value.isEmpty()) {
 			return component.getAttributes().get(value);
-
 		}
 		return null;
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
-		um = (UnidadeMedida) value;
-		if (um != null && um.getIdUm() != null) {
-			component.getAttributes().put(Long.toString(um.getIdUm()), um);
-			return Long.toString(um.getIdUm());
+		tf = (TrueFalse) value;
+		if (tf != null && tf.getTF().toString() != null) {
+			component.getAttributes().put(tf.getTF().toString(), tf);
+			return tf.getTF().toString();
 		}
 		return null;
 	}
-
+	
 }

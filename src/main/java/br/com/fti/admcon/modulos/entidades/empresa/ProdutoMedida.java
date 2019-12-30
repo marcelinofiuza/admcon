@@ -1,4 +1,4 @@
-package br.com.fti.admcon.modulos.entidades.global;
+package br.com.fti.admcon.modulos.entidades.empresa;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,25 +8,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.NumberFormat;
 
+import br.com.fti.admcon.tenancy.ZEmpresa;
+
 /****************************************************************************
- * Entidade Produto UM Desenvolvido por :
+ * Entidade Unidade de Medida Desenvolvido por :
  * 
  * @author Bob-Odin - 27/06/2019
  ****************************************************************************/
 @Entity
-public class UnidadeMedida implements Serializable {
+public class ProdutoMedida extends ZEmpresa implements Serializable {
 
-	private static final long serialVersionUID = -352975428642532199L;
+	private static final long serialVersionUID = 5268072184764578499L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long idUm;
+	private Long idMedida;
 
 	@NotEmpty
 	@Column(length = 5)
@@ -36,17 +36,15 @@ public class UnidadeMedida implements Serializable {
 	@Column(length = 50)
 	private String descricao;
 
-	@DecimalMin(value = "0.0000", message = "Não pode ser menor que 0,0000")
-	@DecimalMax(value = "99999999.9999", message = "Máximo deve ser 9999,9999")
-	@NumberFormat(pattern = "#,##0.0000")
+	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal numeral;
 
-	public Long getIdUm() {
-		return idUm;
+	public Long getIdMedida() {
+		return idMedida;
 	}
 
-	public void setIdUm(Long idUm) {
-		this.idUm = idUm;
+	public void setIdMedida(Long idMedida) {
+		this.idMedida = idMedida;
 	}
 
 	public String getUnidade() {
@@ -65,19 +63,11 @@ public class UnidadeMedida implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public BigDecimal getNumeral() {
-		return numeral;
-	}
-
-	public void setNumeral(BigDecimal numeral) {
-		this.numeral = numeral;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((idUm == null) ? 0 : idUm.hashCode());
+		int result = 1;
+		result = prime * result + ((idMedida == null) ? 0 : idMedida.hashCode());
 		return result;
 	}
 
@@ -85,17 +75,25 @@ public class UnidadeMedida implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UnidadeMedida other = (UnidadeMedida) obj;
-		if (idUm == null) {
-			if (other.idUm != null)
+		ProdutoMedida other = (ProdutoMedida) obj;
+		if (idMedida == null) {
+			if (other.idMedida != null)
 				return false;
-		} else if (!idUm.equals(other.idUm))
+		} else if (!idMedida.equals(other.idMedida))
 			return false;
 		return true;
+	}
+
+	public BigDecimal getNumeral() {
+		return numeral;
+	}
+
+	public void setNumeral(BigDecimal numeral) {
+		this.numeral = numeral;
 	}
 
 }
