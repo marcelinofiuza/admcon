@@ -13,6 +13,7 @@ public enum Role {
 	CLIENTE("Cadastro Cliente"),
 	FORNECEDOR("Cadastro Fornecedor"),
 	CONTA("Cadastro Conta Contábil"),
+	PRODUTO("Cadastro Produto"),
 	
 	CTAS_RECEBER("Contas Receber"),
 	GERAR_COBRANCA("Gerar Cobrança"),

@@ -2,3 +2,7 @@ tbody .ui-column-title {
 	display: none;
 }
 
+.ui-panelgrid-content {
+	background-color: transparent;
+	border: none;
+}
