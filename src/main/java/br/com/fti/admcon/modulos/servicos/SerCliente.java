@@ -87,6 +87,10 @@ public class SerCliente {
 		if (cliente.getCpf() != null && cliente.getCpf().isEmpty()) {
 			cliente.setCpf(null);
 		}
+		
+		if (cliente.getFantasia() == null) {
+			cliente.setFantasia(cliente.getRazaoSocial());
+		}
 
 	}
 

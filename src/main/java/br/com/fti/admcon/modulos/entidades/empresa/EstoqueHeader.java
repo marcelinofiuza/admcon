@@ -47,7 +47,7 @@ public class EstoqueHeader extends ZEmpresa implements Serializable {
 	private boolean fechado;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "idProduto")
+	@JoinColumn(name = "idEstoque")
 	private List<EstoqueItem> estoqueItem = new ArrayList<EstoqueItem>();
 
 	public Long getIdEstoque() {

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,11 +28,17 @@ public class EstoqueItem extends ZEmpresa implements Serializable {
 	private static final long serialVersionUID = 718019860031007270L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long idItem;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "idEstoque")
+	private EstoqueHeader estoqueHeader;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idProduto")
 	private Produto produto;
-
+	
 	@NumberFormat(pattern = "#,##0.000")
 	private BigDecimal quantidade;
 	
@@ -42,33 +49,6 @@ public class EstoqueItem extends ZEmpresa implements Serializable {
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal total;
 
-	public Produto getProduto() {
-		return produto;
-	}
-
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
-
-	public BigDecimal getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(BigDecimal quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	public BigDecimal getUnitario() {
-		return unitario;
-	}
-
-	public void setUnitario(BigDecimal unitario) {
-		this.unitario = unitario;
-	}
-	
-	public BigDecimal getTotal() {
-		return this.unitario.multiply( this.quantidade );
-	}
 
 	@Override
 	public int hashCode() {
