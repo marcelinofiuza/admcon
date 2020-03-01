@@ -1,6 +1,7 @@
 package br.com.fti.admcon.modulos.entidades.empresa;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -8,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,18 +43,6 @@ public class EstoqueLancamento extends ZEmpresa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idLancamento;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "idEstoque")
-	private EstoqueHeader estoqueHeader;
-
-	@Enumerated(EnumType.STRING)
-	@Column(length = 1)
-	private SentidoEstoque sentidoEstoque;
-
-	@Enumerated(EnumType.STRING)
-	@Column(length = 6)
-	private OrigemEstoque origemEstoque;
-
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -62,17 +52,33 @@ public class EstoqueLancamento extends ZEmpresa implements Serializable {
 	@Column(length = 15)
 	private String documento;
 
+	@Enumerated(EnumType.STRING)
+	@Column(length = 6)
+	private OrigemEstoque origemEstoque;
+
+	@Enumerated(EnumType.STRING)
+	@Column(length = 1)
+	private SentidoEstoque sentidoEstoque;
+
 	@NotNull(message = "Informar a quantidade!")
 	@DecimalMin(value = "0.000", message = "Não pode ser menor que 0,000")
 	@DecimalMax(value = "99999999.999", message = "Máximo deve ser 99.999.999,999")
 	@NumberFormat(pattern = "#,##0.000")
-	private Double quantidade;
+	private BigDecimal quantidade;
 
 	@NotNull(message = "Informar o valor unitário!")
 	@DecimalMin(value = "0.00", message = "Não pode ser menor que 0,00")
 	@DecimalMax(value = "99999999.999", message = "Máximo deve ser 99.999.999,99")
 	@NumberFormat(pattern = "#,##0.00")
-	private Double unitario;
+	private BigDecimal unitario;
+
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "idEstoque")
+	private EstoqueHeader estoqueHeader;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idProduto")
+	private Produto produto;
 
 	public Long getIdLancamento() {
 		return idLancamento;
@@ -122,19 +128,19 @@ public class EstoqueLancamento extends ZEmpresa implements Serializable {
 		this.documento = documento;
 	}
 
-	public Double getQuantidade() {
+	public BigDecimal getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(Double quantidade) {
+	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
 	}
 
-	public Double getUnitario() {
+	public BigDecimal getUnitario() {
 		return unitario;
 	}
 
-	public void setUnitario(Double unitario) {
+	public void setUnitario(BigDecimal unitario) {
 		this.unitario = unitario;
 	}
 

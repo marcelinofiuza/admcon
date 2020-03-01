@@ -329,4 +329,64 @@ public class R42Util {
 		return listaConta;
 
 	}
+
+/*	
+    //Ordenação pelo metodo Bolha
+    public static void BubbleSort(Aluno vetor[], String tipo) {
+        boolean troca = false;
+        int i;
+        int j;
+        for (i = vetor.length-1; i > 0; i--) {
+            //o maior valor entre vet[0] e vet[i] vai para a posição vet[i]
+            troca = false;
+            Aluno auxAluno;
+            for (j = 0; j < i; j++) {
+                if (tipo.equalsIgnoreCase("nome")) {
+                    if (vetor[j].getNome().compareToIgnoreCase(vetor[j+1].getNome()) > 0) {
+                        auxAluno = vetor[j];
+                        vetor[j] = vetor[j + 1];
+                        vetor[j + 1] = auxAluno;
+                        troca = true;
+                    }
+                } else {
+                    if (vetor[j].getMatricula().compareToIgnoreCase(vetor[j+1].getMatricula()) > 0) {
+                        auxAluno = vetor[j];
+                        vetor[j] = vetor[j + 1];
+                        vetor[j + 1] = auxAluno;
+                        troca = true;
+                    }
+                }
+            }
+            if (!troca) {
+                return;
+            }
+        }
+    }
+
+
+    //Ordenação método ShellSort
+    public static void ShellSort(Aluno vetor[], String tipo) {
+        Aluno auxAluno;
+        int qtd = vetor.length;
+        int j=0;
+
+        for (int gap = (qtd / 2); gap > 0; gap /= 2) {
+            for (int i = gap; i < qtd; i++) {
+                auxAluno = vetor[i];
+                if (tipo.equalsIgnoreCase("nome")){
+                    for (j = i; j >= gap &&(auxAluno.getNome().compareToIgnoreCase(vetor[j-gap].getNome()) < 0 ); j-=gap) {
+                        vetor[j] = vetor[j-gap];
+                    }
+                } else {
+                    for (j = i; j >= gap &&(auxAluno.getMatricula().compareToIgnoreCase(vetor[j-gap].getMatricula()) < 0 ); j-=gap) {
+                        vetor[j] = vetor[j-gap];
+                    }
+                }
+                vetor[j] = auxAluno;
+            }
+        }
+    }
+    
+*/
+    
 }

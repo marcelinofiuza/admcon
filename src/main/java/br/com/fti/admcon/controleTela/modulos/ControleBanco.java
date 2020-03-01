@@ -24,8 +24,6 @@ import br.com.fti.admcon.modulos.servicos.SerBanco;
 import br.com.fti.admcon.util.ferramentas.FacesMessages;
 import br.com.fti.admcon.util.ferramentas.R42Data;
 
-
-
 /****************************************************************************
  * Classe controle para View da Tela do Banco
  * 
@@ -282,8 +280,8 @@ public class ControleBanco implements Serializable {
 	public void editCarteira() {
 		listaBancoCarteira = new ArrayList<>();
 		listaBancoCarteira.addAll(bancoSelect.getCarteiras());
-	}	
-	
+	}
+
 	/****************************************************************************
 	 * Adicionar nova carteira em branco
 	 ****************************************************************************/
@@ -291,7 +289,7 @@ public class ControleBanco implements Serializable {
 		bancoCarteira = new BancoCarteira();
 		bancoCarteira.setBanco(bancoSelect);
 	}
-	
+
 	/****************************************************************************
 	 * Salvar as carteiras do banco
 	 ****************************************************************************/
@@ -307,14 +305,14 @@ public class ControleBanco implements Serializable {
 		}
 		RequestContext.getCurrentInstance().update(Arrays.asList("frm:msg-frm", "frm:toolbar", "frm:tabela"));
 	}
-	
+
 	/****************************************************************************
 	 * Remove uma carteira da lista de carteiras
 	 ****************************************************************************/
 	public void removeCarteira(BancoCarteira bancoCarteira) {
 		this.listaBancoCarteira.remove(bancoCarteira);
-	}	
-	
+	}
+
 	/****************************************************************************
 	 * Adicionar periodo na lista de periodos
 	 ****************************************************************************/
@@ -322,10 +320,32 @@ public class ControleBanco implements Serializable {
 		listaBancoCarteira.add(bancoCarteira);
 		RequestContext.getCurrentInstance().execute("PF('wgDadosCarteira').hide();");
 	}
-	
+
 	/****************************************************************************
 	 * Gets e Sets do controle
 	 ****************************************************************************/
+	public int getUltimoPeriodo() {
+		if (listaBancoPeriodo.isEmpty()) {
+			return 0;
+		} else {
+			return this.listaBancoPeriodo.size() - 1;
+		}
+	}
+
+	public int getUltimoFechado() {
+		int ultimo = -1;
+		if (!listaBancoPeriodo.isEmpty()) {
+			for (int i = 0; i < listaBancoPeriodo.size(); i++) {
+				BancoPeriodo bancoPeriodo = listaBancoPeriodo.get(i);
+				if (bancoPeriodo.isFechado()) {
+					ultimo = i;
+				} else {
+					break;
+				}
+			}
+		}
+		return ultimo;
+	}
 
 	public List<Banco> getListaBancos() {
 		return listaBancos;
@@ -381,29 +401,6 @@ public class ControleBanco implements Serializable {
 
 	public boolean isPeriodoValido() {
 		return periodoValido;
-	}
-
-	public int getUltimoPeriodo() {
-		if (listaBancoPeriodo.isEmpty()) {
-			return 0;
-		} else {
-			return this.listaBancoPeriodo.size() - 1;
-		}
-	}
-
-	public int getUltimoFechado() {
-		int ultimo = -1;
-		if (!listaBancoPeriodo.isEmpty()) {
-			for (int i = 0; i < listaBancoPeriodo.size(); i++) {
-				BancoPeriodo bancoPeriodo = listaBancoPeriodo.get(i);
-				if (bancoPeriodo.isFechado()) {
-					ultimo = i;
-				} else {
-					break;
-				}
-			}
-		}
-		return ultimo;
 	}
 
 	public List<BancoCarteira> getListaBancoCarteira() {

@@ -48,10 +48,14 @@ CREATE TABLE produto_grupo (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO produto_grupo (descricao) VALUES ('Amigurumi');
-INSERT INTO produto_grupo (descricao) VALUES ('Religiósos');
-INSERT INTO produto_grupo (descricao) VALUES ('Penduricários');
-INSERT INTO produto_grupo (descricao) VALUES ('Ferramentas');
-INSERT INTO produto_grupo (descricao) VALUES ('Diversos');
+INSERT INTO produto_grupo (descricao) VALUES ('Agulha Emborrachada');
+INSERT INTO produto_grupo (descricao) VALUES ('Agulha Cabo Plástivo');
+INSERT INTO produto_grupo (descricao) VALUES ('Agulha Cabo Bambú');
+INSERT INTO produto_grupo (descricao) VALUES ('Olhos Simples');
+INSERT INTO produto_grupo (descricao) VALUES ('Olhos Gatos');
+INSERT INTO produto_grupo (descricao) VALUES ('Olhos Ovais');
+INSERT INTO produto_grupo (descricao) VALUES ('Fuças');
+INSERT INTO produto_grupo (descricao) VALUES ('Fuças Cachorro');
 
 /***************************************/
 /*TABELA PRODUTO -                     */
@@ -59,11 +63,19 @@ INSERT INTO produto_grupo (descricao) VALUES ('Diversos');
 CREATE TABLE produto (
   id_produto bigint(20) NOT NULL AUTO_INCREMENT,
   zempresa bigint(20) DEFAULT NULL,
-  aliq_acrescimo decimal(19,2) DEFAULT NULL,
   ativo bit(1) NOT NULL,
   descricao varchar(100) DEFAULT NULL,
+  sku varchar(50) DEFAULT NULL,
+  gtin varchar(50) DEFAULT NULL,
+  mpn varchar(50) DEFAULT NULL,
+  ncm varchar(50) DEFAULT NULL,
+  peso decimal(19,3) DEFAULT NULL,
+  altura decimal(19,0) DEFAULT NULL,
+  largura decimal(19,0) DEFAULT NULL,
+  profundidade decimal(19,0) DEFAULT NULL,
+  aliq_acrescimo decimal(19,3) DEFAULT NULL,
+  valor_acrescimo decimal(19,2) DEFAULT NULL,  
   preco_venda decimal(19,2) DEFAULT NULL,
-  valor_acrescimo decimal(19,2) DEFAULT NULL,
   id_grupo bigint(20) DEFAULT NULL,
   id_categoria bigint(20) DEFAULT NULL,
   id_medida bigint(20) DEFAULT NULL,
@@ -83,7 +95,7 @@ CREATE TABLE produto (
 CREATE TABLE produto_componente (
   id_componente bigint(20) NOT NULL AUTO_INCREMENT,
   zempresa bigint(20) DEFAULT NULL,
-  qtd_utilizada  decimal(19,3) NOT NULL,
+  qtd_utilizada decimal(19,3) NOT NULL,
   id_item bigint(20) DEFAULT NULL,
   id_produto bigint(20) DEFAULT NULL,
   PRIMARY KEY (id_componente),
@@ -93,3 +105,54 @@ CREATE TABLE produto_componente (
   CONSTRAINT FOREIGN KEY (id_produto) REFERENCES produto (id_produto)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+/***************************************/
+/*TABELA Estoque Header                */
+/***************************************/
+CREATE TABLE estoque_header (
+  id_estoque bigint(20) NOT NULL AUTO_INCREMENT,
+  zempresa bigint(20) DEFAULT NULL,
+  data_inicio date DEFAULT NULL,
+  data_final date DEFAULT NULL,
+  abertura bit(1) NOT NULL,
+  fechado bit(1) NOT NULL,
+  PRIMARY KEY (id_estoque)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+/***************************************/
+/*TABELA Estoque Item                  */
+/***************************************/
+CREATE TABLE estoque_item (
+  id_item bigint(20) NOT NULL AUTO_INCREMENT,
+  zempresa bigint(20) DEFAULT NULL,
+  id_estoque bigint(20) DEFAULT NULL,
+  id_produto bigint(20) DEFAULT NULL,
+  quantidade decimal(19,3) DEFAULT NULL,
+  unitario decimal(19,2) DEFAULT NULL,
+  PRIMARY KEY (id_item),
+  KEY(id_estoque),
+  KEY(id_produto),
+  CONSTRAINT FOREIGN KEY (id_estoque) REFERENCES estoque_header (id_estoque),
+  CONSTRAINT FOREIGN KEY (id_produto) REFERENCES produto (id_produto)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*****************************************/
+/*TABELA LACAMENTO MOVIMENTAÇÃO MATERIAL */
+/*****************************************/
+CREATE TABLE estoque_lancamento (
+  id_lancamento bigint(20) NOT NULL AUTO_INCREMENT,
+  zempresa bigint(20) DEFAULT NULL,
+  data_lcto date DEFAULT NULL,
+  documento varchar(15) DEFAULT NULL,
+  origem_estoque varchar(6) DEFAULT NULL,
+  sentido_estoque varchar(1) DEFAULT NULL,
+  quantidade decimal(19,3) DEFAULT NULL, 
+  unitario decimal(19,2) DEFAULT NULL, 
+  id_estoque bigint(20) DEFAULT NULL,
+  id_produto bigint(20) DEFAULT NULL,
+  PRIMARY KEY (id_lancamento),
+  KEY (id_estoque),
+  KEY (id_produto),
+  CONSTRAINT FOREIGN KEY (id_estoque) REFERENCES estoque_header (id_estoque),
+  CONSTRAINT FOREIGN KEY (id_produto) REFERENCES produto (id_produto)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;  

@@ -101,6 +101,22 @@ body {
 	overflow: auto !important;
 }
 
+.r42-dialogo4 {
+	width: 30% !important;
+	height: 40% !important;
+	overflow: auto !important;
+}
+
+.r42-dialogo5 {
+	width: 40% !important;
+	height: 75% !important;
+	overflow: auto !important;
+}
+
+
+
+
+
 .r42-panelgrid {
 	margin-top: 5px;
 }

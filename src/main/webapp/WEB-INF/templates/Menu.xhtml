@@ -6,7 +6,7 @@
 	<h:form id="frm">
 
 		<p:panelGrid columns="6" layout="grid" class="r42-gridmenu">
-		
+
 			<p:panelMenu toggleable="true">
 				<p:submenu label="Cadastros">
 					<p:menuitem value="Banco" outcome="Banco"
@@ -23,43 +23,47 @@
 			</p:panelMenu>
 
 			<p:panelMenu toggleable="true">
-				<p:submenu label="Contas a Receber">
-					<p:menuitem value="Receber" outcome="Receber"
-						rendered="#{controlePrincipal.authorityCheck('CTAS_RECEBER')}" />
-					<p:submenu label="Boleto">
-						<p:menuitem value="Gerar Cobrança" outcome="Cobranca"
-							rendered="#{controlePrincipal.authorityCheck('GERAR_COBRANCA')}" />
-						<p:menuitem value="Emissão Boleto" outcome="Boleto"
-							rendered="#{controlePrincipal.authorityCheck('EMISSAO_BOLETO')}" />
-						<p:menuitem value="Retorno Boleto" outcome="BoletoRetorno"
-							rendered="#{controlePrincipal.authorityCheck('RETORNO_BOLETO')}" />
+				<p:submenu label="Financeiro">
+					<p:submenu label="Contas a Receber">
+						<p:menuitem value="Receber" outcome="Receber"
+							rendered="#{controlePrincipal.authorityCheck('CTAS_RECEBER')}" />
+						<p:submenu label="Boleto">
+							<p:menuitem value="Gerar Cobrança" outcome="Cobranca"
+								rendered="#{controlePrincipal.authorityCheck('GERAR_COBRANCA')}" />
+							<p:menuitem value="Emissão Boleto" outcome="Boleto"
+								rendered="#{controlePrincipal.authorityCheck('EMISSAO_BOLETO')}" />
+							<p:menuitem value="Retorno Boleto" outcome="BoletoRetorno"
+								rendered="#{controlePrincipal.authorityCheck('RETORNO_BOLETO')}" />
+						</p:submenu>
+						<p:submenu label="Relatórios">
+							<p:menuitem value="Receber" outcome="RelReceber"
+								rendered="#{controlePrincipal.authorityCheck('REL_RECEBER')}" />
+						</p:submenu>
 					</p:submenu>
-					<p:submenu label="Relatórios">
-						<p:menuitem value="Receber" outcome="RelReceber"
-							rendered="#{controlePrincipal.authorityCheck('REL_RECEBER')}" />
+					<p:submenu label="Contas a Pagar">
+						<p:menuitem value="Pagar" outcome="Pagar"
+							rendered="#{controlePrincipal.authorityCheck('CTAS_PAGAR')}" />
+						<p:submenu label="Relatórios">
+							<p:menuitem value="Pagar" outcome="RelPagar"
+								rendered="#{controlePrincipal.authorityCheck('REL_PAGAR')}" />
+						</p:submenu>
+					</p:submenu>
+					<p:submenu label="Movimento Bancário">
+						<p:menuitem value="Lançamento" outcome="Lancamento"
+							rendered="#{controlePrincipal.authorityCheck('LANCAMENTO')}" />
+						<p:menuitem value="Extrato" outcome="Extrato"
+							rendered="#{controlePrincipal.authorityCheck('EXTRATO')}" />
 					</p:submenu>
 				</p:submenu>
 			</p:panelMenu>
 
 			<p:panelMenu toggleable="true">
-				<p:submenu label="Contas a Pagar">
-					<p:menuitem value="Pagar" outcome="Pagar"
-						rendered="#{controlePrincipal.authorityCheck('CTAS_PAGAR')}" />
-					<p:submenu label="Relatórios">
-						<p:menuitem value="Pagar" outcome="RelPagar"
-							rendered="#{controlePrincipal.authorityCheck('REL_PAGAR')}" />
-					</p:submenu>
+				<p:submenu label="Comercial">
+					<p:menuitem value="Estoque" outcome="Estoque"
+						rendered="#{controlePrincipal.authorityCheck('ESTOQUE')}" />
 				</p:submenu>
 			</p:panelMenu>
 
-			<p:panelMenu toggleable="true">
-				<p:submenu label="Movimento Bancário">
-					<p:menuitem value="Lançamento" outcome="Lancamento"
-						rendered="#{controlePrincipal.authorityCheck('LANCAMENTO')}" />
-					<p:menuitem value="Extrato" outcome="Extrato"
-						rendered="#{controlePrincipal.authorityCheck('EXTRATO')}" />
-				</p:submenu>
-			</p:panelMenu>
 
 			<p:panelMenu toggleable="true">
 				<p:submenu label="Config">
@@ -71,9 +75,9 @@
 						rendered="#{controlePrincipal.authorityCheck('MIGRACAO')}" />
 				</p:submenu>
 			</p:panelMenu>
-		
+
 		</p:panelGrid>
-		
+
 	</h:form>
 
 </ui:composition>

@@ -6,3 +6,8 @@ tbody .ui-column-title {
 	background-color: transparent;
 	border: none;
 }
+
+.r42-linkButton {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}

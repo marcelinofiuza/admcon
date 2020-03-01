@@ -54,6 +54,38 @@ public class Produto extends ZEmpresa implements Serializable {
 
 	private boolean ativo;
 
+	@Column(length = 50)
+	private String sku;
+	
+	@Column(length = 50)
+	private String gtin;
+	
+	@Column(length = 50)
+	private String mpn;
+	
+	@Column(length = 50)
+	private String ncm;
+
+	@DecimalMin(value = "0.000", message = "Não pode ser menor que 0,000")
+	@DecimalMax(value = "99999.999", message = "Máximo deve ser 99.999,999")
+	@NumberFormat(pattern = "#,##0.000")
+	private BigDecimal peso;
+
+	@DecimalMin(value = "0", message = "Não pode ser menor que 0")
+	@DecimalMax(value = "999999999", message = "Máximo deve ser 999.999.999")	
+	@NumberFormat(pattern = "#,##0")
+	private BigDecimal altura;
+	
+	@DecimalMin(value = "0", message = "Não pode ser menor que 0")
+	@DecimalMax(value = "999999999", message = "Máximo deve ser 999.999.999")	
+	@NumberFormat(pattern = "#,##0")
+	private BigDecimal largura;
+	
+	@DecimalMin(value = "0", message = "Não pode ser menor que 0")
+	@DecimalMax(value = "999999999", message = "Máximo deve ser 999.999.999")	
+	@NumberFormat(pattern = "#,##0")
+	private BigDecimal profundidade;
+	
 	@Transient
 	@DecimalMin(value = "0.000", message = "Não pode ser menor que 0,000")
 	@DecimalMax(value = "9999.999", message = "Máximo deve ser 9.999,999")
@@ -67,7 +99,7 @@ public class Produto extends ZEmpresa implements Serializable {
 	private BigDecimal valorCusto;
 
 	@DecimalMin(value = "0.000", message = "Não pode ser menor que 0,000")
-	@DecimalMax(value = "9999.99", message = "Máximo deve ser 9.999,99")
+	@DecimalMax(value = "9999.999", message = "Máximo deve ser 9.999,999")
 	@NumberFormat(pattern = "#,##0.000")
 	private BigDecimal aliqAcrescimo;
 
@@ -179,6 +211,70 @@ public class Produto extends ZEmpresa implements Serializable {
 
 	public void setComponentes(List<ProdutoComponente> componentes) {
 		this.componentes = componentes;
+	}
+	
+	public String getSku() {
+		return sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+
+	public String getGtin() {
+		return gtin;
+	}
+
+	public void setGtin(String gtin) {
+		this.gtin = gtin;
+	}
+
+	public String getMpn() {
+		return mpn;
+	}
+
+	public void setMpn(String mpn) {
+		this.mpn = mpn;
+	}
+
+	public String getNcm() {
+		return ncm;
+	}
+
+	public void setNcm(String ncm) {
+		this.ncm = ncm;
+	}
+
+	public BigDecimal getPeso() {
+		return peso;
+	}
+
+	public void setPeso(BigDecimal peso) {
+		this.peso = peso;
+	}
+
+	public BigDecimal getAltura() {
+		return altura;
+	}
+
+	public void setAltura(BigDecimal altura) {
+		this.altura = altura;
+	}
+
+	public BigDecimal getLargura() {
+		return largura;
+	}
+
+	public void setLargura(BigDecimal largura) {
+		this.largura = largura;
+	}
+
+	public BigDecimal getProfundidade() {
+		return profundidade;
+	}
+
+	public void setProfundidade(BigDecimal profundidade) {
+		this.profundidade = profundidade;
 	}
 
 	@Override

@@ -50,6 +50,7 @@ public class EstoqueHeader extends ZEmpresa implements Serializable {
 	@JoinColumn(name = "idEstoque")
 	private List<EstoqueItem> estoqueItem = new ArrayList<EstoqueItem>();
 
+
 	public Long getIdEstoque() {
 		return idEstoque;
 	}
