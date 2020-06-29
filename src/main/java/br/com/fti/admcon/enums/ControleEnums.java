@@ -63,8 +63,13 @@ public class ControleEnums implements Serializable {
 	public StatusRetorno[] getStatusRetorno() {
 		return StatusRetorno.values();
 	}
-	
+
 	public TrueFalse[] getTrueFalse() {
 		return TrueFalse.values();
 	}
+
+	public StatusVenda[] getStatusVenda() {
+		return StatusVenda.values();
+	}
+
 }

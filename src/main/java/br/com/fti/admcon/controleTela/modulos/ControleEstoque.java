@@ -15,6 +15,7 @@ import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.fti.admcon.modulos.entidades.empresa.EstoqueHeader;
+import br.com.fti.admcon.modulos.entidades.empresa.EstoqueItem;
 import br.com.fti.admcon.modulos.servicos.SerEstoque;
 import br.com.fti.admcon.util.ferramentas.FacesMessages;
 import br.com.fti.admcon.util.ferramentas.R42Data;
@@ -35,7 +36,11 @@ public class ControleEstoque implements Serializable {
 
 	private List<EstoqueHeader> listaEstoqueHdr = new ArrayList<EstoqueHeader>();
 	private EstoqueHeader estoqueHrdEdicao;
-	private EstoqueHeader estoqueHrdSelect;
+	private EstoqueHeader estoqueHrdSelect = new EstoqueHeader();
+
+	private List<EstoqueItem> listaEstoqueItm;
+
+	private boolean tbPeriodo;
 
 	@Autowired
 	FacesMessages mensagens;
@@ -56,6 +61,7 @@ public class ControleEstoque implements Serializable {
 	 ****************************************************************************/
 	public void listarPeriodosInv() {
 		estoqueHrdSelect = null;
+		tbPeriodo = false;
 		listaEstoqueHdr = serEstoque.listarTodos("D");
 		RequestContext.getCurrentInstance().execute("PF('wgListaPInv').show();");
 	}
@@ -125,7 +131,7 @@ public class ControleEstoque implements Serializable {
 		} catch (Exception e) {
 			mensagens.error(e.getMessage());
 		}
-		RequestContext.getCurrentInstance().update(Arrays.asList("frm:toolbar", "frm:tabela"));
+		RequestContext.getCurrentInstance().update(Arrays.asList("frm:tabela"));
 
 	}
 
@@ -208,6 +214,24 @@ public class ControleEstoque implements Serializable {
 	}
 
 	/****************************************************************************
+	 * Seleciona Periodo
+	 ****************************************************************************/
+	public void selecionaPeriodo(EstoqueHeader estoqueHeader) {
+		estoqueHrdSelect = estoqueHeader;
+
+		if(estoqueHrdSelect.isFechado()) {
+			listaEstoqueItm = estoqueHeader.getEstoqueItem();
+		} else {
+			listaEstoqueItm = serEstoque.montaEstoque(estoqueHrdSelect);
+		}
+				
+		
+		tbPeriodo = true;
+		RequestContext.getCurrentInstance().execute("PF('wgListaPInv').hide();");
+		RequestContext.getCurrentInstance().update(Arrays.asList("frm"));
+	}
+
+	/****************************************************************************
 	 * Gets e Sets do controle
 	 ****************************************************************************/
 	public List<EstoqueHeader> getListaEstoqueHdr() {
@@ -232,6 +256,22 @@ public class ControleEstoque implements Serializable {
 
 	public void setEstoqueHrdSelect(EstoqueHeader estoqueHrdSelect) {
 		this.estoqueHrdSelect = estoqueHrdSelect;
+	}
+
+	public boolean isTbPeriodo() {
+		return tbPeriodo;
+	}
+
+	public void setTbPeriodo(boolean tbPeriodo) {
+		this.tbPeriodo = tbPeriodo;
+	}
+
+	public List<EstoqueItem> getListaEstoqueItm() {
+		return listaEstoqueItm;
+	}
+
+	public void setListaEstoqueItm(List<EstoqueItem> listaEstoqueItm) {
+		this.listaEstoqueItm = listaEstoqueItm;
 	}
 
 }

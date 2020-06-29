@@ -1,0 +1,284 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+		<section class="r42-pagina">
+			<h:form id="frm">
+
+				<!-- Mensagem Form -->
+				<p:growl id="msg-frm" showDetail="true" />
+
+				<!-- Barra Ferramentas -->
+				<p:toolbar styleClass="r42-toolbar" id="toolbar">
+					<p:toolbarGroup align="left">
+						<p:commandButton id="bto-novo" title="Novo" icon="fa fa-file"
+							actionListener="#{controleOrcamento.novo}" process="@this"
+							update="dialogoOrcamento"
+							oncomplete="PF('wgDadosOrcamento').show()">
+							<p:resetInput target="dialogoOrcamento" />
+						</p:commandButton>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<!-- Listagem dos dados -->
+				<p:dataTable value="#{controleOrcamento.lstOcmHeader}"
+					var="ocmHeader" id="tbHeader" reflow="true" rows="15"
+					paginator="true" paginatorPosition="top"
+					rowKey="#{ocmHeader.idOrcamento}"
+					emptyMessage="Nenhum Lançamento encontrado">
+
+
+					<!-- Colunas -->
+					<p:column headerText="Status" width="80">
+						<h:outputText value="#{ocmHeader.status.descricao}" />
+					</p:column>
+
+					<p:column headerText="Orçamento" width="80">
+						<h:outputText value="#{ocmHeader.idOrcamento}" />
+					</p:column>
+
+					<p:column headerText="Data" width="80">
+						<h:outputText value="#{ocmHeader.data}">
+							<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Cliente">
+						<h:outputText value="#{ocmHeader.cliente.razaoSocial}" />
+					</p:column>
+
+					<p:column headerText="Total Itens" width="150">
+						<h:outputText value="#{ocmHeader.totalItens}" style="float: right">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Frete" width="150">
+						<h:outputText value="#{ocmHeader.frete}" style="float: right">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Total Orçamento" width="150">
+						<h:outputText value="#{ocmHeader.totalOrcamento}"
+							style="float: right">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+
+				<!-- ***************** -->
+				<!-- ***************** -->
+				<!-- ***************** -->
+				<!-- Dialogo inclusão/alteração -->
+				<!-- ***************** -->
+				<!-- ***************** -->
+				<!-- ***************** -->
+				<p:dialog styleClass="r42-dialogo"
+					header="Orçamento #{controleOrcamento.ocmHeaderEdicao.idOrcamento}"
+					widgetVar="wgDadosOrcamento" id="dialogoOrcamento" modal="true"
+					resizable="false" responsive="true">
+
+					<!-- Barra de Ferramentas dialogo-->
+					<p:defaultCommand target="bto-none" scope="dialogoOrcamento" />
+					<!-- botão default desativa <ENTER> -->
+					<p:toolbar>
+						<p:toolbarGroup align="left">
+
+							<p:commandButton id="bto-none" style="display:none"
+								process="dialogoOrcamento" />
+
+							<p:commandButton id="bto-salvar" title="Salvar" icon="fa fa-save"
+								action="#{controleOrcamento.salvar}" process="dialogoOrcamento"
+								oncomplete="if(!args.exceptionThrown) PF('wgDadosOrcamento').hide()" />
+
+						</p:toolbarGroup>
+					</p:toolbar>
+
+					<p:messages showDetail="false" autoUpdate="true" closable="true" />
+
+					<p:tabView id="panelOrcamento">
+
+						<!-- Header -->
+						<p:tab id="cabOrcamento" title="Cabeçalho">
+
+							<p:panelGrid columns="4" layout="grid" styleClass="r42-panelgrid"
+								columnClasses="ui-grid-col-1, ui-grid-col-8,ui-grid-col-1, ui-grid-col-2">
+
+
+								<p:outputLabel value="Cliente" for="cliente" />
+								<p:column>
+									<p:inputText id="cliente" size="10"
+										value="#{controleOrcamento.ocmHeaderEdicao.cliente.idCliente}"
+										readonly="true" />
+
+									<p:commandButton icon="fa fa-search" title="Pesquisar"
+										action="#{pesquisaCliente.abrirDialogo('pesquisaCliente')}"
+										process="@this" update="@none">
+
+										<p:ajax event="dialogReturn"
+											listener="#{controleOrcamento.clienteSelecionado}"
+											process="@this" update="cliente razaoSocial" />
+
+									</p:commandButton>
+									<p:spacer width="10" />
+									<p:inputText id="razaoSocial" size="70"
+										value="#{controleOrcamento.ocmHeaderEdicao.cliente.razaoSocial}"
+										readonly="true" />
+								</p:column>
+
+								<p:outputLabel value="Data" for="data" />
+								<p:calendar id="data" size="10" locale="pt_BR"
+									value="#{controleOrcamento.ocmHeaderEdicao.data}"
+									pattern="dd/MM/yyyy" mask="99/99/9999" showOn="button"
+									required="true" />
+
+							</p:panelGrid>
+
+
+							<p:panelGrid columns="8" layout="grid" styleClass="r42-panelgrid"
+								columnClasses="ui-grid-col-1, ui-grid-col-2,
+											   ui-grid-col-1, ui-grid-col-2,
+											   ui-grid-col-1, ui-grid-col-2,
+								               ui-grid-col-1, ui-grid-col-2">
+
+
+								<p:outputLabel value="Status" for="status" />
+								<p:inputText id="status" size="20"
+									value="#{controleOrcamento.ocmHeaderEdicao.status.descricao}"
+									readonly="true" />
+
+
+								<p:outputLabel value="Itens" for="totItens" />
+								<p:inputNumber id="totItens" size="20"
+									value="#{controleOrcamento.ocmHeaderEdicao.totalItens}"
+									decimalSeparator="," thousandSeparator="." readonly="true" />
+
+
+								<p:outputLabel value="Frete" for="frete" />
+								<p:inputNumber id="frete" size="20"
+									value="#{controleOrcamento.ocmHeaderEdicao.frete}"
+									decimalSeparator="," thousandSeparator="." readonly="true" />
+
+								<p:outputLabel value="Orçamento" for="totOrcamento" />
+								<p:inputNumber id="totOrcamento" size="20"
+									value="#{controleOrcamento.ocmHeaderEdicao.totalOrcamento}"
+									decimalSeparator="," thousandSeparator="." readonly="true" />
+
+							</p:panelGrid>
+
+							<p:panelGrid columns="2" layout="grid" styleClass="r42-panelgrid"
+								columnClasses="ui-grid-col-1, ui-grid-col-12">
+
+								<p:outputLabel value="Observação" for="observacao" />
+								<p:column>
+									<p:inputTextarea id="observacao" rows="5"
+										counter="nObs" maxlength="250"
+										value="#{controleOrcamento.ocmHeaderEdicao.observacao}"
+										counterTemplate="{0} caracter restante." autoResize="false" />
+									<h:outputText id="nObs" />
+								</p:column>
+							</p:panelGrid>
+						</p:tab>
+
+						<!-- Itens -->
+						<p:tab id="cabItens" title="Itens">
+
+							<p:toolbar>
+								<p:toolbarGroup align="left">
+
+									<p:commandButton id="bto-add" title="Novo" icon="fa fa-plus"
+										action="#{controleOrcamento.addItem}" process="@this"
+										update="tabItens" />
+
+								</p:toolbarGroup>
+							</p:toolbar>
+
+							<!-- Listagem dos dados -->
+							<p:dataTable value="#{controleOrcamento.ocmItensEdicao}"
+								var="item" id="tabItens" reflow="true" rows="10"
+								paginator="true" paginatorPosition="top"
+								emptyMessage="Nenhum item informado">
+
+
+								<!-- Colunas -->
+								<p:column width="20">
+									<p:rowToggler />
+								</p:column>
+								<p:column headerText="Produto">
+									<h:outputText value="#{item.produto.descricao}" />
+								</p:column>
+								<p:column headerText="Quantidade" width="100">
+									<h:outputText value="#{item.quantidade}" style="float: right">
+										<f:convertNumber pattern="#0.000" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Unitário" width="100">
+									<h:outputText value="#{item.unitario}" style="float: right">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Total" width="100">
+									<h:outputText value="#{item.total}" style="float: right">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:column>
+
+								<p:rowExpansion>
+									<p:panelGrid id="rowExp" columns="2" layout="grid"
+										styleClass="panelgrid-noborder r42-panelgrid"
+										columnClasses="ui-grid-col-1, ui-grid-col-11">
+
+
+										<p:outputLabel value="Produto" for="idProduto" />
+										<p:column>
+											<p:inputText id="idProduto" size="10" maxlength="10"
+												value="#{item.produto.idProduto}" readonly="true" />
+
+											<p:commandButton icon="fa fa-search" title="Pesquisar"
+												action="#{controleOrcamento.pesquisaProduto(item)}"
+												process="@this" update="@none">
+
+												<p:ajax event="dialogReturn"
+													listener="#{controleOrcamento.produtoSelecionado}"
+													process="@this" update="rowExp" />
+											</p:commandButton>
+
+											<p:inputText id="cptDescricao" size="50" maxlength="50"
+												value="#{item.produto.descricao}" readonly="true" />
+
+										</p:column>
+
+										<p:outputLabel value="Quantidade" for="quantidade" />
+										<p:inputNumber id="quantidade" size="20"
+											value="#{item.quantidade}" decimalPlaces="3"
+											decimalSeparator="," thousandSeparator="." />
+
+										<p:outputLabel value="Unitário" for="unitario" />
+										<p:inputNumber id="unitario" size="20"
+											value="#{item.unitario}" decimalPlaces="2"
+											decimalSeparator="," thousandSeparator="." />
+
+
+										<p:commandButton icon="fa fa-check" title="ok"
+											action="#{controleOrcamento.confirmarItem(item)}"
+											process="tabItens" update="tabItens" />
+
+									</p:panelGrid>
+								</p:rowExpansion>
+							</p:dataTable>
+
+						</p:tab>
+					</p:tabView>
+				</p:dialog>
+
+			</h:form>
+		</section>
+	</ui:define>
+
+</ui:composition>

@@ -64,7 +64,6 @@ body {
 	background-color: transparent;
 }
 
-
 /* Configurações Geral para padronização de páginas*/
 .r42-pagina {
 	margin-bottom: 40px;
@@ -77,10 +76,20 @@ body {
 	margin-bottom: 5px;
 }
 
+.r42-tbInf {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+
 .r42-toolbar-right {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-right: 5px
+}
+
+.r42-topInfo {
+	margin: 4px;
 }
 
 .r42-dialogo {
@@ -103,7 +112,7 @@ body {
 
 .r42-dialogo4 {
 	width: 30% !important;
-	height: 40% !important;
+	height: 30% !important;
 	overflow: auto !important;
 }
 
@@ -112,10 +121,6 @@ body {
 	height: 75% !important;
 	overflow: auto !important;
 }
-
-
-
-
 
 .r42-panelgrid {
 	margin-top: 5px;

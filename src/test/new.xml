@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ns0:BusinessPartnerSUITEBulkReplicateRequest
+	xmlns:ns0="http://sap.com/xi/SAPGlobal20/Global">
+
+
+	<MessageHeader>
+
+		<ID>102773f86c624625acd8a6566ae59225</ID>
+
+		<UUID>102773f8-6c62-4625-acd8-a6566ae59225</UUID>
+
+		<CreationDateTime>2020-05-28T00:23:31Z</CreationDateTime>
+
+		<SenderBusinessSystemID>uhgbrasil-T</SenderBusinessSystemID>
+
+		<RecipientBusinessSystemID>S4QCLNT500</RecipientBusinessSystemID>
+
+	</MessageHeader>
+
+
+	<BusinessPartnerSUITEReplicateRequestMessage>
+
+
+		<MessageHeader>
+
+			<ID>1646d491039c4e34bbba5ca9afc9e213</ID>
+
+			<UUID>1646d491-039c-4e34-bbba-5ca9afc9e213</UUID>
+
+			<CreationDateTime>2020-05-28T00:23:31Z</CreationDateTime>
+
+			<SenderBusinessSystemID>uhgbrasil-T</SenderBusinessSystemID>
+
+			<RecipientBusinessSystemID>S4QCLNT500</RecipientBusinessSystemID>
+
+		</MessageHeader>
+
+
+		<BusinessPartner
+			taxNumberListCompleteTransmissionIndicator="true"
+			industrySectorListCompleteTransmissionIndicator="false"
+			identificationListCompleteTransmissionIndicator="true"
+			roleListCompleteTransmissionIndicator="true"
+			commonListCompleteTransmissionIndicator="true"
+			bankDetailsListCompleteTransmissionIndicator="true"
+			addressInformationListCompleteTransmissionIndicator="true"
+			changeOrdinalNumberValue="57" actionCode="04"
+			xmlns:ns1="http://ariba.com/xi/SupplierManagement">
+
+			<UUID>b10f112b-8287-4a3a-aca5-d1ae43f701fe</UUID>
+
+			<InternalID>S21013965</InternalID>
+
+			<CategoryCode>2</CategoryCode>
+
+			<NumberRangeIntervalBusinessPartnerGroupCode>Z001
+			</NumberRangeIntervalBusinessPartnerGroupCode>
+
+
+			<Supplier xmlns:ns1="http://ariba.com/xi/SupplierManagement"
+				ns1:genericCustomFieldListCompleteTransmissionIndicator="true"
+				supplierTextListCompleteTransmissionIndicator="false"
+				taxGroupingListCompleteTransmissionIndicator="false"
+				subRangeListCompleteTransmissionIndicator="false"
+				procurementArrangementListCompleteTransmissionIndicator="false"
+				qualitiyManagementListCompleteTransmissionIndicator="false"
+				procurementCardIssuingInstitutesListCompleteTransmissionIndicator="false"
+				biddingCharacteristicListCompleteTransmissionIndicator="true"
+				accountingInformationListCompleteTransmissionIndicator="true">
+
+				<InternalID>S21013965</InternalID>
+
+				<MaintenanceProfileCode>ZF01</MaintenanceProfileCode>
+
+				<DeletedIndicator>false</DeletedIndicator>
+
+				<PostingBlockedIndicator>false</PostingBlockedIndicator>
+
+				<AlternativePayeeAllowedIndicator>false
+				</AlternativePayeeAllowedIndicator>
+
+				<EqualizationTaxRelevanceIndicator>false
+				</EqualizationTaxRelevanceIndicator>
+
+				<ValueAddedTaxRelevanceIndicator>false
+				</ValueAddedTaxRelevanceIndicator>
+
+				<SellerAssortmentProductGroupLevelRelevanceIndicator>false
+				</SellerAssortmentProductGroupLevelRelevanceIndicator>
+
+				<PlantLevelRelevanceIndicator>false</PlantLevelRelevanceIndicator>
+
+				<ForSocialInsuranceRegisteredIndicator>false
+				</ForSocialInsuranceRegisteredIndicator>
+
+				<TaxSplitIndicator>false</TaxSplitIndicator>
+
+
+				<AccountingInformation actionCode="04"
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement"
+					accountingTextListCompleteTransmissionIndicator="false"
+					withholdingTaxListCompleteTransmissionIndicator="false">
+
+					<CompanyID>B130</CompanyID>
+
+					<BlockedIndicator>false</BlockedIndicator>
+
+					<DeletedIndicator>false</DeletedIndicator>
+
+
+					<GeneralLedgerAccountReference>
+
+						<ID>21104001</ID>
+
+					</GeneralLedgerAccountReference>
+
+					<PaymentMethodsCode>BCENPTUYZ</PaymentMethodsCode>
+
+					<CashDiscountTermsCode>0090</CashDiscountTermsCode>
+
+					<LocalProcessingIndicator>false</LocalProcessingIndicator>
+
+					<PlanningGroupCode>A1</PlanningGroupCode>
+
+					<DoubleEntriesCheckIndicator>true</DoubleEntriesCheckIndicator>
+
+					<PayItemsSeparatelyIndicator>false</PayItemsSeparatelyIndicator>
+
+					<PaymentAdvicesByEDIIndicator>true</PaymentAdvicesByEDIIndicator>
+
+					<InvoiceVerificationToleranceGroupCode>0001
+					</InvoiceVerificationToleranceGroupCode>
+
+					<CustomerSupplierClearingIndicator>false
+					</CustomerSupplierClearingIndicator>
+
+				</AccountingInformation>
+
+
+				<AccountingInformation actionCode="04"
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement"
+					accountingTextListCompleteTransmissionIndicator="false"
+					withholdingTaxListCompleteTransmissionIndicator="false">
+
+					<CompanyID>B1R0</CompanyID>
+
+					<BlockedIndicator>false</BlockedIndicator>
+
+					<DeletedIndicator>false</DeletedIndicator>
+
+
+					<GeneralLedgerAccountReference>
+
+						<ID>21104001</ID>
+
+					</GeneralLedgerAccountReference>
+
+					<PaymentMethodsCode>BCENPTUYZ</PaymentMethodsCode>
+
+					<CashDiscountTermsCode>0090</CashDiscountTermsCode>
+
+					<LocalProcessingIndicator>false</LocalProcessingIndicator>
+
+					<PlanningGroupCode>A1</PlanningGroupCode>
+
+					<DoubleEntriesCheckIndicator>true</DoubleEntriesCheckIndicator>
+
+					<PayItemsSeparatelyIndicator>false</PayItemsSeparatelyIndicator>
+
+					<PaymentAdvicesByEDIIndicator>true</PaymentAdvicesByEDIIndicator>
+
+					<InvoiceVerificationToleranceGroupCode>0001
+					</InvoiceVerificationToleranceGroupCode>
+
+					<CustomerSupplierClearingIndicator>false
+					</CustomerSupplierClearingIndicator>
+
+				</AccountingInformation>
+
+
+				<BiddingCharacteristic actionCode="04">
+
+					<MinorityOwnedIndicator>false</MinorityOwnedIndicator>
+
+					<WomenOwnedIndicator>false</WomenOwnedIndicator>
+
+					<SurrogateBiddingAllowedIndicator>false
+					</SurrogateBiddingAllowedIndicator>
+
+					<OfflineBiddingIndicator>false</OfflineBiddingIndicator>
+
+				</BiddingCharacteristic>
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement"
+					field="Z_MM_FORN_GM" name="Characteristic" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement" field="001"
+					name="CharacteristicNumber" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement" field="1"
+					name="CategoryGroup" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement"
+					field="AN01525100175-T" name="ANID" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement"
+					field="ACM_140685010" name="ZS4ID" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement" field="6622300"
+					name="CNAE" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement" field="2"
+					name="CodRegTribut" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement" field="8"
+					name="digagen" />
+
+				<ns1:GenericCustomField
+					xmlns:ns1="http://ariba.com/xi/SupplierManagement" field="6"
+					name="digconta" />
+
+			</Supplier>
+
+
+			<AddressInformation actionCode="04"
+				addressUsageListCompleteTransmissionIndicator="true">
+
+				<UUID>e1aa03e7-8755-4503-9a67-975e788cefa9</UUID>
+
+
+				<ValidityPeriod>
+
+					<StartDate>2020-05-27</StartDate>
+
+					<EndDate>9999-12-31</EndDate>
+
+				</ValidityPeriod>
+
+
+				<AddressUsage actionCode="04">
+
+					<AddressUsageCode>XXDEFAULT</AddressUsageCode>
+
+
+					<ValidityPeriod>
+
+						<StartDate>2020-05-27</StartDate>
+
+						<EndDate>9999-12-31</EndDate>
+
+					</ValidityPeriod>
+
+					<DefaultIndicator>false</DefaultIndicator>
+
+				</AddressUsage>
+
+
+				<Address actionCode="04"
+					webListCompleteTransmissionIndicator="false"
+					telephoneListCompleteTransmissionIndicator="true"
+					postalAddressListCompleteTransmissionIndicator="true"
+					personNameListCompleteTransmissionIndicator="false"
+					organisationNameListCompleteTransmissionIndicator="false"
+					facsimileListCompleteTransmissionIndicator="false"
+					emailListCompleteTransmissionIndicator="true"
+					addressNoteListCompleteTransmissionIndicator="false">
+
+
+					<CommunicationPreference actionCode="04">
+
+						<CorrespondenceLanguageCode>PT</CorrespondenceLanguageCode>
+
+					</CommunicationPreference>
+
+
+					<Email actionCode="04"
+						eMailUsageListCompleteTransmissionIndicator="true"
+						eMailNoteListCompleteTransmissionIndicator="true">
+
+						<URI>teste@teste.com.br</URI>
+
+						<UsageDeniedIndicator>false</UsageDeniedIndicator>
+
+
+						<ValidityPeriod>
+
+							<StartDate>2020-05-27</StartDate>
+
+							<EndDate>9999-12-31</EndDate>
+
+						</ValidityPeriod>
+
+						<TransportNeutralEncapsulationFormatEnabledIndicator>false
+						</TransportNeutralEncapsulationFormatEnabledIndicator>
+
+
+						<EmailNote actionCode="04">
+
+							<Note languageCode="PT">Outros</Note>
+
+						</EmailNote>
+
+
+						<EmailUsage actionCode="04">
+
+
+							<Usage>
+
+								<Code>AD_DEFAULT</Code>
+
+
+								<ValidityPeriod>
+
+									<StartDate>2020-05-27</StartDate>
+
+									<EndDate>9999-12-31</EndDate>
+
+								</ValidityPeriod>
+
+							</Usage>
+
+							<DefaultIndicator>true</DefaultIndicator>
+
+						</EmailUsage>
+
+					</Email>
+
+
+					<PostalAddress actionCode="04">
+
+						<CountryCode>BR</CountryCode>
+
+						<RegionCode>SP</RegionCode>
+
+						<CityName>SAO PAULO</CityName>
+
+						<DistrictName>JARDIM IRACEMA</DistrictName>
+
+						<StreetPostalCode>05790-140</StreetPostalCode>
+
+						<StreetName>AVENIDA AUGUSTO BARBOSA TAVARES</StreetName>
+
+						<StreetSuffixName>CONJ 8</StreetSuffixName>
+
+						<HouseID>476</HouseID>
+
+						<POBoxIDVisibleIndicator>false</POBoxIDVisibleIndicator>
+
+					</PostalAddress>
+
+
+					<Telephone actionCode="04"
+						telephoneUsageListCompleteTransmissionIndicator="true"
+						telephoneNoteListCompleteTransmissionIndicator="false">
+
+
+						<Number>
+
+							<SubscriberID>1132372000</SubscriberID>
+
+							<CountryCode>BR</CountryCode>
+
+							<CountryName />
+
+						</Number>
+
+						<UsageDeniedIndicator>false</UsageDeniedIndicator>
+
+
+						<ValidityPeriod>
+
+							<StartDate>2020-05-27</StartDate>
+
+							<EndDate>9999-12-31</EndDate>
+
+						</ValidityPeriod>
+
+						<MobilePhoneNumberIndicator>false</MobilePhoneNumberIndicator>
+
+						<SMSEnabledIndicator>false</SMSEnabledIndicator>
+
+
+						<TelephoneUsage actionCode="04">
+
+
+							<Usage>
+
+								<Code>AD_DEFAULT</Code>
+
+
+								<ValidityPeriod>
+
+									<StartDate>2020-05-27</StartDate>
+
+									<EndDate>9999-12-31</EndDate>
+
+								</ValidityPeriod>
+
+							</Usage>
+
+							<DefaultIndicator>true</DefaultIndicator>
+
+						</TelephoneUsage>
+
+					</Telephone>
+
+
+					<Telephone actionCode="04"
+						telephoneUsageListCompleteTransmissionIndicator="true"
+						telephoneNoteListCompleteTransmissionIndicator="false">
+
+
+						<Number>
+
+							<SubscriberID>11986696262</SubscriberID>
+
+							<CountryCode>BR</CountryCode>
+
+							<CountryName />
+
+						</Number>
+
+						<UsageDeniedIndicator>false</UsageDeniedIndicator>
+
+
+						<ValidityPeriod>
+
+							<StartDate>2020-05-27</StartDate>
+
+							<EndDate>9999-12-31</EndDate>
+
+						</ValidityPeriod>
+
+						<MobilePhoneNumberIndicator>true</MobilePhoneNumberIndicator>
+
+						<SMSEnabledIndicator>false</SMSEnabledIndicator>
+
+					</Telephone>
+
+				</Address>
+
+			</AddressInformation>
+
+
+			<BankDetails actionCode="04"
+				xmlns:ns1="http://ariba.com/xi/SupplierManagement">
+
+				<ID>001C</ID>
+
+
+				<BankDirectoryReference>
+
+					<BankCountryCode>BR</BankCountryCode>
+
+				</BankDirectoryReference>
+
+				<Name>237-2</Name>
+
+				<BankAccountID>6326</BankAccountID>
+
+				<SpecificationsDescription>0198</SpecificationsDescription>
+
+			</BankDetails>
+
+
+			<Common actionCode="04">
+
+				<BusinessPartnerGroupCode>0004</BusinessPartnerGroupCode>
+
+				<DeletedIndicator>false</DeletedIndicator>
+
+				<ReleasedIndicator>true</ReleasedIndicator>
+
+				<BlockedIndicator>false</BlockedIndicator>
+
+				<SalutationText />
+
+				<CorrespondenceBrailleRequiredIndicator>false
+				</CorrespondenceBrailleRequiredIndicator>
+
+				<CorrespondenceLargePrintRequiredIndicator>false
+				</CorrespondenceLargePrintRequiredIndicator>
+
+				<NaturalPersonIndicator>false</NaturalPersonIndicator>
+
+
+				<Organisation>
+
+
+					<Name>
+
+						<FormOfAddressCode>0003</FormOfAddressCode>
+
+						<FirstLineName>LEDICE ASSESSORIA E CORRETORA DE SEGUROS
+						</FirstLineName>
+
+						<FourthLineName>LEDICE SEGUROS</FourthLineName>
+
+					</Name>
+
+				</Organisation>
+
+			</Common>
+
+
+			<Role actionCode="04">
+
+				<RoleCode>FLVN00</RoleCode>
+
+
+				<ValidityPeriod>
+
+					<StartDate>2020-05-27</StartDate>
+
+					<EndDate>9999-12-31</EndDate>
+
+				</ValidityPeriod>
+
+			</Role>
+
+
+			<Identification actionCode="04">
+
+				<PartyIdentifierTypeCode>ZSUSEP</PartyIdentifierTypeCode>
+
+				<BusinessPartnerID>10.2043966.0</BusinessPartnerID>
+
+			</Identification>
+
+
+			<Identification actionCode="04">
+
+				<PartyIdentifierTypeCode>ZCPF</PartyIdentifierTypeCode>
+
+				<BusinessPartnerID>18466835806</BusinessPartnerID>
+
+				<IdentifierIssuingAgencyName>VAGNER FREITAS DOS SANTOS
+				</IdentifierIssuingAgencyName>
+
+				<EntryDate>1974-05-24</EntryDate>
+
+			</Identification>
+
+
+			<TaxNumber actionCode="04">
+
+				<CountryCode>BR</CountryCode>
+
+				<TaxIdentificationNumberTypeCode>1</TaxIdentificationNumberTypeCode>
+
+				<PartyTaxID schemeID="">23865168000165</PartyTaxID>
+
+				<LONG_PartyTaxID schemeID=""
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:nil="true" />
+
+			</TaxNumber>
+
+
+			<TaxNumber actionCode="04">
+
+				<CountryCode>BR</CountryCode>
+
+				<TaxIdentificationNumberTypeCode>3</TaxIdentificationNumberTypeCode>
+
+				<PartyTaxID schemeID="">ISENTO</PartyTaxID>
+
+				<LONG_PartyTaxID schemeID=""
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:nil="true" />
+
+			</TaxNumber>
+
+
+			<TaxNumber actionCode="04">
+
+				<CountryCode>BR</CountryCode>
+
+				<TaxIdentificationNumberTypeCode>4</TaxIdentificationNumberTypeCode>
+
+				<PartyTaxID schemeID="">53816838</PartyTaxID>
+
+				<LONG_PartyTaxID schemeID=""
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:nil="true" />
+
+			</TaxNumber>
+
+			<ns1:GenericCustomField
+				xmlns:ns1="http://ariba.com/xi/SupplierManagement"
+				name="FirstLineName"
+				type="LEDICE ASSESSORIA E CORRETORA DE SEGUROS EIRELI" />
+
+		</BusinessPartner>
+
+	</BusinessPartnerSUITEReplicateRequestMessage>
+
+</ns0:BusinessPartnerSUITEBulkReplicateRequest>

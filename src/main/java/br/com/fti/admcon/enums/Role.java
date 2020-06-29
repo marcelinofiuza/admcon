@@ -26,6 +26,7 @@ public enum Role {
 	EXTRATO("Extrato Bancário"),
 	
 	ESTOQUE("Estoque"),
+	ORCAMENTO("Orçamento"),
 	
 	EMPRESA("Cadastro Empresa"),
 	USUARIO("Cadastro Usuario"),

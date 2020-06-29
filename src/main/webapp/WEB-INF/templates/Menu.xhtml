@@ -61,6 +61,9 @@
 				<p:submenu label="Comercial">
 					<p:menuitem value="Estoque" outcome="Estoque"
 						rendered="#{controlePrincipal.authorityCheck('ESTOQUE')}" />
+						
+					<p:menuitem value="Orçamento" outcome="Orcamento"
+						rendered="#{controlePrincipal.authorityCheck('ORCAMENTO')}" />						
 				</p:submenu>
 			</p:panelMenu>
 

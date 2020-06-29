@@ -21,6 +21,97 @@
 				<p:growl id="msg-frm" showDetail="true" autoUpdate="true" />
 
 
+				<!-- Barra de Ferramentas tela principal-->
+				<p:toolbar id="infPeriodo" styleClass="r42-tbInf"
+					rendered="#{controleEstoque.tbPeriodo}">
+
+					<p:toolbarGroup align="centered" styleClass="r42-topInfo">
+
+						<div class="r42-topInfo">
+
+							<p:outputLabel value="Periodo inventário de " for="dtIni" />
+							<p:calendar id="dtIni" size="10" locale="pt_BR"
+								value="#{controleEstoque.estoqueHrdSelect.dataInicio}"
+								pattern="dd/MM/yyyy" mask="99/99/9999" disabled="true" />
+
+							<p:outputLabel value=" Até " for="dtFim" />
+							<p:calendar id="dtFim" size="10" locale="pt_BR"
+								value="#{controleEstoque.estoqueHrdSelect.dataFinal}"
+								pattern="dd/MM/yyyy" mask="99/99/9999" disabled="true" />
+
+							<span class="ui-separator"> <span
+								class="fa fa-fw fa-ellipsis-v" />
+							</span>
+
+							<p:selectBooleanCheckbox style="margin-top:4px"
+								value="#{controleEstoque.estoqueHrdSelect.fechado}"
+								disabled="true" />
+							<p:outputLabel value="  Periodo fechado" />
+
+						</div>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<p:toolbar styleClass="r42-toolbar" id="tbBotoes"
+					rendered="#{controleEstoque.tbPeriodo}">
+					<p:toolbarGroup align="left">
+
+						<p:commandButton id="bto-periodo" title="Periodos"
+							icon="fa fa-calendar"
+							actionListener="#{controleEstoque.listarPeriodosInv}"
+							process="@this" update="frm" />
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+				<!-- ************************ -->
+				<!-- ************************ -->
+				<!-- ************************ -->
+				<!-- Lista de materiais do inventário -->
+				<!-- ************************ -->
+				<!-- ************************ -->
+				<!-- ************************ -->
+
+				<!-- Listagem dos dados -->
+				<p:dataTable value="#{controleEstoque.listaEstoqueItm}"
+					rendered="#{controleEstoque.tbPeriodo}" var="estoqueItem"
+					id="tabelaItens" reflow="true" rows="15" paginator="true"
+					paginatorPosition="top" emptyMessage="Nenhum produto encontrado">
+
+
+					<!-- Colunas -->
+					<p:column headerText="SKU" width="50">
+						<h:outputText value="#{estoqueItem.produto.sku}" />
+					</p:column>
+					<p:column headerText="Descrição produto">
+						<h:outputText value="#{estoqueItem.produto.descricao}" />
+					</p:column>
+					<p:column headerText="Grupo" width="150">
+						<h:outputText value="#{estoqueItem.produto.categoria.descricao}" />
+					</p:column>
+					<p:column headerText="U.M." width="50">
+						<h:outputText value="#{estoqueItem.produto.medida.unidade}" />
+					</p:column>
+					<p:column headerText="Quantidade" width="100">
+						<h:outputText value="#{estoqueItem.quantidade}"
+							style="float: right">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Unitário" width="100">
+						<h:outputText value="#{estoqueItem.unitario}" style="float: right">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Total" width="100">
+						<h:outputText value="#{estoqueItem.total}" style="float: right">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+
+
 				<!-- ************************ -->
 				<!-- ************************ -->
 				<!-- ************************ -->
@@ -30,19 +121,18 @@
 				<!-- ************************ -->
 				<p:dialog styleClass="r42-dialogo5" header="Periodo Inventário"
 					widgetVar="wgListaPInv" id="dialogoListaPInv" modal="true"
-					resizable="false" responsive="true"
-					closable="false">
+					resizable="false" responsive="true" closable="false">
 
 					<!-- Barra de Ferramentas dialogo-->
 					<p:defaultCommand target="bto-none" scope="dialogoListaPInv" />
 					<!-- botão default desativa <ENTER> -->
-					<p:toolbar>
+					<p:toolbar id="tbListaInventario">
 						<p:toolbarGroup align="left">
 
 							<p:commandButton id="bto-none" style="display:none"
 								process="dialogoListaPInv" />
 
-							<p:link
+							<p:link style="padding-bottom:4px; padding-top:4px"
 								class="fa fa-home ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only r42-linkButton"
 								outcome="Inicio.xhtml">
 							</p:link>
@@ -121,30 +211,31 @@
 
 					<p:defaultCommand target="btoPer-ok" scope="dialogoPeriodoInv" />
 
-					<p:panelGrid id="panelPeriodo" columns="2" layout="grid"
-						styleClass="panelgrid-noborder r42-panelgrid"
-						columnClasses="ui-grid-col-3, ui-grid-col-9">
+					<p:panel>
+						<p:panelGrid id="panelPeriodo" columns="2" layout="grid"
+							styleClass="panelgrid-noborder r42-panelgrid"
+							columnClasses="ui-grid-col-3, ui-grid-col-9">
 
-						<p:outputLabel value="Data Inicial" for="dataInicial" />
-						<p:calendar id="dataInicial" size="10" locale="pt_BR"
-							value="#{controleEstoque.estoqueHrdEdicao.dataInicio}"
-							pattern="dd/MM/yyyy" mask="99/99/9999" showOn="button"
-							required="true"
-							disabled="#{!controleEstoque.estoqueHrdEdicao.abertura}" />
+							<p:outputLabel value="Data Inicial" for="dataInicial" />
+							<p:calendar id="dataInicial" size="10" locale="pt_BR"
+								value="#{controleEstoque.estoqueHrdEdicao.dataInicio}"
+								pattern="dd/MM/yyyy" mask="99/99/9999" showOn="button"
+								required="true"
+								disabled="#{!controleEstoque.estoqueHrdEdicao.abertura}" />
 
-						<p:outputLabel value="Data Final" for="dataFinal" />
-						<p:calendar id="dataFinal" size="10" locale="pt_BR"
-							value="#{controleEstoque.estoqueHrdEdicao.dataFinal}"
-							pattern="dd/MM/yyyy" mask="99/99/9999" showOn="button"
-							required="true" />
+							<p:outputLabel value="Data Final" for="dataFinal" />
+							<p:calendar id="dataFinal" size="10" locale="pt_BR"
+								value="#{controleEstoque.estoqueHrdEdicao.dataFinal}"
+								pattern="dd/MM/yyyy" mask="99/99/9999" showOn="button"
+								required="true" />
 
-						<p:commandButton id="btoPer-ok" title="Ok" icon="fa fa-check"
-							actionListener="#{controleEstoque.adicionaPeriodo}"
-							process="dialogoPeriodoInv" update="tabela" />
+							<p:commandButton id="btoPer-ok" title="Ok" icon="fa fa-check"
+								actionListener="#{controleEstoque.adicionaPeriodo}"
+								process="dialogoPeriodoInv" update="tabela" />
 
-					</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
 				</p:dialog>
-
 
 			</h:form>
 		</section>
