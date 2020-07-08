@@ -1,6 +1,7 @@
 package br.com.fti.admcon.modulos.entidades.empresa;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -66,7 +67,7 @@ public class Conta extends ZEmpresa implements Serializable {
 	private Conta contaPai;
 
 	@OneToMany(mappedBy = "contaPai", fetch = FetchType.LAZY)
-	private List<Conta> subConta;
+	private List<Conta> subConta = new ArrayList<Conta>();
 
 	@Transient
 	private String contafull;

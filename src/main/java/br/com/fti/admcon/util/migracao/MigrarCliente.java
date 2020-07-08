@@ -12,7 +12,6 @@ import br.com.fti.admcon.modulos.servicos.SerCliente;
 import br.com.fti.admcon.modulos.servicos.SerConta;
 import br.com.fti.admcon.util.ferramentas.R42Util;
 
-
 /****************************************************************************
  * Classe para migrar dados dos Clientes ADMCON -> MARVIN
  * 
@@ -25,7 +24,7 @@ public class MigrarCliente {
 	private DbfReader dbfReader;
 
 	@Autowired
-	SerConta serConta;	
+	SerConta serConta;
 	@Autowired
 	SerCliente serCliente;
 
@@ -33,24 +32,23 @@ public class MigrarCliente {
 	 * Executa a migração do arquivo DCL01.DBF para Entidade Cliente
 	 ****************************************************************************/
 	public void executar() throws Exception {
-		try {
 
-			dbfReader = R42Util.lerDbf(arquivo);
+		dbfReader = R42Util.lerDbf(arquivo);
 
-			for (int i = 0; i < dbfReader.getRecordCount(); i++) {
-				Object[] row = dbfReader.nextRecord();
-				
-				String clcodigo = new String(DbfUtils.trimLeftSpaces((byte[]) row[0]));	
-				String clrazao  = new String(DbfUtils.trimLeftSpaces((byte[]) row[1]));	
+		for (int i = 0; i < dbfReader.getRecordCount(); i++) {
+			Object[] row = dbfReader.nextRecord();
+			try {
+				String clcodigo = new String(DbfUtils.trimLeftSpaces((byte[]) row[0]));
+				String clrazao = new String(DbfUtils.trimLeftSpaces((byte[]) row[1]));
 //				String clfone	= new String(DbfUtils.trimLeftSpaces((byte[]) row[2]));
 //				String clfax	= new String(DbfUtils.trimLeftSpaces((byte[]) row[3]));
-				String clinest	= new String(DbfUtils.trimLeftSpaces((byte[]) row[4]));
-				String clcgc	= new String(DbfUtils.trimLeftSpaces((byte[]) row[5]));
-				String clender	= new String(DbfUtils.trimLeftSpaces((byte[]) row[6]));
-				String clbair	= new String(DbfUtils.trimLeftSpaces((byte[]) row[7]));
-				String clcep	= new String(DbfUtils.trimLeftSpaces((byte[]) row[8]));
-				String clcidade	= new String(DbfUtils.trimLeftSpaces((byte[]) row[9]));
-				String cluf		= new String(DbfUtils.trimLeftSpaces((byte[]) row[10]));
+				String clinest = new String(DbfUtils.trimLeftSpaces((byte[]) row[4]));
+				String clcgc = new String(DbfUtils.trimLeftSpaces((byte[]) row[5]));
+				String clender = new String(DbfUtils.trimLeftSpaces((byte[]) row[6]));
+				String clbair = new String(DbfUtils.trimLeftSpaces((byte[]) row[7]));
+				String clcep = new String(DbfUtils.trimLeftSpaces((byte[]) row[8]));
+				String clcidade = new String(DbfUtils.trimLeftSpaces((byte[]) row[9]));
+				String cluf = new String(DbfUtils.trimLeftSpaces((byte[]) row[10]));
 //				String clcend	= new String(DbfUtils.trimLeftSpaces((byte[]) row[11]));
 //				String clcbai	= new String(DbfUtils.trimLeftSpaces((byte[]) row[12]));
 //				String clccep	= new String(DbfUtils.trimLeftSpaces((byte[]) row[13]));
@@ -75,7 +73,7 @@ public class MigrarCliente {
 //				String cldest2	= new String(DbfUtils.trimLeftSpaces((byte[]) row[32]));
 //				String cldest3	= new String(DbfUtils.trimLeftSpaces((byte[]) row[33]));
 //				String cldest4	= new String(DbfUtils.trimLeftSpaces((byte[]) row[34]));				
-				String clconta	= row[35].toString();
+				String clconta = row[35].toString();
 //				String clfracao	  = new String(DbfUtils.trimLeftSpaces((byte[]) row[36]));
 //				String clfracao2  = new String(DbfUtils.trimLeftSpaces((byte[]) row[37]));	
 //				String clfracao3  = new String(DbfUtils.trimLeftSpaces((byte[]) row[38]));	
@@ -85,28 +83,27 @@ public class MigrarCliente {
 //				String cldesconto = new String(DbfUtils.trimLeftSpaces((byte[]) row[42]));	
 //				String cldiapag   = new String(DbfUtils.trimLeftSpaces((byte[]) row[43]));	
 //				String cldttitabe = new String(DbfUtils.trimLeftSpaces((byte[]) row[44]));
-				
-				
+
 				String logradouro = "";
 				String numero = "";
-				String complemento = "";				
-				String[] parts = clender.split(",");				
-				if(parts.length >= 1){
-					logradouro = parts[0].trim();				
-				}				
-				if(parts.length > 1){
+				String complemento = "";
+				String[] parts = clender.split(",");
+				if (parts.length >= 1) {
+					logradouro = parts[0].trim();
+				}
+				if (parts.length > 1) {
 					numero = parts[1].trim();
-					if(numero.length() > 10){
+					if (numero.length() > 10) {
 						numero.substring(0, 10);
 					}
-				}				
-				if(parts.length > 2){
+				}
+				if (parts.length > 2) {
 					complemento = parts[2].trim();
-					if(complemento.length() > 20){
+					if (complemento.length() > 20) {
 						complemento.substring(0, 20);
-					}					
-				}			
-				
+					}
+				}
+
 				Endereco endereco = new Endereco();
 				endereco.setCep(clcep);
 				endereco.setTipoLogradouro("");
@@ -116,11 +113,11 @@ public class MigrarCliente {
 				endereco.setBairro(clbair);
 				endereco.setCidade(clcidade);
 				endereco.setUf(R42Util.converteEstado(cluf));
-				
+
 //				Contato contato = new Contato();
 //				contato.setNomeContato(clrazao);
 //				contato.setTelefone(clfone);
-								
+
 				Cliente cliente = new Cliente();
 				cliente.setRazaoSocial(clrazao);
 				cliente.setFantasia(clrazao);
@@ -131,24 +128,22 @@ public class MigrarCliente {
 				cliente.setEndereco(endereco);
 //				cliente.addContato(contato);
 				cliente.setConta(converteConta(clconta));
-				
-				serCliente.salvar(cliente);
-				
-			}
 
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new Exception(e.getMessage());
+				serCliente.salvar(cliente);
+			} catch (Exception e) {
+				// TODO: handle exception
+				throw new Exception(e.getMessage());
+			}
 		}
 
 	}
-	
+
 	/****************************************************************************
 	 * Converte String em Conta (busca no banco de dados)
-	 ****************************************************************************/	
+	 ****************************************************************************/
 	private Conta converteConta(String reduzida) {
 		Conta conta = serConta.buscarPorReduzida(reduzida);
 		return conta;
-	}	
+	}
 
 }

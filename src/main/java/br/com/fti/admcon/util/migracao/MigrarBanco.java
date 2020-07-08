@@ -42,7 +42,7 @@ public class MigrarBanco {
 		try {
 
 			dbfReader = R42Util.lerDbf(arquivo);
-			
+
 			for (int i = 0; i < dbfReader.getRecordCount(); i++) {
 				Object[] row = dbfReader.nextRecord();
 
@@ -70,29 +70,29 @@ public class MigrarBanco {
 				BigDecimal bc1cd2mest = new BigDecimal(0);
 				BigDecimal bc1cd2cart = new BigDecimal(0);
 
-				if (row[20] != null) {
-					bc1cdage = new BigDecimal((double) row[20]);
-				}
-				if (row[21] != null) {
-					bc1cdconta = new BigDecimal((double) row[21]);
-				}
 				if (row[22] != null) {
-					bc1cdmest = new BigDecimal((double) row[22]);
+					bc1cdage = new BigDecimal((double) row[22]); // 20
 				}
 				if (row[23] != null) {
-					bc1cdcart = new BigDecimal((double) row[23]);
+					bc1cdconta = new BigDecimal((double) row[23]);
 				}
 				if (row[24] != null) {
-					bc1cd2age = new BigDecimal((double) row[24]);
+					bc1cdmest = new BigDecimal((double) row[24]);
 				}
 				if (row[25] != null) {
-					bc1cd2cont = new BigDecimal((double) row[25]);
+					bc1cdcart = new BigDecimal((double) row[25]);
 				}
 				if (row[26] != null) {
-					bc1cd2mest = new BigDecimal((double) row[26]);
+					bc1cd2age = new BigDecimal((double) row[26]);
 				}
 				if (row[27] != null) {
-					bc1cd2cart = new BigDecimal((double) row[27]);
+					bc1cd2cont = new BigDecimal((double) row[27]);
+				}
+				if (row[28] != null) {
+					bc1cd2mest = new BigDecimal((double) row[28]);
+				}
+				if (row[29] != null) {
+					bc1cd2cart = new BigDecimal((double) row[29]);
 				}
 
 				Endereco endereco = new Endereco();
@@ -136,7 +136,7 @@ public class MigrarBanco {
 					carteira2.setCodMestre(bc1cd2mest.toPlainString());
 					carteira2.setCodCarteira(bc1cd2cart.toPlainString());
 					carteira2.setLayoutCnab(LayoutCnab.L400);
-					banco.addCarteira(carteira2);					
+					banco.addCarteira(carteira2);
 				}
 
 				serBanco.salvar(banco);
@@ -154,8 +154,12 @@ public class MigrarBanco {
 	 ****************************************************************************/
 	private Febraban converteFebraban(String codFebraban) {
 		Febraban cod = null;
-		if(codFebraban != null && !codFebraban.isEmpty()){
-			cod = Febraban.valueOf("F_" + codFebraban);
+		if (codFebraban != null && !codFebraban.isEmpty()) {
+			try {
+				cod = Febraban.valueOf("F_" + codFebraban);
+			} catch (Exception e) {
+				cod = Febraban.valueOf("F_CXA"); 
+			}
 		}
 		return cod;
 	}

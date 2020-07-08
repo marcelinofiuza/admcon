@@ -96,9 +96,10 @@ public class MigrarConta {
 				String ct1Dvr = row[6].toString();
 				ct1Dvr = ct1Dvr.substring(0, ct1Dvr.lastIndexOf("."));
 				String ct1Descr = new String(DbfUtils.trimLeftSpaces((byte[]) row[7]));
-				String ct1Status = row[8].toString();
+				
+				String ct1Status = row[9].toString(); //shopping 8
 				ct1Status = ct1Status.substring(0, ct1Status.lastIndexOf("."));
-				String ct1Nat = row[9].toString();
+				String ct1Nat = row[10].toString(); //shopping 9
 				ct1Nat = ct1Nat.substring(0, ct1Nat.lastIndexOf("."));
 
 				linha[0] = ct1Conta.replace(".", "");
