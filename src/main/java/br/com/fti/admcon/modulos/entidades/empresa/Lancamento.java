@@ -116,11 +116,11 @@ public class Lancamento extends ZEmpresa implements Serializable {
 	@JoinColumn(name = "idLctoTransf")
 	private Lancamento transferencia;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "idReceber")
 	private Receber receber;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "idPagar")
 	private Pagar pagar;
 	
